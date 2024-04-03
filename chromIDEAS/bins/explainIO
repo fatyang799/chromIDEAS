@@ -1,0 +1,107 @@
+#!/bin/bash
+
+# Program: explainIO
+package_name="chromIDEAS"
+command="explainIO"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2, then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	test="to be continue"
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvioc:a" opt
+	do
+		case $opt in
+			i) input=T ;;
+			o) output=T ;;
+			c) command_name=${OPTARG} ;;
+			a) all=T ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n" 
+			   cat ${manual_root}/${command}.txt
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	if [[ -z ${input} && -z ${output} && -z ${all} ]]; then
+		echo "Please provide -i or -o parameter."
+		exit 100
+	fi
+
+	if [[ -z ${command_name} && -z ${all} ]]; then
+		echo "Please provide -c parameter."
+		exit 100
+	fi
+
+	if [[ ${all} == "T" ]]; then
+		ls ${manual_root}/*txt | xargs basename -a | cut -d "." -f1 | egrep -v "explainIO|chromIDEAS_onebyone|^chromIDEAS$" | while read id
+		do
+			echo -e " - \033[1;32;40m${id}\033[0m"
+		done
+
+		exit 0
+	fi
+
+	ls ${manual_root}/*txt | xargs basename -a | cut -d "." -f1 | egrep -v "explainIO|chromIDEAS_onebyone|^chromIDEAS$" | egrep -i "^${command_name}$" 1>/dev/null 2>&1
+	if [[ $? -ne 0 ]]; then
+		echo "The command ${command_name} don't exist, please check. All available commands are as below:"
+		ls ${manual_root}/*txt | xargs basename -a | cut -d "." -f1 | egrep -v "explainIO|chromIDEAS_onebyone|^chromIDEAS$" | while read id
+		do
+			echo -e " - \033[1;32;40m${id}\033[0m"
+		done
+		exit 100
+	else
+		command_name=$(ls ${manual_root}/*txt | xargs basename -a | cut -d "." -f1 | egrep -v "explainIO|chromIDEAS_onebyone|^chromIDEAS$" | egrep -i "^${command_name}$")
+	fi
+fi
+
+# explainIO
+if true; then
+	if [[ ${input} == "T" ]]; then
+		cat ${manual_root}/input/${command_name}.txt
+	fi
+
+	if [[ ${output} == "T" ]]; then
+		cat ${manual_root}/output/${command_name}.txt
+		exit
+	fi	
+fi
+
+

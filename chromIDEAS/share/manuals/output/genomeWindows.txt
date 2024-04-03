@@ -1,0 +1,31 @@
+
+Usage example:   
+  genomeWindows -o 1.genomeWindows/ -b 200 -s hg38
+  genomeWindows -o 1.genomeWindows/ -b 200 -g hg38.chr10.sizes -B hg38-blacklist.chr10.bed
+
+# ------------ Output file results ------------ #
+$ tree 1.genomeWindows/
+1.genomeWindows/
+├── windows.bed
+├── windowsNoBlack.noid.bed
+└── windowsNoBlack.withid.bed
+
+
+1. windows.bed: Segment the genome into 200bp windows based on hg38.chr10.sizes file, 
+which include all genomic regions.
+  - col1: chromosome name
+  - col2: start (0-based)
+  - col3: end (0-based)
+
+2. windowsNoBlack.noid.bed: Segment the genome into 200bp windows based on hg38.chr10.sizes 
+file, which exclude hg38-blacklist.chr10.bed region from genome.
+  - col1: chromosome name
+  - col2: start (0-based)
+  - col3: end (0-based)
+
+3. windowsNoBlack.withid.bed: Bin IDs are added to windowsNoBlack.noid.bed.
+  - col1: chromosome name
+  - col2: start (0-based)
+  - col3: end (0-based)
+  - col4: Bin ID
+

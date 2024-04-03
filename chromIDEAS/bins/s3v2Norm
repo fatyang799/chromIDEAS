@@ -1,0 +1,492 @@
+#!/bin/bash
+
+# Program: s3v2Norm
+package_name="chromIDEAS"
+command="s3v2Norm"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2, then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	input_dir=$PWD
+	out_dir=$PWD
+	id_name=chromIDEAS
+	nthreads=4
+	local_bg_bin=5
+
+	metadata=metadata
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvi:o:m:d:p:l:zc" opt
+	do
+		case $opt in
+			i) input_dir=${OPTARG} ;;
+			o) out_dir=${OPTARG} ;;
+			m) metadata=${OPTARG} ;;
+			d) id_name=${OPTARG} ;;
+			p) nthreads=${OPTARG} ;;
+			l) local_bg_bin=${OPTARG} ;;
+			z) zip_output=T ;;
+			c) cont=T ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n" 
+			   cat ${manual_root}/${command}.txt
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# metadata
+	file_check ${metadata}
+	metadata=$(getFull_file ${metadata})
+	rm_empty ${metadata}
+
+	# input_dir & out_dir
+	if true; then
+		# check the file
+		ls ${input_dir}/*ctrl.idsort.bedgraph* 1>/dev/null 2>&1
+		check_status "${input_dir} do not contains the converted bedgraph files, please check." "echo"
+		n1=$(ls ${input_dir}/*ctrl.idsort.bedgraph* | wc -l)
+
+		ls ${input_dir}/*ip.idsort.bedgraph* 1>/dev/null 2>&1
+		check_status "${input_dir} do not contains the converted bedgraph files, please check." "echo"
+		n2=$(ls ${input_dir}/*ip.idsort.bedgraph* | wc -l)
+
+		n3=$(cat ${metadata} | wc -l)
+
+		if [[ $n1 -ne $n2 ]]; then
+			echo "The number of Exp files and CT files is not identical in ${input_dir}, please check."
+			exit 100
+		fi
+		if [[  $n1 -ne $n3 || $n2 -ne $n3 ]]; then
+			echo "The number of files in ${input_dir} is not equal to the row number of ${metadata}, please check."
+			exit 100
+		fi
+
+		input_dir=$(getFull_dir ${input_dir})
+		out_dir=$(getFull_dir ${out_dir})
+	fi
+
+	# nthreads & local_bg_bin
+	if true; then
+		if [[ ${nthreads} -le 0 ]]; then
+			echo "The -p nthreads should be a positive integer greater than 0."
+			exit 100
+		fi
+		if [[ ${local_bg_bin} -le 0 ]]; then
+			echo "The -l local_bg_bin should be a positive integer greater than 0."
+			exit 100
+		fi
+	fi
+fi
+
+# preprocess
+if true; then
+	cap_sig=16
+
+	# check the input format: whether zip or not?
+	if true; then
+		tmp=${out_dir}/check_zip
+		mkdir -p ${tmp}
+		cat ${metadata} | while read -a id
+		do
+			cell=${id[0]}
+			mk=${id[1]}
+			id=${id[2]}
+			echo ${input_dir}/${cell}.${mk}.${id}.ctrl.idsort.bedgraph
+			echo ${input_dir}/${cell}.${mk}.${id}.ip.idsort.bedgraph
+		done > ${tmp}/file.txt
+		cat ${tmp}/file.txt | xargs -n1 -i ls {} 1>/dev/null 2>&1
+		stat1=$?
+		cat ${tmp}/file.txt | xargs -n1 -i ls {}.gz 1>/dev/null 2>&1
+		stat2=$?
+
+		if [[ ${stat1} -eq 0 ]]; then
+			zip=F
+		elif [[ ${stat2} -eq 0 ]]; then
+			zip=T
+		fi
+		rm -rf ${tmp}
+	fi
+	
+	# cd working directory
+	cd ${out_dir}
+	
+	# get mk list
+	mk_list=${id_name}.mk_list.txt
+	cat ${metadata} | cut -f2 | sort -u > ${mk_list}
+	uniq_mk_num=$(cat ${mk_list} | wc -l)
+	total_f_num=$(cat ${metadata} | wc -l)
+
+	# create dir for info
+	mkdir -p ${out_dir}/0.info/{1.get_cpk_cbg_allpk_average_sig,2.S3norm_average_across_marks,3.S3V2_across_samples_with_same_mk,4.S3V2_across_CT_samples,5.NBP_for_S3V2Norm}
+
+	# define some function for continue
+	if true; then
+		function n_file_with_pattern {
+			pat=$1
+			loc=$2
+
+			if [[ ${loc} == "l" ]]; then
+				pat="^${pat}.*"
+			elif [[ ${loc} == "r" ]]; then
+				pat=".*${pat}$"
+			elif [[ ${loc} == "m" ]]; then
+				pat=".*${pat}.*"
+			fi
+
+			n=$(ls | egrep ${pat} | wc -l)
+			echo "$n"
+		}
+
+		function show_time {
+			mess=$1
+			sec=$2
+			echo "${mess}"
+			sleep ${sec}
+		}
+	fi
+
+	# check whether the program has been done
+	if [[ -d ${id_name}_bws_RC && -d ${id_name}_bws_NBP && -d ${id_name}_IDEAS_input_NB ]]; then
+		cd ${out_dir}/${id_name}_bws_RC
+		n1=$(n_file_with_pattern ".S3V2.bedgraph" "m")
+		n2=$(n_file_with_pattern ".average_sig.bedgraph.S3V2.ave.bedgraph" "m")
+		cd ${out_dir}/${id_name}_bws_NBP
+		n3=$(n_file_with_pattern ".S3V2.bedgraph.NBP.bedgraph" "m")
+		n4=$(n_file_with_pattern ".average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph" "m")
+		if [[ ${cont} == "T" && ${uniq_mk_num} -eq ${n2} && ${uniq_mk_num} -eq ${n4} && ${total_f_num} -eq ${n1} && ${total_f_num} -eq ${n3} ]]; then
+			echo "Normalization has been done, skip the process. If you want to re-normalize the data, please remove -c parameter and run the ${command}."
+			exit
+		fi
+	fi
+
+	# cd working directory
+	cd ${out_dir}
+fi
+
+# s3v2 norm
+if true; then
+	# zip: the input file zip or not
+	# zip_output: final output zip or not
+
+	# 1: get cpk cbg allpk average_sig
+	if true; then
+		# output:
+		# ${mk}.file_list.txt: ${input_dir}/${cell}.${mk}.${id}.ip.idsort.bedgraph ${input_dir}/${cell}.${mk}.${id}.ctrl.idsort.bedgraph
+		# ${mk}_commonpkfdr01_z.cpk.txt: common pk regions, 0 for no, 1 for yes
+		# ${mk}_commonpkfdr01_z.cbg.txt: common bg regions, 0 for no, 1 for yes
+		# ${mk}_commonpkfdr01_z.allpk.txt: all peaks regions, as long as it is defined as peak in 1 file, then it is a peak, 0 for no, 1 for yes
+		# ${mk}.average_sig.bedgraph: Mean value of the same marker in multiple cell lines.
+		echo -e "########################## s3v2Norm Start ##########################"
+
+		n1=$(n_file_with_pattern ".file_list.txt" "r")
+		n2=$(n_file_with_pattern "_commonpkfdr01_z.cpk.txt" "r")
+		n3=$(n_file_with_pattern "_commonpkfdr01_z.cbg.txt" "r")
+		n4=$(n_file_with_pattern "_commonpkfdr01_z.allpk.txt" "r")
+		n5=$(n_file_with_pattern ".average_sig.bedgraph" "r")
+		if [[ ${cont} == "T" && ${uniq_mk_num} -eq ${n1} && ${uniq_mk_num} -eq ${n2} && ${uniq_mk_num} -eq ${n3} && ${uniq_mk_num} -eq ${n4} && ${uniq_mk_num} -eq ${n5} ]]; then
+			echo -e "1.Get cpk cbg allpk average_sig done"
+		else
+			cat ${mk_list} | xargs -n1 -i -P ${nthreads} bash ${bin_root}/get_cpk_cbg_allpk_averagesig.sh {} ${metadata} ${input_dir} ${zip}
+
+			check_status "${command} 1 raise error, please check." "rm -rf *commonpkfdr01* *average_sig* *file_list.txt *mk_list.txt"
+			mv *average_sig.bedgraph.notused.files.txt ${out_dir}/0.info/1.get_cpk_cbg_allpk_average_sig
+			echo -e "1.Get cpk cbg allpk average_sig done"
+		fi
+	fi
+
+	# 2: S3norm average across marks (keep the mean value across various marker are identical)
+	if true; then
+		# output:
+		# ${mk}.average_sig.bedgraph.S3.bedgraph: normalized signal in bedgraph format
+		# ${mk}.average_sig.bedgraph.S3.bedgraph.info.txt: Mean_ratio, S3norm_B, S3norm_A. [Mean_ratio=mean(norm)/mean(ref)] [norm=raw**B*A]
+		n1=$(n_file_with_pattern ".average_sig.bedgraph.S3.bedgraph" "r")
+		if [[ ${cont} == "T" && ${uniq_mk_num} -eq ${n1} ]]; then
+			echo -e "2.S3norm average across marks done"
+		else
+			if [[ ${uniq_mk_num} -eq 1 ]]; then
+				mk=$(cat ${mk_list})
+				cp ${mk}.average_sig.bedgraph ${mk}.average_sig.bedgraph.S3.bedgraph
+			else
+				cat ${mk_list} | xargs -n1 -i -P ${nthreads} bash ${bin_root}/s3norm.sh {}
+
+				check_status "${command} 2 raise error, please check." "rm -rf *commonpkfdr01* *average_sig* *file_list.txt *mk_list.txt *average_sig.bedgraph.S3.bedgraph*"
+				mv *.average_sig.bedgraph.log *average_sig.bedgraph.S3.bedgraph.info.txt ${out_dir}/0.info/2.S3norm_average_across_marks/
+			fi
+
+			echo -e "2.S3norm average across marks done"
+		fi
+	fi
+
+	# 3: S3V2 across samples with same mk (keep the mean value of samples with same marker are identical)
+	if true; then
+		# output:
+		# ${mk}.file_list.S3V2.txt: ${input_dir}/${cell}.${mk}.${id}.ip.idsort.bedgraph ${mk}.average_sig.bedgraph.S3.bedgraph ${cell}_${id} ${mk}
+		# ${cell}_${id}.${mk}.S3V2.bedgraph: normalized bedgraph file
+		# ${cell}_${id}.${mk}.S3V2.bedgraph.info.txt: normalization info
+		# ${cell}_${id}.${mk}.S3V2.bedgraph.low.value.txt: the file with low value, which must be treated with caution
+		# ${mk}.getave_nbp.list.txt: ${cell}_${id}.${mk}.S3V2.bedgraph ${cell}.${mk}.${id}.ctrl.idsort.bedgraph.norm.bedgraph
+		# ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph: the average signal of ${cell}_${id}.${mk}.S3V2.bedgraph
+		# ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph.notused.files.txt: the not used file when calculate average signal for all ${cell}_${id}.${mk}.S3V2.bedgraph
+
+		n1=$(n_file_with_pattern ".file_list.S3V2.txt" "r")
+		n2=$(n_file_with_pattern ".getave_nbp.list.txt" "r")
+		n3=$(n_file_with_pattern ".average_sig.bedgraph.S3V2.ave.bedgraph" "r")
+		n4=$(n_file_with_pattern ".S3V2.bedgraph" "r")
+		if [[ ${cont} == "T" && ${uniq_mk_num} -eq ${n1} && ${uniq_mk_num} -eq ${n2} && ${uniq_mk_num} -eq ${n3} && ${total_f_num} -eq ${n4} ]]; then
+			echo -e "3.S3V2 across samples with same mk done"
+		else
+			cat ${mk_list} | xargs -n1 -i bash ${bin_root}/s3v2norm.sh -k {} -i ${input_dir} -n ${uniq_mk_num} -L ${local_bg_bin} -r 0.0001 -m ${metadata} -p ${nthreads}
+			
+			check_status "${command} 3 raise error, please check." "rm -rf *.file_list.S3V2.txt *.S3V2.bedgraph *.average_sig.bedgraph.S3V2.ave.bedgraph.notused.files.txt *.S3V2.bedgraph.info.txt *S3V2.bedgraph.log *.S3V2.bedgraph.low.value.txt *.getave_nbp.list.txt *.average_sig.bedgraph.S3V2.ave.bedgraph"
+			mv *.average_sig.bedgraph.S3V2.ave.bedgraph.notused.files.txt *.S3V2.bedgraph.info.txt *S3V2.bedgraph.log ${out_dir}/0.info/3.S3V2_across_samples_with_same_mk/
+			ls *.S3V2.bedgraph.low.value.txt 1>/dev/null 2>&1
+			if [[ $? -eq 0 ]]; then
+				mv *.S3V2.bedgraph.low.value.txt ${out_dir}/0.info/3.S3V2_across_samples_with_same_mk/
+			fi
+			echo -e "3.S3V2 across samples with same mk done"
+		fi
+	fi
+
+	# 4: S3V2 across CT samples
+	if true; then
+		# output:
+		# all.ctrl.list.txt: ${cell}.${mk}.${id}.ctrl.idsort.bedgraph
+		# ${cell}.${mk}.${id}.ctrl.idsort.bedgraph.norm.bedgraph: s3v2 norm CT
+		# ${cell}.${mk}.${id}.ctrl.idsort.bedgraph.norm.bedgraph.info: s3v2 normalization info
+
+		n1=$(n_file_with_pattern ".ctrl.idsort.bedgraph.norm.bedgraph" "r")
+		if [[ ${cont} == "T" && ${total_f_num} -eq ${n1} && -f all.ctrl.list.txt ]]; then
+			echo -e "4.S3V2 across CT samples done"
+		else
+			awk -F '\t' -v OFS='\t' '{print $1"."$2"."$3".ctrl.idsort.bedgraph"}' ${metadata} | sed "s#^#${input_dir}/#g" > all.ctrl.list.txt
+			if [[ ${zip} == "T" ]]; then
+				sed "s/$/.gz/g" all.ctrl.list.txt > all.ctrl.list.txt.tmp
+				mv all.ctrl.list.txt.tmp all.ctrl.list.txt
+			fi
+			Rscript ${bin_root}/non0scale.R all.ctrl.list.txt
+			
+			check_status "${command} 4 raise error, please check." "rm -rf all.ctrl.list.txt *.ctrl.idsort.bedgraph.norm.bedgraph"
+			mv *.ctrl.idsort.bedgraph*.norm.bedgraph.info.txt ${out_dir}/0.info/4.S3V2_across_CT_samples/
+			echo -e "4.S3V2 across CT samples done"
+		fi
+	fi
+
+	# 5: Get NBP for S3V2 normalized data
+	if true; then
+		# output:
+		# ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph: the -log10Pvalue for ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph
+		# ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph.info.txt: (NB model parameters) AVEmat_cbg_prob, AVEmat_cbg_size, scale_down
+		# ${cell}_${id}.${mk}.S3V2.bedgraph.NBP.bedgraph: the -log10Pvalue for each file (${cell}_${id}.${mk}.S3V2.bedgraph)
+
+		n1=$(n_file_with_pattern ".average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph" "r")
+		if [[ ${cont} == "T" && ${uniq_mk_num} -eq ${n1} ]]; then
+			echo -e "5.Get NBP for S3V2 normalized data done"
+		else
+			if [[ ${zip} == "T" ]]; then
+				ls *.getave_nbp.list.txt | while read id
+				do
+					sed "s/.norm.bedgraph$/.gz.norm.bedgraph/g" ${id} > ${id}.tmp
+					mv ${id}.tmp ${id}
+				done
+			fi
+			cat ${mk_list} | xargs -n1 -i -P ${nthreads} Rscript ${bin_root}/global_nbp_NB_cm.ok.R {}.getave_nbp.list.txt {}.average_sig.bedgraph.S3V2.ave.bedgraph
+			
+			check_status "${command} 5 raise error, please check." "rm -rf *.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph *S3V2.bedgraph.NBP.bedgraph"
+			mv *.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph.info.txt ${out_dir}/0.info/5.NBP_for_S3V2Norm/
+			echo -e "5.Get NBP for S3V2 normalized data done"
+		fi
+		echo -e "########################## s3v2Norm End ##########################"
+		echo ""
+	fi
+
+	# 6: Management of output files
+	if true; then
+		# 6.1 ${id_name}_bws_RC
+		mkdir -p ${id_name}_bws_RC
+		mv *.S3V2.bedgraph *.average_sig.bedgraph.S3V2.ave.bedgraph ${id_name}_bws_RC/
+		if [[ ${zip_output} == "T" ]]; then
+			ls ${id_name}_bws_RC/* | xargs -n1 -i -P ${nthreads} gzip -f {}
+		fi
+
+		# 6.2 ${id_name}_bws_NBP
+		mkdir -p ${id_name}_bws_NBP
+		mv *.S3V2.bedgraph.NBP.bedgraph *.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph ${id_name}_bws_NBP/
+		if [[ ${zip_output} == "T" ]]; then
+			ls ${id_name}_bws_NBP/* | xargs -n1 -i -P ${nthreads} gzip -f {}
+		fi
+
+		# 6.3 ${id_name}_IDEAS_input_NB # split to mergeBedgraph
+		if false; then
+			mkdir -p ${id_name}_IDEAS_input_NB
+			if [[ ${zip_output} == "F" ]]; then
+				ls ${out_dir}/${id_name}_bws_NBP/*.S3V2.bedgraph.NBP.bedgraph | while read id
+				do
+					input_file=$(basename ${id} | sed "s/bedgraph$/txt/g")
+					cut -f 4 ${id} > ${out_dir}/${id_name}_IDEAS_input_NB/${input_file}
+				done
+			elif [[ ${zip_output} == "T" ]]; then
+				ls ${out_dir}/${id_name}_bws_NBP/*.S3V2.bedgraph.NBP.bedgraph.gz | while read id
+				do
+					input_file=$(basename ${id} | sed "s/bedgraph.gz$/txt.gz/g")
+					zcat ${id} | cut -f 4 | gzip > ${out_dir}/${id_name}_IDEAS_input_NB/${input_file}
+				done
+			fi
+
+			if [[ ${uniq_mk_num} -eq 1 ]]; then
+				if [[ ${zip_output} == "F" ]]; then
+					ls ${out_dir}/${id_name}_bws_NBP/*.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph | while read id
+					do
+						input_file=$(basename ${id} | sed "s/ave.bedgraph.NBP.bedgraph$/bedgraph.NBP.txt/g")
+						cut -f 4 ${id} > ${out_dir}/${id_name}_IDEAS_input_NB/${input_file}
+					done
+				elif [[ ${zip_output} == "T" ]]; then
+					ls ${out_dir}/${id_name}_bws_NBP/*.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph.gz | while read id
+					do
+						input_file=$(basename ${id} | sed "s/ave.bedgraph.NBP.bedgraph.gz$/bedgraph.NBP.txt.gz/g")
+						zcat ${id} | cut -f 4 | gzip > ${out_dir}/${id_name}_IDEAS_input_NB/${input_file}
+					done
+				fi
+			fi
+		fi
+		
+		### rm redundant files
+		rm *average_sig.bedgraph *.bedgraph*.norm.bedgraph *commonpkfdr01_z* *S3V2.txt *list.txt *average_sig.bedgraph.S3.bedgraph
+	fi
+fi
+
+# log management
+if true; then
+	echo "Summary for normalization:"
+	show_time "Ready to show Summary: 3s" 1
+	show_time "Ready to show Summary: 2s" 1
+	show_time "Ready to show Summary: 1s" 1
+
+	if true; then
+		echo "#=============================================Summary for normalization=============================================#"
+		# 1: get cpk cbg allpk average_sig
+		if true; then
+			echo "############# 1: get cpk cbg allpk average_sig #############"
+			n=$(cat ${out_dir}/0.info/1.get_cpk_cbg_allpk_average_sig/*.average_sig.bedgraph.notused.files.txt | egrep -v "^\d*$" | wc -l)
+			if [[ $n -gt 0 ]]; then
+				echo "The signal of thess files are too low, the mean value is NA or the max value equal to 0: "
+				cat ${out_dir}/0.info/1.get_cpk_cbg_allpk_average_sig/*.average_sig.bedgraph.notused.files.txt | egrep -v "^\d*$" | nl | sed -r "s/^\s+/\t/g" | sed -r "s/([0-9]{1,})\t/\1) /g"
+			else
+				echo "Nothing requiring additional attention"
+			fi
+			echo -e "\n"
+			sleep 1
+		fi
+
+		# 2: S3norm average across marks
+		if true; then
+			echo "############# 2: S3norm average across marks #############"
+			echo "The normalization parameters (norm=A*raw^B):"
+			i=1
+			ls ${out_dir}/0.info/2.S3norm_average_across_marks/*.average_sig.bedgraph.S3.bedgraph.info.txt | while read id
+			do
+				mk=$(basename ${id} | cut -d "." -f1)
+				echo -e "\t${i}) ${mk}:"
+				cat ${id} | column -t | sed "s/^/\t\t/g"
+				let i++
+			done
+			echo -e "\n"
+			sleep 1
+		fi
+
+		# 3: S3V2 across samples with same mk
+		if true; then
+			echo "############# 3: S3V2 across samples with same mk #############"
+			echo "The normalization parameters:"
+			echo -e "norm_dat = norm_pk + norm_bg"
+			i=1
+			ls ${out_dir}/0.info/3.S3V2_across_samples_with_same_mk/*S3V2.bedgraph.info.txt | while read id
+			do
+				file=$(basename ${id} | sed "s/.info.txt//g")
+				echo -e "\t${i}) ${file}:"
+				echo -e "\t\tPk region normalization parameters [exponential regression: norm=(2^A)*(raw^B)]:"
+				cut -f1-2 ${id} | column -t | sed "s/^/\t\t\t/g"
+				echo -e "\t\tBg region normalization parameters [linear regression: norm=B*raw+A]:"
+				cut -f3-4 ${id} | column -t | sed "s/^/\t\t\t/g"
+				let i++
+			done
+			
+			n=$(cat ${out_dir}/0.info/3.S3V2_across_samples_with_same_mk/*.average_sig.bedgraph.S3V2.ave.bedgraph.notused.files.txt | egrep -v "^\d*$" | wc -l)
+			if [[ $n -gt 0 ]]; then
+				echo "The signal of thess files are too low, the mean value is NA or the max value equal to 0: "
+				cat ${out_dir}/0.info/3.S3V2_across_samples_with_same_mk/*.average_sig.bedgraph.S3V2.ave.bedgraph.notused.files.txt | egrep -v "^\d*$" | nl | sed -r "s/^\s+/\t/g" | sed -r "s/([0-9]{1,})\t/\1) /g"
+			fi
+			echo -e "\n"
+			sleep 1
+		fi
+
+		# 4: S3V2 across CT samples
+		if true; then
+			echo "############# 4: S3V2 across CT samples #############"
+			echo "The normalization parameters [linear regression: norm=B*raw+A]:"
+			i=1
+			ls ${out_dir}/0.info/4.S3V2_across_CT_samples/*.ctrl.idsort.bedgraph*.norm.bedgraph.info.txt | while read id
+			do
+				file=$(basename ${id} | sed "s/.info.txt//g")
+				echo -e "\t${i}) ${file}:"
+				cut -f1-2 ${id} | column -t | sed "s/^/\t\t/g"
+				let i++
+			done
+			echo -e "\n"
+			sleep 1
+		fi
+
+		# 5: Get NBP for S3V2 normalized data
+		if true; then
+			echo "############# 5: Get NBP for S3V2 normalized data #############"
+			echo "Fit the s3v2 norm data to NB model:"
+			i=1
+			ls ${out_dir}/0.info/5.NBP_for_S3V2Norm/*.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph.info.txt | while read id
+			do
+				mk=$(basename ${id} | cut -d "." -f1)
+				echo -e "\t${i}) The normalization parameters for average signal of ${mk}:"
+				cat ${id} | column -t | sed "s/^/\t\t/g"
+				let i++
+			done
+			echo -e "\n"
+			sleep 1
+		fi
+	fi | tee ${id_name}.norm.log.txt
+
+	rm -rf ${out_dir}/0.info
+fi

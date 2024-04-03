@@ -1,0 +1,57 @@
+
+DESCRIPTION:
+    ideasCS is a Integrative and Discriminative Epigenome Annotation System tool. It learns chromatin state 
+models from the normalized epigenomic signals simultaneously along the genome and across cell types to improve 
+consistency of state assignments across different cell types. 
+Detail algorithms can be viewed: https://doi.org/10.1093/nar/gkw278
+
+Usage:   ideasCS [options] ...
+Version: 1.0
+
+Required arguments:
+  -m metadata               The metadata file, which include all normalized files with only signal value. There are
+                            three columns in the file, which record the cell (1st column), marker (2nd column) and
+                            corresponding file (3rd column). [default: None]
+                            An example file (separated by **blank space**) is as follows:
+                                ${cell} ${mk} ${sig_file}
+                                cell_r1 DNase file1.txt
+                                cell_r2 DNase file2.txt
+                                cell_r1 H2AFZ file3.txt
+                                cell_r2 H2AFZ file4.txt
+                                ...
+  -o out_dir                The output directory. [default: ./]
+  -a prefix                 The output file prefix. When combined with -o ${out_dir}, the full filename of all output 
+                            files will be will be: ${out_dir}/${prefix}*. [default: chromIDEAS]
+  -b bed                    The windows bin file (separated by **tab**). You can generate it with genomeWindows command 
+                            if you don't have it. [default: None]
+
+Optional arguments:
+  -f otherpara              This allows you to use .para file from other data as priors for the Gaussian distribution 
+                            parameters in the current job. However, currently we assume that the set of marks and their 
+                            orders in input are the same between previous and current data. [default: None]
+  -p thread                 The number of threads to be used for parallelization. [default: 4]
+  -I impute                 Imputation for missing marker data. You can set it as "None" or "All" or the markers you want 
+                            to impute. All markers to be imputed are separated by commas, e.g. "H3K4me1,H3K4me2,H3K4me3". [default: None]
+  -t train                  The number of random starts used to select the state, which determines the number of times to 
+                            pre-train the HMM model. The higher the value, the more stable the model is, but at the same time 
+                            the computation consumes more time. 0: no training. [default: 100]
+  -s trainsz                The bin number used to pre-train model. The higher the value, the more stable the model is, but at 
+                            the same time the computation consumes more time. **Caution: trainsz < row number of bed file**. [default: 500000]
+  -C num                    Specify number of states at the initialization stage. We recommend setting the initial number of 
+                            states slightly larger than the number of states you expect or are willing to handle. The program 
+                            will auto-set the parameter based on the number of marker type (n): n=1, -C 4 ; else -C 100. [default: auto-set]
+  -G num                    Specify the number of states to be inferred. The final number of inferred states may be smaller 
+                            than the number you specified. 0: let program determine. The program will auto-set the parameter 
+                            based on the number of marker type (n): n=1, -G 4 ; else -G 0. [default: auto-set]
+  -e minerr                 Specify the minimum standard deviation for the emission Gaussian distribution, usually between 
+                            (0,1]. [default: 0.5]
+  -B burnin                 The number of burnins. Increasing the number will increase computing and only slightly increase 
+                            accuracy. [default: 20]
+  -M mcmc                   The number of steps for maximization. Increasing the number will increase computing and only 
+                            slightly increase accuracy. [default: 5]
+  -z                        The output files will be written out in a GZIP compressed form to save disk space. [default: Not set]
+  -h                        Show this help message and exit.
+  -v                        Show program's version number and exit.
+
+For more information visit: https://github.com/YenLab
+

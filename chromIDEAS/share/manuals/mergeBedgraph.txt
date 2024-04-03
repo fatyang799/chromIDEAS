@@ -1,0 +1,28 @@
+
+DESCRIPTION:
+    mergeBedgraph is a tool to merge normalized ChIPseq data with multiple replicates.
+
+Usage:   mergeBedgraph [options] ...
+Version: 1.0
+
+Required arguments:
+  -o out_dir                The output directory. [default: ./]
+  -f file                   The name of file which record the group label for the data. The output filename will 
+                            be ${group}.S3V2.bedgraph.NBP.txt. [default: None]
+                            An example file (separated by tab) is as follows:
+                                ${file}                                 ${group}
+                                A_rep1.H3K36me3.S3V2.bedgraph.NBP.txt   A_rep1.H3K36me3
+                                A_rep2.H3K36me3.S3V2.bedgraph.NBP.txt   A_rep1.H3K36me3
+                                B_rep1.H3K36me3.S3V2.bedgraph.NBP.txt   A_rep1.H3K36me3
+                                B_rep2.H3K36me3.S3V2.bedgraph.NBP.txt   A_rep1.H3K36me3
+                                B_rep1.H3K9me3.S3V2.bedgraph.NBP.txt    A_rep1.H3K9me3
+                                B_rep2.H3K9me3.S3V2.bedgraph.NBP.txt    A_rep1.H3K9me3
+                                ...
+
+Optional arguments:
+  -p thread                 Number of bigwig files to process at the same time. [default: 4]
+  -h                        Show this help message and exit.
+  -v                        Show program's version number and exit.
+
+For more information visit: https://github.com/YenLab
+

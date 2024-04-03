@@ -1,0 +1,59 @@
+
+================= [[ Run all at once with chromIDEAS ]] =================
+Required arguments:
+  -d id_name              The project name. [default: chromIDEAS]
+  -b bin_size             The bin size. [default: 200]
+  -m metadata             The metadata file for normalization, which record the Cell, Marker, ID, Exp_bigwig file, 
+                          and CT_bigwig (optional) file info. [default: None]
+                          An example file (separated by tab) is as follows:
+                              H1 H2AFZ    rep1  /PATH/TO/H2AFZ_rep1.bw /PATH/TO/H2AFZ_rep1_CT.bw
+                              H1 H3K27ac  rep1  /PATH/TO/H3K27ac_rep1.bw
+                              ...
+  -o output              The output directory. [default: ./]
+  -s species              The species, which can be one of the following options: hg38/hg19, mm10. If it don't have 
+                          what you need in these options, you can also provide your own  **genomesizes file** by -g 
+                          and **blackList file** by -B. [default: None]
+  -g genomesizes          The genomesizes file, which record the size of each chromosome.  [default: None]
+                          An example file (separated by tab) is as follows:
+                              chr1  249250621
+                              ...
+
+Optional arguments:
+  -B blackList            The blacklist file. If you have set -s mm10/hg38/hg19, then the program will automatically 
+                          get the file blacklist file. Or you can specify your own blacklist file. [default: None]
+                          An example file (separated by tab) is as follows:
+                              chr1  200 3000
+                              ...
+  -p thread               The number of threads to be used for parallelization. [default: 4]
+  -h                      Show this help message and exit.
+  -v                      Show program's version number and exit.
+  
+  #==== Normalization Parameters ====#
+  -l local_bg_bin         Local background bin number. If set local_bg_bin=5, this means when the target bin is bin10, 
+                          the surrounding background bins are bin5-9 and bin11-15 [default: 5]
+  #==== Chromatin States Assignment Parameters ====#
+  -f otherpara            This allows you to use .para file from other data as priors for the Gaussian distribution 
+                          parameters in the current job. However, currently we assume that the set of marks and their 
+                          orders in input are the same between previous and current data. [default: None]
+  -I impute               Imputation for missing marker data. You can set it as "None" or "All" or the markers you want 
+                          to impute. All markers to be imputed are separated by commas, e.g. "H3K4me1,H3K4me2,H3K4me3". [default: None]
+  -t train                The number of random starts used to select the state, which determines the number of times to 
+                          pre-train the HMM model. The higher the value, the more stable the model is, but at the same time 
+                          the computation consumes more time. 0: no training. [default: 100]
+  -S trainsz              The bin number used to pre-train model. The higher the value, the more stable the model is, but at 
+                          the same time the computation consumes more time. **Caution: trainsz < row number of bed file**. [default: 500000]
+  -C num                  Specify number of states at the initialization stage. We recommend setting the initial number of 
+                          states slightly larger than the number of states you expect or are willing to handle. The program 
+                          will auto-set the parameter based on the number of marker type (n): n=1, -C 4 ; else -C 100. [default: auto-set]
+  -G num                  Specify the number of states to be inferred. The final number of inferred states may be smaller 
+                          than the number you specified. 0: let program determine. The program will auto-set the parameter 
+                          based on the number of marker type (n): n=1, -G 4 ; else -G 0. [default: auto-set]
+  -e minerr               Specify the minimum standard deviation for the emission Gaussian distribution, usually between 
+                          (0,1]. [default: 0.5]
+  -N burnin               The number of burnins. Increasing the number will increase computing and only slightly increase 
+                          accuracy. [default: 20]
+  -M mcmc                 The number of steps for maximization. Increasing the number will increase computing and only 
+                          slightly increase accuracy. [default: 5]
+
+For more information visit: https://github.com/YenLab
+

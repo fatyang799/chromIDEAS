@@ -1,0 +1,30 @@
+
+Usage example:   
+  mergeBedgraph -o 3.s3v2Norm/chromIDEAS_IDEAS_input_NB -f 3.s3v2Norm/chromIDEAS_IDEAS_input_NB/group.txt -p 10
+
+# ------------ Output file results ------------ #
+$ tree 3.s3v2Norm/chromIDEAS_IDEAS_input_NB
+3.s3v2Norm/chromIDEAS_IDEAS_input_NB
+├── A.H3K36me3.S3V2.bedgraph.NBP.txt
+├── A.H3K9me3.S3V2.bedgraph.NBP.txt
+├── B.H3K36me3.S3V2.bedgraph.NBP.txt
+├── B.H3K9me3.S3V2.bedgraph.NBP.txt
+├── group.txt
+└── meta.txt
+
+1. meta.txt: The file record the cell type, marker type and merged file full path (separated by blank space). This file 
+will be the input for ideasCS command. The content in the file is as below:
+----------------- meta.txt -----------------
+A H3K36me3 /FULL/PATH/TO/3.s3v2Norm/chromIDEAS_IDEAS_input_NB/A.H3K36me3.S3V2.bedgraph.NBP.txt
+A H3K9me3 /FULL/PATH/TO/3.s3v2Norm/chromIDEAS_IDEAS_input_NB/A.H3K9me3.S3V2.bedgraph.NBP.txt
+B H3K36me3 /FULL/PATH/TO/3.s3v2Norm/chromIDEAS_IDEAS_input_NB/B.H3K36me3.S3V2.bedgraph.NBP.txt
+B H3K9me3 /FULL/PATH/TO/3.s3v2Norm/chromIDEAS_IDEAS_input_NB/B.H3K9me3.S3V2.bedgraph.NBP.txt
+--------------------------------------------
+  - col1: Cell type.
+  - col2: Marker type.
+  - col3: Full path for merged data file.
+
+2. ${group}.S3V2.bedgraph.NBP.txt: the ${group} is defined in 3.s3v2Norm/chromIDEAS_IDEAS_input_NB/group.txt column 2. 
+The ${group} defines the data to be merged on the one hand, and the output file prefix on the other.
+  - col1: Merged normalized value.
+

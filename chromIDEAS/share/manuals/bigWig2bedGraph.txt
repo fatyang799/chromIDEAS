@@ -1,0 +1,34 @@
+
+DESCRIPTION:
+    bigWig2bedGraph is a tool to convert bigwig file format to bedgraph file format with 
+specific windows as the standard. There are two mode to use:
+- Multiple mode: User provide a metadata file, which record multiple files info. Detailed info can been seen below.
+- Single mode: User only provide a bigwig file.
+
+Usage:   bigWig2bedGraph [options] ...
+Version: 1.0
+
+Required arguments:
+  -w windows_dir            The windows file directory. [default: ./]
+  # [ Multiple mode ] #
+  -m metadata               The metadata file for normalization, which record the Cell, Marker, ID, Exp_bigwig file,
+                            CT_bigwig (optional) file info. [default: None]
+                            An example file (separated by tab) is as follows:
+                                ${cell}   ${mk}    ${id}    ${Exp_Fullpath}          ${Control_Fullpath}
+                                H1        H2AFZ    rep1     /PATH/TO/H2AFZ_rep1.bw   /PATH/TO/H2AFZ_rep1_CT.bw
+                                H1        H3K27ac  rep1     /PATH/TO/H3K27ac_rep1.bw
+                                ...
+  -o out_dir                The output directory. [default: None]
+  # [ Single mode ] #
+  -i bigwig                 The input bigwig filename. [default: None]
+  -O outfile                The output bedgraph filename. [default: None]
+
+Optional arguments:
+  -p thread                 Number of bigwig files to process at the same time. [default: 4]
+  -z                        The converted bedgraph files will be written out in a GZIP compressed form to save disk 
+                            space. [default: Not set]
+  -h                        Show this help message and exit.
+  -v                        Show program's version number and exit.
+
+For more information visit: https://github.com/YenLab
+

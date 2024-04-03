@@ -1,0 +1,313 @@
+#!/bin/bash
+
+# Program: ideasCS
+package_name="chromIDEAS"
+command="ideasCS"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${gsl_root}/lib
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2, then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	metadata=metadata
+	out_dir=$PWD
+	id=chromIDEAS
+	bed=bed
+	otherpara=F
+	nthreads=4
+	impute=None
+	train=100
+	trainsz=500000
+	C=NA
+	G=NA
+	minerr=0.5
+	burnin=20
+	mcmc=5
+	zip_output=F
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvm:o:a:b:f:p:I:t:s:C:G:e:B:M:kz" opt
+	do
+		case $opt in
+			m) metadata=${OPTARG} ;;
+			o) out_dir=${OPTARG} ;;
+			a) id=${OPTARG} ;;
+			b) bed=${OPTARG} ;;
+			f) otherpara=${OPTARG} ;;
+			p) nthreads=${OPTARG} ;;
+			I) impute=${OPTARG} ;;
+			t) train=${OPTARG} ;;
+			s) trainsz=${OPTARG} ;;
+			C) C=${OPTARG} ;;
+			G) G=${OPTARG} ;;
+			e) minerr=${OPTARG} ;;
+			B) burnin=${OPTARG} ;;
+			M) mcmc=${OPTARG} ;;
+			z) zip_output=T ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${package_name} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n" 
+			   cat ${manual_root}/${command}.txt
+			   exit ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# check file: metadata & bed & otherpara
+	if true; then
+		file_check ${metadata}
+		metadata=$(getFull_file ${metadata})
+
+		file_check ${bed}
+		bed=$(getFull_file ${bed})
+
+		if [[ ${otherpara} != "F" ]]; then
+			file_check ${metadata}
+			otherpara=$(getFull_file ${otherpara})
+		fi
+	fi
+
+	# check directory: out_dir
+	out_dir=$(getFull_dir ${out_dir})
+
+	# check other arguments: 
+	if true; then
+		# nthreads
+		if [[ ${nthreads} -le 0 ]]; then
+			echo "The -p nthreads should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		# impute
+		if [[ ${impute,,} == "all" ]]; then
+			tmp=${out_dir}/${id}_imputation
+			mkdir -p ${tmp}
+			cut -d " " -f 2 ${metadata} | sort -u > ${tmp}/total_marker.txt
+			cut -d " " -f 1 ${metadata} | sort -u | while read cell
+			do
+				awk -F " " -v cell=${cell} '{if($1 == cell) {print $2}}' ${metadata} | sort -u > ${tmp}/${cell}_marker.txt
+				sort ${tmp}/total_marker.txt ${tmp}/${cell}_marker.txt ${tmp}/${cell}_marker.txt | uniq -u > ${tmp}/${cell}_inpute.txt
+				n_impute=$(cat ${tmp}/${cell}_inpute.txt | wc -l)
+				if [[ ${n_impute} -gt 0 ]]; then
+					lack_m=$(cat ${tmp}/${cell}_inpute.txt)
+					echo -e "\tThe ${cell} lack data: ${lack_m}"
+				fi
+			done > ${tmp}/imputation_info.txt
+
+			n_impute=$(cat ${tmp}/imputation_info.txt | wc -l)
+			echo "The -I all: program will impute all missing data."
+			echo "Now the program will auto-detect missing data:"
+			if [[ ${n_impute} -eq 0 ]]; then
+				echo "No missing data is found, turn off the imputation function (impute=None)"
+				impute=None
+			else
+				cat ${tmp}/imputation_info.txt
+				echo "Above missing data will be imputed after the chromatin states have been calculated."
+			fi
+			rm -rf ${tmp}
+		elif [[ ${impute,,} != "all" && ${impute,,} != "none" ]]; then
+			echo ${impute} | awk -F "," '{for(i=1;i<=NF;i++){print $i}}' | while read mk
+			do
+				egrep -i "${mk}" ${metadata} 1>/dev/null 2>&1
+				if [[ $? -ne 0 ]]; then
+					echo "There is no ${mk} marker data in the metadata file ($(basename ${metadata})), please check."
+					exit 100
+				fi
+			done
+			echo "These missing data will be imputed after the chromatin states have been calculated:"
+			echo ${impute} | awk -F "," '{for(i=1;i<=NF;i++){print $i}}' | nl | sed -r "s/([0-9]{1,})\s+/\1) /g"
+		fi
+
+		# train
+		if [[ ${train} -le 0 ]]; then
+			echo "The -t train should be a positive integer greater than 0."
+			exit 100
+		elif [[ ${train} -gt 100 ]]; then
+			echo -e "The -t train should not be set too large, the maximum setting is 150. \nReset it to the default: -t 100"
+			train=100
+		fi
+
+		# trainsz
+		if true; then
+			n_bin=$(cat ${bed} | wc -l)
+			n_bin_rs=$(echo "${n_bin}*0.5" | bc | cut -d "." -f1)
+			n_bin_rs_1=$(echo ${n_bin_rs} | cut -c 1)
+			n_len=$(echo ${n_bin_rs} | wc -m)
+			n_len=$(expr ${n_len} - 2)
+			n_len=$((10**${n_len}))
+			n_bin_rs=$((${n_bin_rs_1}*n_len))
+			if [[ ${trainsz} -le 0 ]]; then
+				echo "The -s trainsz should be a positive integer greater than 0."
+				exit 100
+			elif [[ ${trainsz} -gt ${n_bin} ]]; then
+				echo -e "The -s trainsz should be less than the number of lines in bed file ($(basename ${bed})). \nReset it to the 50% of the number of lines in bed file: -s ${n_bin_rs}"
+				trainsz=${n_bin_rs}
+			fi
+		fi
+
+		# uniq mk number
+		uniq_mk_num=$(cut -d " " -f 2 ${metadata} | sort -u | wc -l)
+
+		# custom G
+		if [[ ${G} != "NA" ]]; then
+			# custom setting
+			if [[ ${G} -lt 0 ]]; then
+				echo "The -G G should be a positive integer greater than 0."
+				echo "The program will auto-set based on the number of marker type (n=${uniq_mk_num})."
+				if [[ ${uniq_mk_num} -eq 1 ]]; then
+					G=4
+				elif [[ ${uniq_mk_num} -gt 1 ]]; then
+					G=0
+				fi
+			fi
+		fi
+
+		# custom C
+		if [[ ${C} != "NA" ]]; then
+			# custom setting
+			if [[ ${C} -lt 0 ]]; then
+				echo "The -C C should be a positive integer greater than 0."
+				echo "The program will auto-set based on the number of marker type (n=${uniq_mk_num})."
+				if [[ ${uniq_mk_num} -eq 1 ]]; then
+					C=4
+				elif [[ ${uniq_mk_num} -gt 1 ]]; then
+					C=100
+				fi
+			fi
+		fi
+
+		# auto-set G and C
+		if [[ ${G} == "NA" && ${C} == "NA" ]]; then
+			if [[ ${uniq_mk_num} -eq 1 ]]; then
+				C=4
+				G=4
+			elif [[ ${uniq_mk_num} -gt 1 ]]; then
+				C=100
+				G=0
+			fi
+		fi
+
+		# custom minerr
+		if [[ ${minerr} != "0.5" ]]; then
+			max_minerr=$(echo "${minerr}*10000" | bc | cut -d "." -f1)
+			if [[ $? -ne 0 ]]; then
+				echo "The -e minerr should between (0,1], please check"
+				exit 100
+			fi
+			if [[ ${max_minerr} -gt 10000 ]]; then
+				echo -e "The -e minerr should between (0,1]. ${minerr} is too large.\nReset it to the default: -e 0.5"
+				minerr=0.5
+			fi
+			if [[ ${max_minerr} -eq 0 ]]; then
+				echo -e "The -e minerr should between (0,1]. It cannot be 0.\nReset it to the default: -e 0.5"
+				minerr=0.5
+			fi
+		fi
+
+		# custom burnin
+		if [[ ${burnin} -ne 20 ]]; then
+			if [[ ${burnin} -lt 0 ]]; then
+				echo -e "The -B burnin should be a positive integer greater than 0.\nReset it to the default: -B 20"
+				burnin=20
+			fi
+		fi
+
+		# custom mcmc
+		if [[ ${mcmc} -ne 5 ]]; then
+			if [[ ${mcmc} -lt 0 ]]; then
+				echo -e "The -M mcmc should be a positive integer greater than 0.\nReset it to the default: -M 5"
+				mcmc=5
+			fi
+		fi
+	fi
+fi
+
+# preprocess
+if true; then
+	# rm exist output file
+	if [[ -d ${out_dir} ]]; then
+		rm -rf ${out_dir}/${id}* ${out_dir}/*log*
+	fi
+fi
+
+# run IDEAS
+if true; then
+	# 1.get prepare
+	if true; then
+		# convert tab to space
+		sed "s/\t/ /g" ${bed} > ${out_dir}/windowsNoBlack.withid.IDEASbins.txt
+		check_status "${command} 1 raise error, please check." "rm -rf ${out_dir}/windowsNoBlack.withid.IDEASbins.txt"
+
+		# add average track for input
+		if [[ ${uniq_mk_num} -eq 1 ]]; then
+			echo "to be test"
+			exit 100
+		fi
+	fi
+
+	# 2.run IDEAS
+	if true; then
+		bash ${bin_root}/ideas.sh ${metadata} ${out_dir} ${id} ${out_dir}/windowsNoBlack.withid.IDEASbins.txt ${otherpara} ${nthreads} ${impute} ${train} ${trainsz} ${C} ${G} ${minerr} ${burnin} ${mcmc}
+		check_status "${command} 2 raise error, please check." "echo '**********************error in ideas.sh**********************'"
+
+		### get cCRE list
+		if [[ ${uniq_mk_num} -eq 1 ]]; then
+			echo "to be test"
+		fi
+
+		if [[ ${zip_output} == "T" ]]; then
+			gzip -f ${out_dir}/${id}.state
+		fi
+	fi
+
+	# 3.remove redundent files
+	if true; then
+		rm -rf ${out_dir}/windowsNoBlack.withid.IDEASbins.txt
+
+		mkdir -p ${out_dir}/.para
+		mv ${out_dir}/${id}*tmp* ${out_dir}/.para
+		mv ${out_dir}/${id}.*0 ${out_dir}/.para
+		mv ${out_dir}/${id}.cluster ${out_dir}/.para
+		mv ${out_dir}/${id}.para ${out_dir}/.para
+		mv ${out_dir}/${id}.profile ${out_dir}/.para
+		mv ${out_dir}/*log* ${out_dir}/.para
+	fi
+
+	# plot emission heatmap
+	Rscript ${bin_root}/emission_heatmap.R ${out_dir}/.para/${id}.para ${out_dir}/${id}.emission.pdf ${out_dir}/${id}.emission.txt 1>/dev/null 2>&1
+fi
+

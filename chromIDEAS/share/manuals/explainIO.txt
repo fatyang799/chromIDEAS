@@ -1,0 +1,19 @@
+
+DESCRIPTION:
+    explainIO is a tool to show the input file and to explain the output results for each subcommand.
+
+Usage:   explainIO [options] ...
+Version: 1.0
+
+Required arguments:
+  -i                        Show the input file of the target command. [default: Not set]
+  -o                        Explain the output results of the target command. [default: Not set]
+  -c command                Specify the target command name. Ignore case. [default: None]
+
+Optional arguments:
+  -a                        Show All available command name. [default: Not set]
+  -h                        Show this help message and exit.
+  -v                        Show program's version number and exit.
+
+For more information visit: https://github.com/YenLab
+

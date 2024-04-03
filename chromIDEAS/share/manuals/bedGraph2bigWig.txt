@@ -1,0 +1,38 @@
+
+DESCRIPTION:
+    bedGraph2bigWig is a tool to convert bedgraph file format to bigwig file format.
+
+Usage:   bedGraph2bigWig [options] ...
+Version: 1.0
+
+Required arguments:
+  -s species                The species, which can be one of the following options: hg38/hg19, mm10. If it don't have what you 
+                            need in these options, you can also provide your own **genomesizes file** by -g. [default: None]
+  -g genomesizes            The genomesizes file, which record the size of each chromosome. [default: None]
+                            An example file (separated by tab) is as follows:
+                                chr1  249250621
+                                ...
+  # [ Single mode ] #
+  -i input                  The input bedgraph file. The program support auto-check gzip format. [default: None]
+  -o output                 The output bigwig filename. [default: None]
+  # [ Multiple mode ] #
+  -m                        If there are multiple bedgraph files need to convert to bigwig file format, using **multiple_mode** 
+                            can process these files parallelly. If using **multiple_mode**, then the input should be a file 
+                            list (-f). [default: Not set]
+  -f file_list              The input file for **multiple_mode**. This argument only work when -m set. The file records the 
+                            paths to all input bedgraph filenames and corresponding output bigwig filenames. The program support 
+                            auto-check gzip format. [default: None]
+                            An example file (separated by tab) is as follows:
+                                ${input_bedgraph_file}           ${output_bigwig_file}
+                                /PATH/TO/example1.bedgraph       /PATH/TO/example1.bw
+                                /PATH/TO/example2.bedgraph.gz    /PATH/TO/example2.bw
+                                ...
+
+Optional arguments:
+  -p thread                 Number of bedgraph files to process at the same time. This argument only work when -M set. [default: 4]
+  -r                        Remove the raw bedgraph files. [default: Not set]
+  -h                        Show this help message and exit.
+  -v                        Show program's version number and exit.
+
+For more information visit: https://github.com/YenLab
+

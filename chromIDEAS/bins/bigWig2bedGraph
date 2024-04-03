@@ -1,0 +1,133 @@
+#!/bin/bash
+
+# Program: bigWig2bedGraph
+package_name="chromIDEAS"
+command="bigWig2bedGraph"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2, then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	windows_dir=$PWD
+	nthreads=4
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvo:m:w:p:zi:O:" opt
+	do
+		case $opt in
+			o) out_dir=${OPTARG} ;;
+			m) metadata=${OPTARG} ;;
+			w) windows_dir=${OPTARG} ;;
+			p) nthreads=${OPTARG} ;;
+			z) zip_output=T ;;
+			i) bigwig=${OPTARG} ;;
+			O) outfile=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n" 
+			   cat ${manual_root}/${command}.txt
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# windowsNoBlack
+	windows_dir=$(getFull_dir ${windows_dir})
+	file_check ${windows_dir}/windowsNoBlack.noid.bed
+fi
+
+# bigWig2bedGraph
+if true; then
+	if [[ -n ${metadata} || -n ${out_dir} ]]; then
+		if [[ -n ${bigwig} || -n ${outfile} ]]; then
+			echo "You can only use Single mode [-i and -O] or Multiple mode [-m and -o]"
+			exit 100
+		fi
+		# check input arguments
+		if true; then
+			out_dir=$(getFull_dir ${out_dir})
+			# metadata
+			file_check ${metadata}
+			metadata=$(getFull_file ${metadata})
+			rm_empty ${metadata}
+			# check files in metadata
+			awk -F "\t" '{if(NF == 4){print $4} else if(NF == 5){printf $4"\n"$5"\n"}}' ${metadata} | while read id
+			do
+				file_check ${id}
+			done
+		fi
+		echo "################# Multiple mode #################"
+		if true; then
+			awk -F "\t" -v OFS="\t" '{print $0, 1}' ${windows_dir}/windowsNoBlack.noid.bed > ${out_dir}/tmpControl.bed
+			check_status "${command} 1 raise error, please check." "rm -rf ${out_dir}/tmpControl.bed"
+
+			cat ${metadata} | xargs -n1 -i -P ${nthreads} bash ${bin_root}/binSignal.sh {} ${out_dir} ${bin_root} ${windows_dir} ${zip_output}
+			check_status "${command} 2 raise error, please check." "rm -rf ${out_dir}/tmpControl.bed"
+
+			rm ${out_dir}/tmpControl.bed
+			echo "All bigWig files have been convert to bedGraph."
+		fi
+	else
+		if [[ -z ${bigwig} || -z ${outfile} ]]; then
+			echo "You must use one of Single mode [-i and -O] or Multiple mode [-m and -o]"
+			exit 100
+		fi
+		# check input arguments
+		if true; then
+			# outfile
+			out_dir=$(dirname ${outfile})
+			out_dir=$(getFull_dir ${out_dir})
+			outfile=$(getFull_file ${outfile})
+			# bigwig
+			file_check ${bigwig}
+			bigwig=$(getFull_file ${bigwig})
+		fi
+		echo "################# Single mode #################"
+		if true; then
+			${bin_root}/bigWigAverageOverBed ${bigwig} ${windows_dir}/windowsNoBlack.withid.bed ${outfile}.tmp 1>/dev/null 2>&1
+			check_status "${command} 1 raise error, please check." "rm -rf ${outfile}.tmp"
+
+			sort -k1,1n ${outfile}.tmp | cut -f 5 | paste ${windows_dir}/windowsNoBlack.noid.bed - > ${outfile}
+			check_status "${command} 2 raise error, please check." "rm -rf ${outfile}.tmp ${outfile}"
+
+			if [[ ${zip} == "T" ]]; then
+				gzip -f ${outfile}
+			fi
+			rm -rf ${outfile}.tmp
+			echo "The $(basename ${bigwig}) have been convert to bedGraph."
+		fi
+	fi
+fi

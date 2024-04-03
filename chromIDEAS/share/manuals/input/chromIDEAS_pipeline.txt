@@ -1,0 +1,27 @@
+
+Usage example:   
+  chromIDEAS -d chromIDEAS -b 200 -m metadata.txt -o ./ -s hg38 -p 30
+  chromIDEAS -d chromIDEAS -b 200 -m metadata.txt -o ./ -g hg38.chr10.sizes -B hg38-blacklist.chr10.bed -p 30
+
+# ------------ Input file format ------------ #
+1. -m metadata [metadata.txt]: separated by tab
+$ cat metadata.txt
+A   H3K36me3  rep1  /FULL/PATH/TO/test_data/A_H3K36me3_rep1_chr10.bw
+A   H3K36me3  rep2  /FULL/PATH/TO/test_data/A_H3K36me3_rep2_chr10.bw
+A   H3K9me3   rep1  /FULL/PATH/TO/test_data/A_H3K9me3_rep1_chr10.bw
+B   H3K36me3  rep1  /FULL/PATH/TO/test_data/B_H3K36me3_rep1_chr10.bw
+B   H3K36me3  rep2  /FULL/PATH/TO/test_data/B_H3K36me3_rep2_chr10.bw
+B   H3K9me3   rep1  /FULL/PATH/TO/test_data/B_H3K9me3_rep1_chr10.bw
+B   H3K9me3   rep2  /FULL/PATH/TO/test_data/B_H3K9me3_rep2_chr10.bw
+
+2. -g genomesizes [hg38.chr10.sizes]: separated by tab
+$ cat hg38.chr10.sizes
+chr10   133797422
+
+3. -B blackList [hg38-blacklist.chr10.bed]: separated by tab
+$ cat hg38-blacklist.chr10.bed
+chr10   0       45700
+chr10   38481300        38596500
+chr10   38782600        38967900
+...
+

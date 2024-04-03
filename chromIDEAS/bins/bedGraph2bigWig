@@ -1,0 +1,149 @@
+#!/bin/bash
+
+# Program: bedGraph2bigWig
+package_name="chromIDEAS"
+command="bedGraph2bigWig"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2, then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	nthreads=4
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvi:o:mf:s:g:rp:" opt
+	do
+		case $opt in
+			i) input=${OPTARG} ;;
+			o) output=${OPTARG} ;;
+			m) multiple_mode=T ;;
+			f) file_list=${OPTARG} ;;
+			s) species=${OPTARG} ;;
+			g) genomesizes=${OPTARG} ;;
+			r) remove_old=T ;;
+			p) nthreads=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n" 
+			   cat ${manual_root}/${command}.txt
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# get genomesizes file
+	if [[ ${species} == "hg38" ]]; then
+		genomesizes=${genomesize_root}/hg38.chrom.1_22XY.sizes
+	elif [[ ${species} == "hg19" ]]; then
+		genomesizes=${genomesize_root}/hg19.chrom.1_22XY.sizes
+	elif [[ ${species} == "mm10" ]]; then
+		genomesizes=${genomesize_root}/mm10.chrom.1_19XY.sizes
+	elif [[ -z ${species} ]]; then
+		if [[ -z ${genomesizes} ]]; then
+			echo "Please provide -s species OR specify your own genomesizes file."
+			exit 100
+		else
+			genomesizes=$(getFull_file ${genomesizes})
+		fi
+	else
+		echo "The program can only auto-provide species: hg19, hg38 and mm10. Your provided species is not supported, you can provide Genome Sizes File with -g"
+		exit 100
+	fi
+fi
+
+# bedGraph2bigWig
+if true; then
+	if [[ ${multiple_mode} != "T" ]]; then
+		# single file mode
+		if [[ -n ${input} ]]; then
+			input=$(getFull_file ${input})
+		else
+			echo 'You must select one of -i or -m!'
+			exit 100
+		fi
+		output=$(getFull_file ${output})
+
+		# bigwig to bedgraph
+		if true; then
+			bash ${bin_root}/get_bw.sh ${genomesizes} "${input} ${output}"
+			check_status "${input} fail to convert to bigwig format, please check." "echo err1"
+		fi
+
+		# remove raw bedgraph
+		if [[ ${remove_old} == "T" ]]; then
+			echo -e "\tThe raw bedgraph file (${input}) will be deleted."
+			rm -rf ${input}
+		fi
+	elif [[ ${multiple_mode} == "T" ]]; then
+		# multiple file mode
+		if [[ -n ${input} ]]; then
+			echo 'The -i and -m can not exist at same time!'
+			exit 100
+		else
+			if [[ -z ${file_list} ]]; then
+				echo "In multiple_mode, you must specify -f, please check."
+				exit 100
+			else
+				file_list=$(getFull_file ${file_list})
+			fi
+		fi
+		rm_empty ${file_list}
+
+		cat ${file_list} | while read -a id
+		do
+			file_check ${id[0]}
+			if [[ -z ${id[1]} ]]; then
+				echo "The output file for ${id[0]} is not specify, please check."
+				exit 100
+			fi
+			output_dir=$(dirname ${id[1]})
+			dir_check ${output_dir}
+		done
+
+		# bigwig to bedgraph
+		if true; then
+			cat ${file_list} | xargs -n1 -i -P ${nthreads} bash ${bin_root}/get_bw.sh ${genomesizes} {}
+			check_status "${input} multiple file mode fail to convert to bigwig format, please check." "echo err1"
+		fi
+
+		# remove raw bedgraph
+		if [[ ${remove_old} == "T" ]]; then
+			echo -e "\tThe raw bedgraph file in (${file_list}) will be deleted."
+			cut -f1 ${file_list} | xargs -n1 -i rm -rf {}
+		fi
+		echo "All bedGraph files have been convert to bigWig."
+	fi
+fi

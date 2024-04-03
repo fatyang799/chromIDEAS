@@ -1,0 +1,115 @@
+#!/bin/bash
+
+# Program: genomeWindows
+package_name="chromIDEAS"
+command="genomeWindows"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2, then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	out_dir=$PWD
+	bin_size=200
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvo:b:s:B:g:" opt
+	do
+		case $opt in
+			o) out_dir=${OPTARG} ;;
+			b) bin_size=${OPTARG} ;;
+			s) species=${OPTARG} ;;
+			B) blackList=${OPTARG} ;;
+			g) genomesizes=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   cat ${manual_root}/${command}.txt
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# species & genomesizes & blackList
+	if true; then
+		if [[ ${species} == "hg38" ]]; then
+			genomesizes=${genomesize_root}/hg38.chrom.1_22XY.sizes
+			blackList=${blacklist_root}/hg38-blacklist.v2.bed
+		elif [[ ${species} == "hg19" ]]; then
+			genomesizes=${genomesize_root}/hg19.chrom.1_22XY.sizes
+			blackList=${blacklist_root}/hg19-blacklist.v2.bed
+		elif [[ ${species} == "mm10" ]]; then
+			genomesizes=${genomesize_root}/mm10.chrom.1_19XY.sizes
+			blackList=${blacklist_root}/mm10-blacklist.v2.bed
+		elif [[ -z ${species} ]]; then
+			if [[ -z ${genomesizes} ]]; then
+				echo "Please provide -s species OR specify your own genomesizes file (-g) and blackList file (-B, not necessary)."
+				exit 100
+			else
+				file_check ${genomesizes}
+				genomesizes=$(getFull_file ${genomesizes})
+			fi
+		else
+			echo "The program can only auto-provide species: hg19, hg38 and mm10. Your provided species is not supported, you can specify your own genomesizes file (-g) and blackList file (-B, not necessary)."
+			exit 100
+		fi
+
+		if [[ -n ${blackList} ]]; then
+			file_check ${blackList}
+			blackList=$(getFull_file ${blackList})
+		fi
+	fi
+
+	out_dir=$(getFull_dir ${out_dir})
+fi
+
+# genomeWindows
+if true; then
+	## create the windows.bed
+	bedtools makewindows -g ${genomesizes} -w ${bin_size} > ${out_dir}/windows.bed
+	check_status "${command} 1 raise error, please check." "rm -rf ${out_dir}/windows.bed"
+
+	## create the windowsNoBlack.noid.bed
+	if [[ -z ${blackList} ]]; then
+		cp ${out_dir}/windows.bed ${out_dir}/windowsNoBlack.noid.bed
+	else
+		bedtools subtract -a ${out_dir}/windows.bed -b ${blackList} -A > ${out_dir}/windowsNoBlack.noid.bed
+	fi
+	check_status "${command} 2 raise error, please check." "rm -rf ${out_dir}/windows.bed ${out_dir}/windowsNoBlack.noid.bed"
+
+	## create the windowsNoBlack.withid.bed
+	awk -F "\t" -v OFS="\t" '{print $0, NR}' ${out_dir}/windowsNoBlack.noid.bed > ${out_dir}/windowsNoBlack.withid.bed
+	check_status "${command} 3 raise error, please check." "rm -rf ${out_dir}/windows.bed ${out_dir}/windowsNoBlack.noid.bed ${out_dir}/windowsNoBlack.withid.bed"
+fi

@@ -1,0 +1,31 @@
+
+DESCRIPTION:
+    genomeWindows is a tool to segment the genome into equally sized and contiguous bin. The output 
+files are used for downstream S3V2 normalization.
+
+Usage:   genomeWindows [options] ...
+Version: 1.0
+
+Required arguments:
+  -o out_dir                The output directory. [default: ./]
+  -b bin_size               The bin size. [default: 200]
+  -s species                The species, which can be one of the following options: hg38/hg19, mm10. When you using -s, 
+                            the program will automatically matches the corresponding genomesizes file and blackList file
+                            simultaneously. If program don't contain what you need in these options, you can also provide 
+                            your own **genomesizes file** (-g) and **blackList file** (-B). [default: None]
+  -g genomesizes            The genomesizes file, which record the size of each chromosome.  [default: None]
+                            An example file (separated by tab) is as follows:
+                                chr1	249250621
+                                ...
+
+Optional arguments:
+  -B blackList              The blacklist file. If you have set -s mm10/hg38/hg19, then the program will automatically 
+                            get the file blacklist file. Or you can specify your own blacklist file. [default: None]
+                            An example file (separated by tab) is as follows:
+                                chr1	200	3000
+                                ...
+  -h                        Show this help message and exit.
+  -v                        Show program's version number and exit.
+  
+For more information visit: https://github.com/YenLab
+

@@ -1,0 +1,131 @@
+#!/bin/bash
+
+# Program: mergeBedgraph
+package_name="chromIDEAS"
+command="mergeBedgraph"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2, then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	out_dir=$PWD
+	nthreads=4
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvo:f:p:" opt
+	do
+		case $opt in
+			o) out_dir=${OPTARG} ;;
+			f) file=${OPTARG} ;;
+			p) nthreads=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n" 
+			   cat ${manual_root}/${command}.txt
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# out_dir
+	out_dir=$(getFull_dir ${out_dir})
+	
+	# file
+	file_check ${file}
+	file=$(getFull_file ${file})
+	
+	# check whether the file record in ${file} exist && the coordinates of all files are identical && zip or not
+	if true; then
+		cut -f1 ${file} | egrep "\.gz$" 1>/dev/null 2>&1
+		if [[ $? -eq 0 ]]; then
+			n1=$(cut -f1 ${file} | egrep "\.gz$" | wc -l)
+			n2=$(cat ${file} | wc -l)
+			if [[ ${n1} -eq ${n2} ]]; then
+				zip=T
+			else
+				echo "The format of files recorded in $(basename ${file}) should be identical. All files compressed or uncompressed."
+				exit 100
+			fi
+		else
+			zip=F
+		fi
+
+		seq 1 ${n2} | while read id
+		do
+			tmp=$(cut -f1 ${file} | head -n ${id} | tail -n1)
+			file_check ${tmp}
+			if [[ ${id} -eq 1 ]]; then
+				if [[ ${zip} == "T" ]]; then
+					loc1=$(zcat ${tmp} | awk -F "\t" '{if(NR==100 || NR==5000) {print $1, $2, $3}}')
+				else
+					loc1=$(awk -F "\t" '{if(NR==100 || NR==5000) {print $1, $2, $3}}' ${tmp})
+				fi
+				
+			fi
+			if [[ ${id} -gt 1 ]]; then
+				if [[ ${zip} == "T" ]]; then
+					loc2=$(zcat ${tmp} | awk -F "\t" '{if(NR==100 || NR==5000) {print $1, $2, $3}}')
+				else
+					loc2=$(awk -F "\t" '{if(NR==100 || NR==5000) {print $1, $2, $3}}' ${tmp})
+				fi
+				
+				if [[ ${loc1} != ${loc2} ]]; then
+					echo "The coordinates of the ${tmp} are different, please check"
+					exit 100
+				fi
+			fi
+		done
+	fi
+
+	# check the separator && group info
+	n=$(awk -F "\t" '{print NF}' ${file} | sort -u)
+	if [[ $n -eq 2 ]]; then
+		n=$(cut -f2 ${file} | sort | uniq -c | sed -r "s/^\s+//g" | sed -r "s/\s+/\t/g" | cut -f1 | sort -r | head -n1)
+		if [[ $n -eq 1 ]]; then
+			echo "No data is divided into the same group. All data are without replicates."
+			exit 100
+		fi
+	else
+		echo "The separator of $(basename ${file}) is not tab, or there are not 2 column data in $(basename ${file}), please check."
+		exit 100
+	fi
+fi
+
+# mergeBedgraph
+if true; then
+	cut -f 2 ${file} | sort -u | xargs -n1 -i -P ${nthreads} bash ${bin_root}/merge_bedgraph_with_sameMK.sh {} ${file} ${out_dir} ${zip}
+	check_status "${command} 1 raise error, please check." "rm -rf ${out_dir}/*.S3V2.bedgraph.NBP.txt ${out_dir}/*.S3V2.bedgraph.NBP.gz"
+fi

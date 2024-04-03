@@ -1,0 +1,37 @@
+
+DESCRIPTION:
+    s3v2Norm is a tool to Simultaneously normalize the Signal in peak regions and the Signal in 
+background regions of epigenomic data sets. 
+Detail algorithms can be viewed: https://doi.org/10.1093/nar/gkaa105
+
+Usage:   s3v2Norm [options] ...
+Version: 1.0
+
+Required arguments:
+  -i input_dir              The input directory, which contains the converted bedgraph files. [default: ./]
+  -o out_dir                The output directory. [default: ./]
+  -m metadata               The metadata file for normalization, which record the Cell, Marker, ID, Exp_bigwig file, and 
+                            CT_bigwig (optional) file info. [default: None]
+                            An example file (separated by tab) is as follows:
+                                H1 H2AFZ    rep1  /PATH/TO/H2AFZ_rep1.bw /PATH/TO/H2AFZ_rep1_CT.bw
+                                H1 H3K27ac  rep1  /PATH/TO/H3K27ac_rep1.bw
+                                ...
+
+Optional arguments:
+  -c                        Continue running a partially finished normalization process. Use this option to resume 
+                            a normalization process interrupted by an error. [default: Not set]
+  -d id_name                The project name. [default: chromIDEAS]
+                            The output results will be placed into:
+                                - ${out_dir}/${id_name}_bws_RC/: 
+                                - ${out_dir}/${id_name}_bws_NBP/: 
+                                - ${out_dir}/${id_name}_IDEAS_input_NB/: used for downstream analysis.
+  -p thread                 Thread number. [default: 4]
+  -l local_bg_bin           Local background bin number. If set local_bg_bin=5, this means when the target bin is bin10, 
+                            the surrounding background bins are bin5-9 and bin11-15 [default: 5]
+  -z                        The converted bedgraph files will be written out in a GZIP compressed form to save disk 
+                            space. [default: Not set]
+  -h                        Show this help message and exit.
+  -v                        Show program's version number and exit.
+
+For more information visit: https://github.com/YenLab
+
