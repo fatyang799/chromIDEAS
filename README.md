@@ -1,6 +1,8 @@
 ## S3V2norm
 
-修改
+[![Anaconda-Server Badge](https://anaconda.org/fatyang/chromideas/badges/license.svg)](https://anaconda.org/fatyang/chromideas)
+[![Anaconda-Server Badge](https://anaconda.org/fatyang/chromideas/badges/platforms.svg)](https://anaconda.org/fatyang/chromideas)
+[![Anaconda-Server Badge](https://anaconda.org/fatyang/chromideas/badges/version.svg)](https://anaconda.org/fatyang/chromideas)
 
 ### 1. get cpk cbg allpk average_sig
 
