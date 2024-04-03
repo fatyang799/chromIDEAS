@@ -74,7 +74,7 @@ if (T) {
        rep(1:l-1,each=p),
        rep(1:p,l),
        rep(1:l,each=p),
-       col=round(((m)-min(m))/(max(m)-min(m))*100))
+       col=round((t(m)-min(m))/(max(m)-min(m))*100))
   
   dev.off()
 }
