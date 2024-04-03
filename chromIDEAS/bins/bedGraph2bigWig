@@ -89,6 +89,7 @@ if true; then
 	if [[ ${multiple_mode} != "T" ]]; then
 		# single file mode
 		if [[ -n ${input} ]]; then
+			file_check ${input}
 			input=$(getFull_file ${input})
 		else
 			echo 'You must select one of -i or -m!'
