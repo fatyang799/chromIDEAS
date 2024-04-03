@@ -16,7 +16,7 @@ Each tool should be called by its own name as in the following example:
   bedGraph2bigWig         Convert bedgraph file format to bigwig file format.
 
 [ Tools for Chromatin State Assignment ]
-  ideas                   Assignment chromatin states with position-dependent and cell type-specific information.
+  ideasCS                 Assignment chromatin states with position-dependent and cell type-specific information.
   clusterCS               Cluster all chromatin states based on similarity between them. (to be continued)
   enrichFunctionElement   Function elements enrichment analysis. (to be continued)
   stateCompare            Compare the similarity and difference between two chromatin state results. (to be continued)
