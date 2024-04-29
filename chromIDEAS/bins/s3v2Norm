@@ -284,13 +284,13 @@ if true; then
 	fi
 
 	# 4: S3V2 across CT samples
-	if false; then
+	if true; then
 		# output:
 		# all.ctrl.list.txt: ${cell}.${mk}.${id}.ctrl.idsort.bedgraph
 		# ${cell}.${mk}.${id}.ctrl.idsort.bedgraph.norm.bedgraph: s3v2 norm CT
 		# ${cell}.${mk}.${id}.ctrl.idsort.bedgraph.norm.bedgraph.info: s3v2 normalization info
 
-		n1=$(n_file_with_pattern ".ctrl.idsort.bedgraph.norm.bedgraph" "r")
+		n1=$(n_file_with_pattern ".ctrl.idsort.bedgraph.?g?z?.norm.bedgraph" "r")
 		if [[ ${cont} == "T" && ${total_f_num} -eq ${n1} && -f all.ctrl.list.txt ]]; then
 			echo -e "4.S3V2 across CT samples done"
 		else
@@ -308,7 +308,7 @@ if true; then
 	fi
 
 	# 5: Get NBP for S3V2 normalized data
-	if false; then
+	if true; then
 		# output:
 		# ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph: the -log10Pvalue for ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph
 		# ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph.info.txt: (NB model parameters) AVEmat_cbg_prob, AVEmat_cbg_size, scale_down
@@ -336,7 +336,7 @@ if true; then
 	fi
 
 	# 6: Management of output files
-	if false; then
+	if true; then
 		# 6.1 ${id_name}_bws_RC
 		mkdir -p ${id_name}_bws_RC
 		mv *.S3V2.bedgraph *.average_sig.bedgraph.S3V2.ave.bedgraph ${id_name}_bws_RC/
@@ -386,12 +386,14 @@ if true; then
 		fi
 		
 		### rm redundant files
-		rm *average_sig.bedgraph *.bedgraph*.norm.bedgraph *commonpkfdr01_z* *S3V2.txt *list.txt *average_sig.bedgraph.S3.bedgraph
+		if true; then
+			rm *average_sig.bedgraph *.bedgraph*.norm.bedgraph *commonpkfdr01_z* *S3V2.txt *list.txt *average_sig.bedgraph.S3.bedgraph
+		fi
 	fi
 fi
 
 # log management
-if false; then
+if true; then
 	echo "Summary for normalization:"
 	show_time "Ready to show Summary: 3s" 1
 	show_time "Ready to show Summary: 2s" 1
