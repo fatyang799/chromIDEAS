@@ -41,13 +41,13 @@ if (T) {
 if (T) {
   dat = lapply(file_list, function(x) {
     dat = data.table::fread(x, header=F, sep='\t', data.table = F)[, 4]
-    dat = as.integer(dat)
     if (is.na(mean(dat)) || (max(dat)==0)){
       stop('!!!Something wrong with normalize controls step!!!     non0scale.R script line45')
     }
     return(dat)
   })
   dat = do.call(cbind, dat)
+  dat = as.data.frame(dat)
 }
 
 # get CT random bins value
@@ -64,10 +64,7 @@ if (T) {
 
 ### non0scale for every CT
 if (T) {
-  for (i in 1:length(file_list)){
-    dmat_sigi = dat[, i]
-    dmat_sigi = as.integer(as.vector(dmat_sigi))
-    
+  out <- lapply(dat, function(dmat_sigi) {
     if (length(unique(dmat_sigi))!=1){
       norm_factors = non0scale(dmat_sigi, average_non0mean, average_non0sd)
       B = norm_factors[1]
@@ -82,22 +79,22 @@ if (T) {
       dmat_sigi_norm = dmat_sigi
     }
     
-    # output
-    if (T) {
-      # norm_dat
-      outdat = cbind(dbed, dmat_sigi_norm)
-      file_tmp = basename(file_list[i])
-      output_name_tmp = paste0(file_tmp, '.norm.bedgraph')
-      
-      write.table(outdat, output_name_tmp, row.names=F, col.names=F, quote=F, sep='\t')
-      # data.table::fwrite(outdat, output_name_tmp, row.names=F, col.names=F, quote=F, sep='\t')
-      
-      # norm_info
-      info = data.frame(B=B,
-                        A=A,
-                        average_non0mean = average_non0mean,
-                        average_non0sd = average_non0sd)
-      write.table(info, paste0(output_name_tmp, ".info.txt"), row.names=F, col.names=T, quote=F, sep='\t')
-    }
+    # norm_dat
+    outdat = cbind(dbed, dmat_sigi_norm)
+    # norm_info
+    info = data.frame(B=B,
+                      A=A,
+                      average_non0mean = average_non0mean,
+                      average_non0sd = average_non0sd)
+    return(list(outdat, info))
+  })
+  
+  for (i in 1:length(file_list)){
+    # output for norm dat
+    file_tmp = basename(file_list[i])
+    output_name_tmp = paste0(file_tmp, '.norm.bedgraph')
+    write.table(out[[i]][[1]], output_name_tmp, row.names=F, col.names=F, quote=F, sep='\t')
+    # output for norm info
+    write.table(out[[i]][[2]], paste0(output_name_tmp, ".info.txt"), row.names=F, col.names=T, quote=F, sep='\t')
   }
 }
