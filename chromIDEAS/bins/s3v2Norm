@@ -284,7 +284,7 @@ if true; then
 	fi
 
 	# 4: S3V2 across CT samples
-	if true; then
+	if false; then
 		# output:
 		# all.ctrl.list.txt: ${cell}.${mk}.${id}.ctrl.idsort.bedgraph
 		# ${cell}.${mk}.${id}.ctrl.idsort.bedgraph.norm.bedgraph: s3v2 norm CT
@@ -308,7 +308,7 @@ if true; then
 	fi
 
 	# 5: Get NBP for S3V2 normalized data
-	if true; then
+	if false; then
 		# output:
 		# ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph: the -log10Pvalue for ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph
 		# ${mk}.average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph.info.txt: (NB model parameters) AVEmat_cbg_prob, AVEmat_cbg_size, scale_down
@@ -336,7 +336,7 @@ if true; then
 	fi
 
 	# 6: Management of output files
-	if true; then
+	if false; then
 		# 6.1 ${id_name}_bws_RC
 		mkdir -p ${id_name}_bws_RC
 		mv *.S3V2.bedgraph *.average_sig.bedgraph.S3V2.ave.bedgraph ${id_name}_bws_RC/
@@ -391,7 +391,7 @@ if true; then
 fi
 
 # log management
-if true; then
+if false; then
 	echo "Summary for normalization:"
 	show_time "Ready to show Summary: 3s" 1
 	show_time "Ready to show Summary: 2s" 1
