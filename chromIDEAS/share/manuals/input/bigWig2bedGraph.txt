@@ -1,0 +1,27 @@
+
+Usage example:   
+  Multiple mode: bigWig2bedGraph -w 1.genomeWindows/ -m metadata.txt -o 2.bigWig2bedGraph/ -z 
+  Single mode: bigWig2bedGraph -w 1.genomeWindows/ -i test_data/A_H3K36me3_rep2_chr10.bw -O 2.bigWig2bedGraph/A.H3K36me3.rep2.ip.idsort.bedgraph -z
+
+# ------------ Input file format ------------ #
+1. -w windows_dir [1.genomeWindows/]: 
+$ tree 1.genomeWindows/
+1.genomeWindows/
+├── windows.bed
+├── windowsNoBlack.noid.bed
+└── windowsNoBlack.withid.bed
+
+# --- Multiple mode ---#
+1. -m metadata [metadata.txt]: separated by tab
+$ cat metadata.txt
+A   H3K36me3  rep1  /FULL/PATH/TO/test_data/A_H3K36me3_rep1_chr10.bw
+A   H3K36me3  rep2  /FULL/PATH/TO/test_data/A_H3K36me3_rep2_chr10.bw
+A   H3K9me3   rep1  /FULL/PATH/TO/test_data/A_H3K9me3_rep1_chr10.bw
+B   H3K36me3  rep1  /FULL/PATH/TO/test_data/B_H3K36me3_rep1_chr10.bw
+B   H3K36me3  rep2  /FULL/PATH/TO/test_data/B_H3K36me3_rep2_chr10.bw
+B   H3K9me3   rep1  /FULL/PATH/TO/test_data/B_H3K9me3_rep1_chr10.bw
+B   H3K9me3   rep2  /FULL/PATH/TO/test_data/B_H3K9me3_rep2_chr10.bw
+
+# --- Single mode ---#
+1. -i bigwig [test_data/A_H3K36me3_rep2_chr10.bw]
+

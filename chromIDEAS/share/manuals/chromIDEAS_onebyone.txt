@@ -1,0 +1,33 @@
+
+================= [[ Run analysis one by one with subcommands ]] =================
+Each tool should be called by its own name as in the following example:
+ $ s3v2Norm -i input/ -o s3v2_norm/ -m ./metadata.txt -p 10
+
+[ Tools for Genomic Windows Bin Bed Creation ]
+  genomeWindows           Segment the genome into equally sized and contiguous bin. Output used  for S3V2 
+                          normalization.
+
+[ Tools for BigWig file Normalization ]
+  bigWig2bedGraph         Convert bigwig file format to bedgraph file format with specific windows bin as 
+                          the standard.
+  s3v2Norm                Simultaneously normalize the Signal in peak regions and the Signal in background 
+                          regions of epigenomic data sets.
+  mergeBedgraph           Merge the replicated data of a sample.
+  bedGraph2bigWig         Convert bedgraph file format to bigwig file format.
+
+[ Tools for Chromatin State Assignment ]
+  ideasCS                 Assignment chromatin states with position-dependent and cell type-specific information.
+  clusterCS               Cluster all chromatin states based on similarity between them. (to be continued)
+  enrichFunctionElement   Function elements enrichment analysis. (to be continued)
+  stateCompare            Compare the similarity and difference between two chromatin state results. (to be continued)
+  chromDCSCG              Differential Chromatin-modified Genes analysis. (to be continued)
+
+[ Tools for QC ]
+  stateMatrix             Prepare the chromatin state matrix
+  plotProfile             Plots metaplot over user selected regions using signal value. (to be continued)
+
+[ Tools for Input and Output Explanation ]
+  explainIO               Give detailed explanation for Input data and Output results of subcommand. (to be continued)
+
+For more information visit: https://github.com/YenLab/chromIDEAS
+

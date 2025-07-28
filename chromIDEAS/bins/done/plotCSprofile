@@ -1,0 +1,373 @@
+#!/bin/bash
+
+# Program: plotCSprofile
+package_name="chromIDEAS"
+command="plotCSprofile"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+else
+	type=$1
+	shift
+
+	if [[ ${type} == "TSS" || ${type} == "Body" ]]; then
+		if [[ -z $1 ]]; then
+			cat ${manual_root}/${command}_${type}.txt
+			exit
+		fi
+	else
+		cat ${manual_root}/${command}.txt
+		exit 100
+	fi
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	sampleID=All
+	output_matrix=F
+	region_type=transcript
+	scale_type=genomic
+	
+	body_num=10
+	up_num=5
+	down_num=5
+	num_per_row=5
+
+	startLabel=TSS
+	endLabel=TES
+	refPointLabel=TSS
+
+	width=10
+	height=8
+
+	colors=Auto
+	reverse_order=F
+	
+	order_of_CS=cs
+	nthreads=4
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvi:o:r:S:m:t:b:u:d:s:e:l:z:W:H:C:N:O:Rp:" opt
+	do
+		case $opt in
+			i) input=${OPTARG} ;;
+			o) output_figure=${OPTARG} ;;
+			r) regionFile=${OPTARG} ;;
+			S) sampleID=${OPTARG} ;;
+			m) output_matrix=${OPTARG} ;;
+			t) region_type=${OPTARG} ;;
+			b) body_num=${OPTARG} ;;
+			u) up_num=${OPTARG} ;;
+			d) down_num=${OPTARG} ;;
+			s) startLabel=${OPTARG} ;;
+			e) endLabel=${OPTARG} ;;
+			l) refPointLabel=${OPTARG} ;;
+			z) scale_type=${OPTARG} ;;
+			W) width=${OPTARG} ;;
+			H) height=${OPTARG} ;;
+			C) colors=${OPTARG} ;;
+			N) num_per_row=${OPTARG} ;;
+			O) order_of_CS=${OPTARG} ;;
+			R) reverse_order=T ;;
+			p) nthreads=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}_${type}.txt
+			   exit ;;
+			v) echo "${package_name} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# check the required parameters
+	if [[ -z ${input} || -z ${output_figure} || -z ${regionFile} ]]; then
+		echo "Error: Required parameters -i <input> -o <output_figure> -r <regionFile> missing. "
+		exit 100
+	fi
+
+	# check file: input & regionFile && sampleID
+	if true; then
+		# input
+		if true; then
+			# file exist
+			if true; then
+				file_check ${input}
+				input=$(getFull_file ${input})
+				rm_empty ${input}
+			fi
+
+			# format 
+			if true; then
+				ntype=$(head -n 1000 ${input} | awk -F ' ' '{print NF}' | sort -u | wc -l)
+				nc=$(head -n 1000 ${input} | awk -F ' ' '{print NF}' | sort -u)
+				n_all_samples=$(expr $nc - 4)
+
+				if [[ ${ntype} -ne 1 || ${nc} -le 4 ]]; then
+					echo "Error: the format of -i <input> is wrong. Example:"
+					echo "#ID CHR POSst POSed cell1 cell2"
+					echo "1 chr1 792600 792800 1 1"
+					echo "2 chr1 792800 793000 0 0"
+					echo "3 chr1 793000 793200 0 0"
+					echo "4 chr1 793200 793400 0 0"
+
+					exit 100
+				fi
+
+				# sampleID
+				if [[ ${sampleID} != "All" ]]; then
+					n_sample=$(echo ${sampleID} | sed "s/,/\n/g" | wc -l)
+					echo ${sampleID} | sed "s/,/\n/g" | while read id
+					do
+						status=$(head -n1 ${input} | cut -d " " -f 5- | sed "s/ /\n/g" | awk -v sid=${id} '{if($0 == sid) {print 1}}')
+						if [[ ${status} -ne 1 ]]; then
+							echo "Error: The ${id} specified in -S <sampleID> was not found in the <input> file."
+							echo "The sample name in <input>: "
+							head -n1 ${input} | cut -d " " -f 5- | sed "s/ /,/g"
+
+							exit 100
+						fi
+					done
+				fi
+			fi
+		fi
+
+		# regionFile
+		if true; then
+			# file exist
+			if true; then
+				file_check ${regionFile}
+				regionFile=$(getFull_file ${regionFile})
+				rm_empty ${regionFile}
+			fi
+
+			# format 
+			if true; then
+				ncol=$(egrep -v "^#" ${regionFile} | head | awk -F '\t' '{print NF}' | sort -u)
+				if [[ ${ncol} == 4 ]]; then
+					regionFile_type=bed
+					# check column 4
+					n=$(awk -F "\t" '{print $4}' ${regionFile} | sort -u | fgrep -v "+" | fgrep -v "-" | fgrep -v "*" | wc -l)
+					if [[ $n -gt 0 ]]; then
+						echo "Error: the 4th column in <regionFile> should record strand orientation, and the content must be '+/-/*'."
+						exit 100
+					fi
+				elif [[ ${ncol} == 9 ]]; then
+					regionFile_type=gtf
+				else
+					echo "Error: -r <regionFile> only accept gtf and bed format file."
+
+					exit 100
+				fi
+			fi
+		fi
+	fi
+
+	# check directory: output_matrix & output_figure
+	if true; then
+		# output_matrix
+		if [[ ${output_matrix} != "F" ]]; then
+			output_matrix=$(getFull_file ${output_matrix})
+		fi
+		
+		output_figure=$(getFull_file ${output_figure})
+	fi
+
+	# region_type
+	if [[ ${regionFile_type} == "gtf" ]]; then
+		if [[ ${region_type} != "transcript" && ${region_type} != "gene" ]]; then
+			echo "Error: when -r <regionFile> is specified as the GTF format file, -t <region_type> can only choose 'gene' or 'transcript'."
+			exit 100
+		fi
+	fi
+
+	# integer: body_num & up_num & down_num & num_per_row & width & height & nthreads
+	if true; then
+		# body_num
+		if [[ ${type} == "Body" ]]; then
+			dat_type=$(data_type ${body_num})
+			if [[ ${dat_type} != "gt0_Integer" ]]; then
+				echo "The -b <body_num> should be a positive integer greater than 0."
+				exit 100
+			fi
+		fi
+
+		# up_num
+		dat_type=$(data_type ${up_num})
+		if [[ ${dat_type} == "Character" ]]; then
+			echo "The -u <up_num> should be a integer."
+			exit 100
+		fi
+
+		# down_num
+		dat_type=$(data_type ${down_num})
+		if [[ ${dat_type} == "Character" ]]; then
+			echo "The -d <down_num> should be a integer."
+			exit 100
+		fi
+
+		# num_per_row
+		dat_type=$(data_type ${num_per_row})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -N <num_per_row> should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		# width
+		if [[ ${width} -ne 10 ]]; then
+			echo ${width} | egrep -q '^[0-9]+([.][0-9]+)?$'
+			if [[ $? -ne 0 ]]; then
+				echo "The -W <width> should be a positive value."
+				exit 100
+			fi
+		fi
+
+		# height
+		if [[ ${height} -ne 8 ]]; then
+			echo ${height} | egrep -q '^[0-9]+([.][0-9]+)?$'
+			if [[ $? -ne 0 ]]; then
+				echo "The -H <height> should be a positive value."
+				exit 100
+			fi
+		fi
+
+		# nthreads
+		dat_type=$(data_type ${nthreads})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -p <nthreads> should be a positive integer greater than 0."
+			exit 100
+		fi
+	fi
+
+	# scale_type & colors & order_of_CS & reverse_order
+	if true; then
+		# scale_type
+		if [[ ${scale_type} != "genomic" && ${scale_type} != "state" ]]; then
+			echo "Error: -z parameter must be either 'genomic' (genomic proportions) or 'state' (state proportions)."
+
+			exit 100
+		fi
+
+		# colors
+		if [[ ${colors} != "Auto" ]]; then
+			n_colors=$(echo ${colors} | sed "s/,/\n/g" | wc -l)
+			if [[ ${sampleID} != "All" ]]; then
+				if [[ ${n_colors} -ne ${n_sample} ]]; then
+					echo "Error: the number of provided colors ${colors} (n=${n_colors}) is not equal to the number of sample IDs (n=${n_sample}): "
+					echo ${sampleID}
+
+					exit 100
+				fi
+			else
+				if [[ ${n_colors} -ne ${n_all_samples} ]]; then
+					echo "Error: the number of provided colors ${colors} (n=${n_colors}) **is not equal to** the number of sample IDs (n=${n_all_samples}): "
+					head -n1 ${input} | cut -d " " -f 5- | sed "s/ /,/g"
+
+					exit 100
+				fi
+			fi
+		fi
+
+		# order_of_CS
+		if [[ ${order_of_CS} != "cs" && ${order_of_CS} != "csgp" ]]; then
+			n_s=$(echo ${order_of_CS} | sed "s/,/\n/g" | sort -u | wc -l)
+
+			total_s=$(cut -d " " -f 5 ${input} | tail -n+2 | sort -u | xargs)
+			n_total_s=$(echo ${total_s} | sed "s/ /\n/g" | wc -l)
+
+			if [[ ${n_s} -eq ${n_total_s} ]]; then
+				echo ${order_of_CS} | sed "s/,/\n/g" | sort -u | while read cs
+				do
+					status=$(echo ${total_s} | sed "s/ /\n/g" | awk -v csid=${cs} '{if($0 == csid) {print 1}}')
+					if [[ ${status} -ne 1 ]]; then
+						echo "Error: The State ${cs} specified in -O <order_of_CS> was not found in the <input> file."
+						echo "The chromatin state name in <input>: "
+						echo ${total_s} | sed "s/ /,/g"
+
+						exit 100
+					fi
+				done
+			else
+				echo "Error: the number of chromatin states (CSs) provided by -O <order_of_CS> is not equal to the number of all CSs in <input>."
+				exit 100
+			fi
+		fi
+
+		# reverse_order
+		if [[ ${reverse_order} != T ]]; then
+			reverse_order=F
+		fi
+	fi
+fi
+
+# CS distribution
+if true; then
+	# format the regionFile: convert into bed
+	if [[ ${regionFile_type} == gtf ]]; then
+		mv ${regionFile} ${regionFile}.7991799.txt
+		awk -F "\t" -v region_type=${region_type} 'BEGIN{OFS="\t"} {if($3 == region_type) {print $1, $4, $5, $7}}' ${regionFile}.7991799.txt > ${regionFile}
+	fi
+
+	# plot the figure
+	if true; then
+		Rscript ${bin_root}/cs_distribution.R \
+			${type} \
+			${input} \
+			${output_figure} \
+			${regionFile} \
+			${sampleID} \
+			${output_matrix} \
+			${body_num} \
+			${up_num} \
+			${down_num} \
+			${startLabel} \
+			${endLabel} \
+			${refPointLabel} \
+			${scale_type} \
+			${width} \
+			${height} \
+			${colors} \
+			${num_per_row} \
+			${order_of_CS} \
+			${reverse_order} \
+			${nthreads}
+
+		check_status "${command} ${type} cs_distribution raise error, please check." "mv ${regionFile}.7991799.txt ${regionFile}"
+	fi
+
+	if [[ ${regionFile_type} == gtf ]]; then
+		mv ${regionFile}.7991799.txt ${regionFile}
+	fi
+fi
+

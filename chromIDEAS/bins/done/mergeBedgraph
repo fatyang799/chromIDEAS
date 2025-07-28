@@ -1,0 +1,153 @@
+#!/bin/bash
+
+# Program: mergeBedgraph
+package_name="chromIDEAS"
+command="mergeBedgraph"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	nthreads=4
+	average_method=mean
+	cutoff_cor=0.1
+	cor_method=pearson
+	skipZeros=F
+	quiet=F
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvf:m:c:zl:qp:" opt
+	do
+		case $opt in
+			f) file_list=${OPTARG} ;;
+			m) average_method=${OPTARG} ;;
+			c) cor_method=${OPTARG} ;;
+			z) skipZeros=T ;;
+			l) cutoff_cor=${OPTARG} ;;
+			q) quiet=T ;;
+			p) nthreads=${OPTARG} ;;
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# check the required parameters
+	if [[ -z ${file_list} || -z ${average_method} ]]; then
+		echo "Error: Required -f <file_list> and -m <average_method> parameters missing. "
+		exit 100
+	fi
+
+	# file_list
+	if true; then
+		file_check ${file_list}
+		file_list=$(getFull_file ${file_list})
+		rm_empty ${file_list}
+		# check files in file_list
+		cat ${file_list} | while read id out
+		do
+			file_check ${id}
+			check_status "Error: ${id} in <file_list> is not exist, please check."
+			dir_check $(dirname ${out})
+		done
+	fi
+	
+	# check whether the coordinates of all files are identical
+	if true; then
+		f1=$(cut -f1 ${file_list} | head -n1)
+		loc1=$(awk -F "\t" '{if(NR==100 || NR==5000) {print $1, $2, $3}}' ${f1})
+
+		cut -f1 ${file_list} | tail -n+2 | while read f2
+		do
+			loc2=$(awk -F "\t" '{if(NR==100 || NR==5000) {print $1, $2, $3}}' ${f2})
+			
+			if [[ ${loc1} != ${loc2} ]]; then
+				echo "The coordinates of ${f1} and ${f2} are different, please check."
+				exit 100
+			fi
+		done
+	fi
+
+	# method: average_method && cor_method
+	if true; then
+		if [[ ${average_method} != "mean" && ${average_method} != "median" ]]; then
+			echo "-m <average_method> only support mean or median, please check."
+			exit 100
+		fi
+
+		if [[ ${cor_method} != "spearman" && ${cor_method} != "pearson" ]]; then
+			echo "-c <cor_method> only support pearson or spearman, please check."
+			exit 100
+		fi
+	fi
+
+	# numeric: cutoff_cor
+	if true; then
+		if [[ ${cutoff_cor} != "0.1" ]]; then
+			max_cutoff_cor=$(echo "${cutoff_cor}*10000" | bc | cut -d "." -f1)
+			if [[ $? -ne 0 ]]; then
+				echo "The -e cutoff_cor should between (0,1], please check"
+				exit 100
+			fi
+			if [[ ${max_cutoff_cor} -gt 10000 ]]; then
+				echo -e "The -e cutoff_cor should between (0,1]. ${cutoff_cor} is too large.\nReset it to the default: -l 0.1"
+				cutoff_cor=0.1
+			fi
+			if [[ ${max_cutoff_cor} -eq 0 ]]; then
+				echo -e "The -e cutoff_cor should between (0,1]. It cannot be 0.\nReset it to the default: -l 0.1"
+				cutoff_cor=0.1
+			fi
+		fi
+	fi
+
+	# integer: nthreads
+	if true; then
+		dat_type=$(data_type ${nthreads})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -p <nthreads> should be a positive integer greater than 0."
+			exit 100
+		fi
+	fi
+fi
+
+# mergeBedgraph
+if true; then
+	cut -f2 ${file_list} | sort -u | xargs -n1 -i -P ${nthreads} bash ${bin_root}/merge_bedgraph.sh {} ${file_list} ${average_method} ${cor_method} ${skipZeros} ${cutoff_cor} ${quiet}	
+	check_status "${command} raise error, please check."
+fi

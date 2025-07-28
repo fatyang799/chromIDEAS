@@ -1,0 +1,17 @@
+
+Usage example:   
+  genomeWindows -o output/ -b 200 -s hg38
+  genomeWindows -o output/ -b 200 -g hg38.chr10.sizes -B hg38-blacklist.chr10.bed
+
+# ------------ Input file format ------------ #
+1. -g genomesizes [hg38.chr10.sizes]: separated by tab
+$ cat hg38.chr10.sizes
+chr10   133797422
+
+2. -B blackList [hg38-blacklist.chr10.bed]: separated by tab
+$ cat hg38-blacklist.chr10.bed
+chr10   0       45700
+chr10   38481300        38596500
+chr10   38782600        38967900
+...
+

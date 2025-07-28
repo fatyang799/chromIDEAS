@@ -1,0 +1,184 @@
+#!/bin/bash
+
+# Program: bigWig2bedGraph
+package_name="chromIDEAS"
+command="bigWig2bedGraph"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	nthreads=4
+	bin_size=200
+	zip_output=F
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvf:n:p:zi:o:b:s:B:g:" opt
+	do
+		case $opt in
+			f) file_list=${OPTARG} ;;
+			n) windows_name=${OPTARG} ;;
+			p) nthreads=${OPTARG} ;;
+			z) zip_output=T ;;
+			i) bigwig=${OPTARG} ;;
+			o) outfile=${OPTARG} ;;
+			# if no -n, then run genomeWindows firstly
+			b) bin_size=${OPTARG} ;;
+			s) species=${OPTARG} ;;
+			B) blackList=${OPTARG} ;;
+			g) genomesizes=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# input and output for bigWig2bedGraph
+	if [[ -n ${file_list} ]]; then
+		if [[ -n ${bigwig} || -n ${outfile} ]]; then
+			echo "Error: You must use either Single File mode (with -i/-o) OR Multiple Files mode (with -m/-O), but not both simultaneously."
+			exit 100
+		fi
+		# check input arguments
+		if true; then
+			# file_list
+			file_check ${file_list}
+			file_list=$(getFull_file ${file_list})
+			rm_empty ${file_list}
+			# check files in file_list
+			cut -f1 ${file_list} | while read id
+			do
+				file_check ${id}
+				check_status "Error: ${id} is not exist, please check."
+			done
+		fi
+	else
+		if [[ -z ${bigwig} || -z ${outfile} ]]; then
+			echo "Error: Single File mode requires simultaneous use of -i <bigwig> and -o <outfile>."
+			exit 100
+		fi
+		# check input arguments
+		if true; then
+			# bigwig
+			file_check ${bigwig}
+			bigwig=$(getFull_file ${bigwig})
+			# outfile
+			dir_check $(dirname ${outfile})
+			outfile=$(getFull_file ${outfile})
+		fi
+	fi
+
+	# bin_size
+	if [[ ${bin_size} =~ ^[0-9]+$ ]]; then
+		if [[ ${bin_size} -lt 1 ]]; then
+			echo "Error: The bin_size must >0, please check."
+			exit 100
+		fi
+	else
+		echo "Error: The bin_size must be a positive integer, please check."
+		exit 100
+	fi
+
+	# nthreads
+	if [[ ${nthreads} =~ ^[0-9]+$ ]]; then
+		if [[ ${nthreads} -lt 1 ]]; then
+			echo "Error: The nthreads must >0, please check."
+			exit 100
+		fi
+	else
+		echo "Error: The nthreads must be a positive integer, please check."
+		exit 100
+	fi
+
+	# windows_name
+	if [[ -z ${windows_name} ]]; then
+		echo "Error: Required parameter '-n <window_bin_name>' is missing."
+		echo "To resolve:"
+		echo "1) List available pre-built window bins: genomeWindows -l"
+		echo "2) If no suitable bins exist, create new ones: bigWig2bedGraph -b <bin_size> -s <species> [-n <windows_name> -g <genomesizes> -B <blackList> ...]"
+		exit 100
+	fi
+fi
+
+# bigWig2bedGraph
+if true; then
+	# check the windows bin files
+	windows_dir=${windows_root}/${windows_name}/binSize${bin_size}
+	if [[ ! -f ${windows_dir}/windows.bed && -f ${windows_dir}/windowsNoBlack.noid.bed && -f ${windows_dir}/windowsNoBlack.withid.bed ]]; then
+		if [[ -n ${species} ]]; then
+			genomeWindows -b ${bin_size} -s ${species}
+		elif [[ -n ${genomesizes} && -z ${blackList} ]]; then
+			genomeWindows -b ${bin_size} -g ${genomesizes} -n ${windows_name}
+		elif [[ -n ${genomesizes} && -n ${blackList} ]]; then
+			genomeWindows -b ${bin_size} -g ${genomesizes} -n ${windows_name} -B ${blackList}
+		fi
+	fi
+
+	# bigWig2bedGraph
+	if [[ -n ${file_list} ]]; then
+		echo "################# Multiple mode #################"
+		if true; then
+			cat ${file_list} | xargs -n1 -i -P ${nthreads} bash ${bin_root}/binSignal.sh {} ${bin_root} ${windows_dir} ${zip_output}
+			check_status "Error: ${command} 1 raise error, please check."
+			echo "All bigWig files have been convert to bedGraph."
+		fi
+	else
+		# echo "################# Single mode #################"
+		if true; then
+			${bin_root}/bigWigAverageOverBed ${bigwig} ${windows_dir}/windowsNoBlack.withid.bed ${outfile}.tmp 1>/dev/null 2>&1
+			check_status "Error: ${command} 1 raise error, please check." "rm -rf ${outfile}.tmp"
+
+			sort -k1,1n ${outfile}.tmp | cut -f 5 | paste ${windows_dir}/windowsNoBlack.noid.bed - > ${outfile}
+			check_status "Error: ${command} 2 raise error, please check." "rm -rf ${outfile}.tmp ${outfile}"
+
+			if [[ ${zip} == "T" ]]; then
+				gzip -f ${outfile}
+			fi
+			rm -rf ${outfile}.tmp
+			echo "The ${bigwig} have been convert to bedGraph."
+		fi
+	fi
+fi
+
+
+
+
+
+

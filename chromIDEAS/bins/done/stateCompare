@@ -1,0 +1,151 @@
+#!/bin/bash
+
+# Program: stateCompare
+package_name="chromIDEAS"
+command="stateCompare"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	method=ARI
+	heatmap=F
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvf:a:b:Ho:O:m:" opt
+	do
+		case $opt in
+			f) file=${OPTARG} ;;
+			a) cell1=${OPTARG} ;;
+			b) cell2=${OPTARG} ;;
+			H) heatmap=T ;;
+			o) heatmap_name=${OPTARG} ;;
+			O) heatmap_mat=${OPTARG} ;;
+			m) method=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${package_name} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# check the required parameters
+	if [[ -z ${file} || -z ${cell1} || -z ${cell2} ]]; then
+		echo "Error: Required parameters -f <file> -a <cell1> -b <cell2> missing. "
+		exit 100
+	fi
+
+	# check file: file & cell1 & cell2
+	if true; then
+		# file exist
+		if true; then
+			file_check ${file}
+			file=$(getFull_file ${file})
+			rm_empty ${file}
+		fi
+
+		# format  & cell1 & cell2
+		if true; then
+			ntype=$(head -n 1000 ${file} | awk -F ' ' '{print NF}' | sort -u | wc -l)
+			nc=$(head -n 1000 ${file} | awk -F ' ' '{print NF}' | sort -u)
+
+			if [[ ${ntype} -ne 1 || ${nc} -le 4 ]]; then
+				echo "Error: the format of -i <file> is wrong. Example:"
+				echo "#ID CHR POSst POSed cell1 cell2"
+				echo "1 chr1 792600 792800 1 1"
+				echo "2 chr1 792800 793000 0 0"
+				echo "3 chr1 793000 793200 0 0"
+				echo "4 chr1 793200 793400 0 0"
+
+				exit 100
+			fi
+
+			# cell1 & cell2
+			if true; then
+				function cell_exist {
+					cell_name=$1
+					file=$2
+
+					status=$(head -n1 ${file} | cut -d " " -f 5- | sed "s/ /\n/g" | awk -v cell_name=${cell_name} '{if($0 == cell_name) {print 1}}')
+					if [[ ${status} -ne 1 ]]; then
+						echo "Error: The ${cell_name} was not found in the <file>."
+						echo "The sample name in <file>: "
+						head -n1 ${file} | cut -d " " -f 5- | sed "s/ /,/g"
+
+						exit 100
+					fi
+				}
+				cell_exist ${cell1} ${file}
+				cell_exist ${cell2} ${file}
+			fi
+		fi
+	fi
+
+	# check directory: heatmap & heatmap_name & heatmap_mat
+	if [[ ${heatmap} == "T" ]]; then
+		if [[ -z ${heatmap_name} ]]; then
+			echo "Error: Missing output filename. Please specify -o <heatmap_name> when using -H to plot transition heatmap."
+			exit 100
+		fi
+
+		# heatmap_name
+		if [[ -n ${heatmap_name} ]]; then
+			heatmap_name=$(getFull_file ${heatmap_name})
+		fi
+
+		# heatmap_mat
+		if [[ -n ${heatmap_mat} ]]; then
+			heatmap_mat=$(getFull_file ${heatmap_mat})
+		fi
+	fi
+	
+	# method
+	if [[ ${method} != "H" && ${method} != "RI" && ${method} != "ARI" && ${method} != "MI" && ${method} != "NMI" && ${method} != "VI" && ${method} != "NVI" && ${method} != "ID" && ${method} != "NID" && ${method} != "All" ]]; then
+		echo "Error: The specified method '${method}' is not valid."
+		echo "\tPossible choices: H (Entropy), RI (Rand Index), ARI (Adjusted Rand Index), MI (Mutual Information), NMI (Normalized Mutual Information), VI (Variation of Information), NVI (Normalized Variation of Information), ID (Information Distance), NID (Normalized Information Distance) or All (which computes all available metrics)."
+
+		exit 100
+	fi
+fi
+
+# stateCompare
+if true; then
+	Rscript ${bin_root}/state_compare.R ${file} ${cell1} ${cell2} ${method} ${heatmap} ${heatmap_name} ${heatmap_mat}
+fi
+

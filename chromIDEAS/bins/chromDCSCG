@@ -1,0 +1,325 @@
+#!/bin/bash
+
+# Program: stateCompare
+package_name="chromIDEAS"
+command="stateCompare"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	method=ARI
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvf:a:b:Ho:O:m:" opt
+	do
+		case $opt in
+			f) file=${OPTARG} ;;
+			a) cell1=${OPTARG} ;;
+			b) cell2=${OPTARG} ;;
+			H)  ;;
+			o) heatmap_name=${OPTARG} ;;
+			O) heatmap_mat=${OPTARG} ;;
+			m) method=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${package_name} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit ;;
+		esac
+	done
+fi
+
+
+# check the input arguments
+if true; then
+	# check the required parameters
+	if [[ -z ${metadata} ]]; then
+		echo "Error: Required parameters -m <metadata> missing. "
+		exit 100
+	fi
+
+	# check file: metadata & otherpara
+	if true; then
+		# metadata
+		if true; then
+			file_check ${metadata}
+			metadata=$(getFull_file ${metadata})
+			rm_empty ${metadata}
+
+			ncol=$(awk -F '[ ]' '{print NF}' ${metadata} | sort -u)
+			if [[ ${ncol} -ne 3 ]]; then
+				echo "Error: The <metadata> should be separated by space. The line should include <cell> <marker> <input_file>."
+				exit 100
+			fi
+
+			inf1=$(cut -d ' ' -f3 ${metadata} | head -n1)
+			if [[ -f ${inf1} ]]; then
+				loc1=$(awk -F '\t' '{if(NR==1 || NR==100) {print $1$2$3}}' ${inf1})
+			else
+				echo "The $(basename ${inf1}) in <metadata> is not exist, please check."
+				exit 100
+			fi
+			
+			cut -d ' ' -f3 ${metadata} | tail -n+2 | while read id
+			do
+				if [[ -f ${id} ]]; then
+					loc2=$(awk -F '\t' '{if(NR==1 || NR==100) {print $1$2$3}}' ${id})
+					if [[ ${loc1} != ${loc2} ]]; then
+						echo "Error: Inconsistent coordinate systems between $(basename ${inf1}) and $(basename ${id}) in <metadata>. Check files."
+						exit 100
+					fi
+				else
+					echo "The $(basename ${id}) in <metadata> is not exist, please check."
+					exit 100
+				fi
+			done
+		fi
+
+		# otherpara
+		if [[ ${otherpara} != "F" ]]; then
+			file_check ${otherpara}
+			otherpara=$(getFull_file ${otherpara})
+			rm_empty ${otherpara}
+		fi
+	fi
+
+	# check directory: out_dir
+	out_dir=$(getFull_dir ${out_dir})
+
+	# impute
+	if [[ ${impute,,} == "all" ]]; then
+		impute=All
+		tmp=${out_dir}/${id_name}_imputation
+		mkdir -p ${tmp}
+		cut -d " " -f 2 ${metadata} | sort -u > ${tmp}/total_marker.txt
+		cut -d " " -f 1 ${metadata} | sort -u | while read cell
+		do
+			awk -F '[ ]' -v cell=${cell} '{if($1 == cell) {print $2}}' ${metadata} | sort -u > ${tmp}/${cell}_marker.txt
+			sort ${tmp}/total_marker.txt ${tmp}/${cell}_marker.txt ${tmp}/${cell}_marker.txt | uniq -u > ${tmp}/${cell}_inpute.txt
+			n_impute=$(cat ${tmp}/${cell}_inpute.txt | wc -l)
+			if [[ ${n_impute} -gt 0 ]]; then
+				lack_m=$(cat ${tmp}/${cell}_inpute.txt | xargs)
+				echo -e "\tThe ${cell} lack data: ${lack_m}"
+			fi
+		done > ${tmp}/imputation_info.txt
+
+		n_impute=$(cat ${tmp}/imputation_info.txt | wc -l)
+		echo "The -I All: program will impute all missing data."
+		echo "Now the program will auto-detect missing data:"
+		if [[ ${n_impute} -eq 0 ]]; then
+			echo "No missing data is found, turn off the imputation function (impute=None)"
+			impute=None
+		else
+			cat ${tmp}/imputation_info.txt
+			echo "Above missing data will be imputed after the chromatin states have been calculated."
+		fi
+		rm -rf ${tmp}
+	elif [[ ${impute,,} != "all" && ${impute,,} != "none" ]]; then
+		echo ${impute} | awk -F "," '{for(i=1;i<=NF;i++){print $i}}' | while read mk
+		do
+			n_impute=$(awk -F '[ ]' -v mks=${mk} '{if($2 == mks) {print $0}}' ${metadata} | wc -l)
+			if [[ ${n_impute} -eq 0 ]]; then
+				echo "There is no ${mk} data in the metadata file, please check."
+				exit 100
+			fi
+		done
+		echo "These missing data will be imputed after the chromatin states have been calculated:"
+		echo ${impute} | awk -F "," '{for(i=1;i<=NF;i++){print $i}}' | nl | sed -r "s/([0-9]{1,})\s+/\1) /g"
+	fi
+
+	# integer: nthreads & train & trainsz & C & G & burnin & mcmc
+	if true; then
+		# nthreads
+		dat_type=$(data_type ${nthreads})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -p <nthreads> should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		# train
+		if true; then
+			dat_type=$(data_type ${train})
+			if [[ ${dat_type} != "gt0_Integer" ]]; then
+				echo "The -t <train> should be a positive integer greater than 0."
+				exit 100
+			fi
+
+			if [[ ${train} -gt 150 ]]; then
+				echo -e "The -t <train> should not be set too large, the maximum setting is 150. \nReset it to the default: -t 100"
+				train=100
+			fi
+		fi
+
+		# trainsz
+		if true; then
+			dat_type=$(data_type ${trainsz})
+			if [[ ${dat_type} != "gt0_Integer" ]]; then
+				echo "The -s <trainsz> should be a positive integer greater than 0."
+				exit 100
+			fi
+			
+			n_bin=$(cat ${inf1} | wc -l)
+			n_bin_rs=$(echo "${n_bin}*0.6" | bc | cut -d "." -f1)
+			if [[ ${trainsz} -gt ${n_bin} ]]; then
+				echo -e "Invalid -s <trainsz>: exceeds bedgraph rows. \nReset it to 60% rows: -s ${n_bin_rs}"
+				trainsz=${n_bin_rs}
+			fi
+		fi
+
+		# C
+		dat_type=$(data_type ${C})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -C <num> should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		# G
+		dat_type=$(data_type ${trainsz})
+		if [[ ${G} != 0 ]]; then
+			if [[ ${dat_type} != "gt0_Integer" ]]; then
+				echo "The -G <num> should be a positive integer greater than 0."
+				exit 100
+			fi
+		fi
+
+		# burnin
+		dat_type=$(data_type ${burnin})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -B <burnin> should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		# mcmc
+		dat_type=$(data_type ${mcmc})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -M <mcmc> should be a positive integer greater than 0."
+			exit 100
+		fi
+	fi
+
+	# numeric: minerr
+	if [[ ${minerr} != "0.5" ]]; then
+		max_minerr=$(echo "${minerr}*10000" | bc | cut -d "." -f1)
+		if [[ $? -ne 0 ]]; then
+			echo "The -e minerr should between (0,1], please check"
+			exit 100
+		fi
+		if [[ ${max_minerr} -gt 10000 ]]; then
+			echo -e "The -e minerr should between (0,1]. ${minerr} is too large."
+			exit 100
+		elif [[ ${max_minerr} -eq 0 ]]; then
+			echo -e "The -e minerr should between (0,1]. It cannot be 0."
+			exit 100
+		fi
+	fi
+fi
+
+# run IDEAS
+if true; then
+	# 1.get prepare
+	if true; then
+		# convert tab to space
+		cut -f 1-3 ${inf1} | sed "s/\t/ /g" > ${out_dir}/windowsNoBlack.withid.IDEASbins.txt
+		check_status "${command} 1 raise error, please check." "rm -rf ${out_dir}/windowsNoBlack.withid.IDEASbins.txt"
+	fi
+
+	# prepare the signal input
+	if true; then
+		cut -d ' ' -f3 ${metadata} | while read id
+		do
+			mv ${id} ${id}.bkp7991799.bkp
+			cut -f 4 ${id}.bkp7991799.bkp > ${id}
+		done
+	fi
+
+	# 3.run IDEAS
+	if true; then
+		bash ${bin_root}/ideas.sh ${metadata} ${out_dir} ${id_name} ${out_dir}/windowsNoBlack.withid.IDEASbins.txt ${otherpara} ${nthreads} ${impute} ${train} ${trainsz} ${C} ${G} ${minerr} ${burnin} ${mcmc}
+		if [[ $? -ne 0 ]]; then
+			echo ""${command} 2 raise error, please check." "echo '**********************error in ideas.sh**********************'""
+			seq 1 ${train} | while read nid
+			do
+				rm -rf ${out_dir}/${id_name}.tmp.${nid}.{profile,cluster,state}
+				rm -rf ${metadata}.${nid}
+			done
+
+			cut -d ' ' -f3 ${metadata} | while read id
+			do
+				mv ${id}.bkp7991799.bkp ${id}
+			done
+
+			rm -rf ${out_dir}/windowsNoBlack.withid.IDEASbins.txt
+
+			exit 100
+		fi
+
+		# recovery of files in metadata
+		if true; then
+			cut -d ' ' -f3 ${metadata} | while read id
+			do
+				rm -rf ${id}
+				mv ${id}.bkp7991799.bkp ${id}
+			done
+		fi
+
+		# format the output
+		if true; then
+			ncol=$(head ${out_dir}/${id_name}.state | awk -F '[ ]' '{print NF}' | sort -u)
+			ncol=$(expr ${ncol} - 1)
+			cut -d " " -f 1-${ncol} ${out_dir}/${id_name}.state > ${out_dir}/${id_name}.state.7992799
+			mv ${out_dir}/${id_name}.state.7992799 ${out_dir}/${id_name}.state
+		fi
+
+		if [[ ${zip_output} == "T" ]]; then
+			gzip -f ${out_dir}/${id_name}.state
+		fi
+	fi
+
+	# 4.remove redundent files
+	if true; then
+		rm -rf ${out_dir}/windowsNoBlack.withid.IDEASbins.txt
+
+		mkdir -p ${out_dir}/.para
+		mv ${out_dir}/${id_name}.tmp.*.para              ${out_dir}/.para
+		mv ${out_dir}/${id_name}.{para,profile,cluster}  ${out_dir}/.para
+		mv ${out_dir}/${id_name}.{para,profile}0         ${out_dir}/.para
+		mv ${out_dir}/log.txt                            ${out_dir}/.para
+	fi
+
+	# plot emission heatmap
+	Rscript ${bin_root}/emission_heatmap.R ${out_dir}/.para/${id_name}.para ${out_dir}/${id_name}.emission.pdf ${out_dir}/${id_name}.emission.txt 1>/dev/null 2>&1
+fi
+

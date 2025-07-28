@@ -1,0 +1,36 @@
+{% set pkg_name_lowercase = "chromideas" %}
+{% set version = "1.0.0" %}
+
+package:
+  name: {{ pkg_name_lowercase }}
+  version: {{ version }}
+
+source:
+  path: chromIDEAS/
+
+build:
+  number: 0
+  string: fatyang799
+  noarch: generic
+
+requirements:
+  run:
+    - python >=3.8
+    - numpy >1.23.1
+    - scipy >=1.8.0
+    - pandas >=1.5.0
+    - bedtools >=2.27.1
+    - r-base >=3.8.2
+    - r-data.table >1.12.0
+    - r-r.utils >2.5.1
+    - r-foreach >1.4.0
+    - r-doparallel >1.0.0
+    - r-r-ggplot >=3.4
+
+test: 
+
+about:
+  home: https://github.com/fatyang799/chromIDEAS
+  license: MIT
+  summary: "chromIDEAS: an ultra-fast all-in-one Chromatin State Analyzer"
+

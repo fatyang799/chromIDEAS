@@ -1,0 +1,254 @@
+#!/bin/bash
+
+# Program: mergeBigwig
+package_name="chromIDEAS"
+command="mergeBigwig"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	nthreads=4
+	average_method=mean
+	bin_size=200
+	cutoff_cor=0.1
+	cor_method=pearson
+	skipZeros=F
+	quiet=F
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvf:m:b:s:g:n:B:c:zl:qp:" opt
+	do
+		case $opt in
+			f) file_list=${OPTARG} ;;
+			m) average_method=${OPTARG} ;;
+			b) bin_size=${OPTARG} ;;
+			s) species=${OPTARG} ;;
+			g) genomesizes=${OPTARG} ;;
+			n) windows_name=${OPTARG} ;;
+			B) blackList=${OPTARG} ;;
+			c) cor_method=${OPTARG} ;;
+			z) skipZeros=T ;;
+			l) cutoff_cor=${OPTARG} ;;
+			q) quiet=T ;;
+			p) nthreads=${OPTARG} ;;
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# check the required parameters
+	if [[ -z ${file_list} || -z ${average_method} ]]; then
+		echo "Error: Required parameters missing. "
+		echo -e "1) pre-existing window bins"
+		echo -e "\tmergeBigwig -f <file_list> -m <average_method> -n <windows_name>"
+		echo -e "2) building window bins for hg38/hg19/mm10"
+		echo -e "\tmergeBigwig -f <file_list> -m <average_method> -b <bin_size> -s <species> [-n <windows_name>]"
+		echo -e "3) building window bins for custom species"
+		echo -e "\tmergeBigwig -f <file_list> -m <average_method> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]"
+		exit 100
+	fi
+
+	# check the required parameters for genome bins
+	if ! ( [[ -n ${windows_name} ]] || [[ -n ${bin_size} && -n ${species} ]] || [[ -n ${bin_size} && -n ${genomesizes} && -n ${windows_name} ]] ); then
+		echo "Error: Required parameters missing. "
+		echo -e "1) pre-existing window bins"
+		echo -e "\tmergeBigwig -f <file_list> -m <average_method> -n <windows_name>"
+		echo -e "2) building window bins for hg38/hg19/mm10"
+		echo -e "\tmergeBigwig -f <file_list> -m <average_method> -b <bin_size> -s <species> [-n <windows_name>]"
+		echo -e "3) building window bins for custom species"
+		echo -e "\tmergeBigwig -f <file_list> -m <average_method> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]"
+		exit 100
+	fi
+
+	# species & genomesizes & blackList
+	if true; then
+		if [[ ${species} == "hg38" ]]; then
+			genomesizes=${genomesize_root}/hg38.chrom.1_22XY.sizes
+			blackList=${blacklist_root}/hg38-blacklist.v2.bed
+			if [[ -z ${windows_name} ]]; then
+				windows_name=${species}
+			fi
+		elif [[ ${species} == "hg19" ]]; then
+			genomesizes=${genomesize_root}/hg19.chrom.1_22XY.sizes
+			blackList=${blacklist_root}/hg19-blacklist.v2.bed
+			if [[ -z ${windows_name} ]]; then
+				windows_name=${species}
+			fi
+		elif [[ ${species} == "mm10" ]]; then
+			genomesizes=${genomesize_root}/mm10.chrom.1_19XY.sizes
+			blackList=${blacklist_root}/mm10-blacklist.v2.bed
+			if [[ -z ${windows_name} ]]; then
+				windows_name=${species}
+			fi
+		elif [[ -z ${species} ]]; then
+			if [[ -z ${genomesizes} && ! -d ${windows_root}/${windows_name} ]]; then
+				echo "Error: Please provide -s species OR specify your own genomesizes file (-g) and blackList file (-B, not necessary)."
+				exit 100
+			elif [[ -n ${genomesizes} ]]; then
+				file_check ${genomesizes}
+				genomesizes=$(getFull_file ${genomesizes})
+				rm_empty ${genomesizes}
+			elif [[ -d ${windows_root}/${windows_name} ]]; then
+				bin_size=$(tail -n+4 ${windows_root}/${windows_name}/*/command_line.log | cut -d " " -f 2 | head -n1)
+				genomesizes=$(tail -n+7 ${windows_root}/${windows_name}/*/command_line.log | cut -d " " -f 2 | head -n1)
+				bl=$(tail -n+6 ${windows_root}/${windows_name}/*/command_line.log | cut -d " " -f 2 | head -n1)
+				if [[ -n ${bl} ]]; then
+					blackList=${bl}
+				fi
+			fi
+			if [[ -z ${windows_name} ]]; then
+				echo "Error: You must provide -n windows_name to specify your own genome Windows database."
+				exit 100
+			fi
+		else
+			echo -e "Error: The program can only auto-provide species: hg19, hg38 and mm10. Your provided species is not supported, you can specify your own genomesizes file (-g) and blackList file (-B, not necessary)."
+			exit 100
+		fi
+
+		if [[ -n ${blackList} ]]; then
+			file_check ${blackList}
+			blackList=$(getFull_file ${blackList})
+			rm_empty ${blackList}
+		fi
+	fi
+
+	# file_list
+	if true; then
+		file_check ${file_list}
+		file_list=$(getFull_file ${file_list})
+		rm_empty ${file_list}
+		# check files in file_list
+		cat ${file_list} | while read id out
+		do
+			file_check ${id}
+			check_status "Error: ${id} in <file_list> is not exist, please check."
+			dir_check $(dirname ${out})
+		done
+	fi
+
+	# method: average_method && cor_method
+	if true; then
+		if [[ ${average_method} != "mean" && ${average_method} != "median" ]]; then
+			echo "-m <average_method> only support mean or median, please check."
+			exit 100
+		fi
+
+		if [[ ${cor_method} != "spearman" && ${cor_method} != "pearson" ]]; then
+			echo "-c <cor_method> only support pearson or spearman, please check."
+			exit 100
+		fi
+	fi
+
+	# numeric: cutoff_cor
+	if true; then
+		if [[ ${cutoff_cor} != "0.1" ]]; then
+			max_cutoff_cor=$(echo "${cutoff_cor}*10000" | bc | cut -d "." -f1)
+			if [[ $? -ne 0 ]]; then
+				echo "The -e cutoff_cor should between (0,1], please check"
+				exit 100
+			fi
+			if [[ ${max_cutoff_cor} -gt 10000 ]]; then
+				echo -e "The -e cutoff_cor should between (0,1]. ${cutoff_cor} is too large.\nReset it to the default: -l 0.1"
+				cutoff_cor=0.1
+			fi
+			if [[ ${max_cutoff_cor} -eq 0 ]]; then
+				echo -e "The -e cutoff_cor should between (0,1]. It cannot be 0.\nReset it to the default: -l 0.1"
+				cutoff_cor=0.1
+			fi
+		fi
+	fi
+
+	# integer: nthreads && bin_size
+	if true; then
+		dat_type=$(data_type ${nthreads})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -p <nthreads> should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		dat_type=$(data_type ${bin_size})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -b <bin_size> should be a positive integer greater than 0."
+			exit 100
+		fi
+	fi
+fi
+
+# mergeBigwig
+if true; then
+	# bigWig2bedGraph
+	if true; then
+		cut -f 1 ${file_list} | xargs -n1 -i echo -e "{}\t{}.bedgraph" > file7991799.txt
+		command_line="bigWig2bedGraph -f file7991799.txt -n ${windows_name} -p ${nthreads} -b ${bin_size} -g ${genomesizes}"
+		if [[ -n ${blackList} ]]; then
+			command_line="${command_line} -B ${blackList}"
+		fi
+		bash -c "${command_line}"
+		check_status "${command} 1 bigWig2bedGraph raise error, please check." "rm file7991799.txt"
+	fi
+	
+	# mergeBedgraph
+	if true; then
+		paste file7991799.txt ${file_list} | cut -f2,4 | xargs -n1 -i echo "{}.bedgraph" > file7992799.txt
+
+		command_line="mergeBedgraph -f file7992799.txt -m ${average_method} -c ${cor_method} -l ${cutoff_cor} -p ${nthreads}"
+		if [[ ${skipZeros} == "T" ]]; then
+			command_line="${command_line} -z"
+		fi
+		if [[ ${quiet} == "T" ]]; then
+			command_line="${command_line} -q"
+		fi
+		bash -c "${command_line}"
+		check_status "${command} 2 mergeBedgraph raise error, please check." "cut -f 2 file7991799.txt | xargs -n1 -i rm -rf {}; rm file7991799.txt file7992799.txt"
+		
+		cut -f 2 file7991799.txt | xargs -n1 -i rm -rf {}
+	fi
+
+	# bedGraph2bigWig
+	if true; then
+		paste file7992799.txt ${file_list} | cut -f2,4 | sort -u > file7993799.txt
+		bedGraph2bigWig -g ${genomesizes} -f file7993799.txt -p ${nthreads}
+		check_status "${command} 3 bedGraph2bigWig raise error, please check." "cut -f1 file7993799.txt | xargs -n1 -i rm -rf {}; rm -rf file7991799.txt file7992799.txt file7993799.txt"
+		
+		cut -f1 file7993799.txt | xargs -n1 -i rm -rf {}
+		rm -rf file7991799.txt file7992799.txt file7993799.txt
+	fi
+fi

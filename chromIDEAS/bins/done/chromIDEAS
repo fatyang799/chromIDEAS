@@ -1,0 +1,517 @@
+#!/bin/bash
+
+# Program: chromIDEAS
+package_name="chromIDEAS"
+command="chromIDEAS"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${gsl_root}/lib
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	output=$PWD
+	id_name=chromIDEAS
+	otherpara=F
+	nthreads=4
+	impute=None
+	train=100
+	trainsz=500000
+	C=100
+	G=0
+	minerr=0.5
+	burnin=20
+	mcmc=5
+	zip_output=F
+
+	# 
+	metadata=metadata
+	windows_name=hg38
+	genomesizes=genomesizes
+	bin_size=200
+	local_bg_bin=5
+	cont=F
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvb:o:m:s:g:n:cd:B:p:zl:f:I:t:S:C:G:e:N:M:" opt
+	do
+		case $opt in
+			b) bin_size=${OPTARG} ;;
+			o) output=${OPTARG} ;;
+			m) metadata=${OPTARG} ;;
+			s) species=${OPTARG} ;;
+			g) genomesizes=${OPTARG} ;;
+			n) windows_name=${OPTARG} ;;
+			c) cont=T ;;
+			d) id_name=${OPTARG} ;;
+			B) blackList=${OPTARG} ;;
+			p) nthreads=${OPTARG} ;;
+			z) zip_output=T ;;
+			l) local_bg_bin=${OPTARG} ;;
+			f) otherpara=${OPTARG} ;;
+			I) impute=${OPTARG} ;;
+			t) train=${OPTARG} ;;
+			S) trainsz=${OPTARG} ;;
+			C) C=${OPTARG} ;;
+			G) G=${OPTARG} ;;
+			e) minerr=${OPTARG} ;;
+			N) burnin=${OPTARG} ;;
+			M) mcmc=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# check the required parameters
+	if true; then
+		if [[ -z ${metadata} ]]; then
+			echo "Error: Required parameters -m <metadata> missing. "
+			exit 100
+		fi
+
+		if ! ( [[ -n ${windows_name} && -n ${genomesizes} ]] || [[ -n ${species} ]] || [[ -n ${windows_name} ]] ); then
+			echo "Error: Required parameters missing. "
+			echo "\tUsage:   s3v2Norm [options] -o <output> -m <metadata> -n <windows_name> [-b <bin_size>]"
+			echo "\t   or:   s3v2Norm [options] -o <output> -m <metadata> -b <bin_size> -s <species> [-n <windows_name>]"
+			echo "\t   or:   s3v2Norm [options] -o <output> -m <metadata> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]"
+			exit 100
+		fi
+	fi
+
+	# species & genomesizes & blackList
+	if true; then
+		if [[ ${species} == "hg38" ]]; then
+			genomesizes=${genomesize_root}/hg38.chrom.1_22XY.sizes
+			blackList=${blacklist_root}/hg38-blacklist.v2.bed
+			if [[ -z ${windows_name} ]]; then
+				windows_name=${species}
+			fi
+		elif [[ ${species} == "hg19" ]]; then
+			genomesizes=${genomesize_root}/hg19.chrom.1_22XY.sizes
+			blackList=${blacklist_root}/hg19-blacklist.v2.bed
+			if [[ -z ${windows_name} ]]; then
+				windows_name=${species}
+			fi
+		elif [[ ${species} == "mm10" ]]; then
+			genomesizes=${genomesize_root}/mm10.chrom.1_19XY.sizes
+			blackList=${blacklist_root}/mm10-blacklist.v2.bed
+			if [[ -z ${windows_name} ]]; then
+				windows_name=${species}
+			fi
+		elif [[ -z ${species} ]]; then
+			if [[ -z ${genomesizes} && ! -d ${windows_root}/${windows_name} ]]; then
+				echo "Error: Please provide -s species OR specify your own genomesizes file (-g) and blackList file (-B, not necessary)."
+				exit 100
+			elif [[ -n ${genomesizes} ]]; then
+				file_check ${genomesizes}
+				genomesizes=$(getFull_file ${genomesizes})
+				rm_empty ${genomesizes}
+			elif [[ -d ${windows_root}/${windows_name} ]]; then
+				bin_size=$(tail -n+4 ${windows_root}/${windows_name}/binSize${bin_size}/command_line.log | cut -d " " -f 2 | head -n1)
+				genomesizes=$(tail -n+7 ${windows_root}/${windows_name}/binSize${bin_size}/command_line.log | cut -d " " -f 2 | head -n1)
+				bl=$(tail -n+6 ${windows_root}/${windows_name}/binSize${bin_size}/command_line.log | cut -d " " -f 2 | head -n1)
+				if [[ -n ${bl} ]]; then
+					blackList=${bl}
+				fi
+			fi
+			if [[ -z ${windows_name} ]]; then
+				echo "Error: You must provide -n <windows_name> to specify your own genome Windows database."
+				exit 100
+			fi
+		else
+			echo -e "Error: The program can only auto-provide species: hg19, hg38 and mm10. Your provided species is not supported, you can specify your own genomesizes file (-g) and blackList file (-B, not necessary)."
+			exit 100
+		fi
+
+		if [[ -n ${blackList} ]]; then
+			file_check ${blackList}
+			blackList=$(getFull_file ${blackList})
+			rm_empty ${blackList}
+		fi
+	fi
+
+	# check file: metadata & otherpara
+	if true; then
+		# metadata
+		if true; then
+			# metadata
+			file_check ${metadata}
+			metadata=$(getFull_file ${metadata})
+			rm_empty ${metadata}
+
+			ncol=$(awk -F '\t' '{print NF}' ${metadata} | sort -nu | head -n1)
+			if [[ ${ncol} -ne 4 ]]; then
+				echo "Error: The <metadata> should be separated by tab. The line should include '<cell> <marker> <id> <Exp_bigwig> [<CT_bigwig>]'."
+				exit 100
+			fi
+			
+			awk -F '\t' '{print $4"\n"$5}' ${metadata} | sort -u | egrep -v "^\s*$" | while read id
+			do
+				if [[ ! -f ${id} ]]; then
+					echo "The $(basename ${id}) in <metadata> is not exist, please check."
+					exit 100
+				fi
+			done
+		fi
+
+		# otherpara
+		if [[ ${otherpara} != "F" ]]; then
+			file_check ${otherpara}
+			otherpara=$(getFull_file ${otherpara})
+			rm_empty ${otherpara}
+		fi
+	fi
+
+	# check directory: output
+	output=$(getFull_dir ${output})
+
+	# impute
+	if [[ ${impute,,} == "all" ]]; then
+		impute=All
+		tmp=${out_dir}/${id_name}_imputation
+		mkdir -p ${tmp}
+		cut -d " " -f 2 ${metadata} | sort -u > ${tmp}/total_marker.txt
+		cut -d " " -f 1 ${metadata} | sort -u | while read cell
+		do
+			awk -F '[ ]' -v cell=${cell} '{if($1 == cell) {print $2}}' ${metadata} | sort -u > ${tmp}/${cell}_marker.txt
+			sort ${tmp}/total_marker.txt ${tmp}/${cell}_marker.txt ${tmp}/${cell}_marker.txt | uniq -u > ${tmp}/${cell}_inpute.txt
+			n_impute=$(cat ${tmp}/${cell}_inpute.txt | wc -l)
+			if [[ ${n_impute} -gt 0 ]]; then
+				lack_m=$(cat ${tmp}/${cell}_inpute.txt | xargs)
+				echo -e "\tThe ${cell} lack data: ${lack_m}"
+			fi
+		done > ${tmp}/imputation_info.txt
+
+		n_impute=$(cat ${tmp}/imputation_info.txt | wc -l)
+		echo "The -I All: program will impute all missing data."
+		echo "Now the program will auto-detect missing data:"
+		if [[ ${n_impute} -eq 0 ]]; then
+			echo "No missing data is found, turn off the imputation function (impute=None)"
+			impute=None
+		else
+			cat ${tmp}/imputation_info.txt
+			echo "Above missing data will be imputed after the chromatin states have been calculated."
+		fi
+		rm -rf ${tmp}
+	elif [[ ${impute,,} != "all" && ${impute,,} != "none" ]]; then
+		echo ${impute} | awk -F "," '{for(i=1;i<=NF;i++){print $i}}' | while read mk
+		do
+			n_impute=$(awk -F '[ ]' -v mks=${mk} '{if($2 == mks) {print $0}}' ${metadata} | wc -l)
+			if [[ ${n_impute} -eq 0 ]]; then
+				echo "There is no ${mk} data in the metadata file, please check."
+				exit 100
+			fi
+		done
+		echo "These missing data will be imputed after the chromatin states have been calculated:"
+		echo ${impute} | awk -F "," '{for(i=1;i<=NF;i++){print $i}}' | nl | sed -r "s/([0-9]{1,})\s+/\1) /g"
+	fi
+
+	# integer: local_bg_bin & bin_size & nthreads & train & trainsz & G & C & burnin & mcmc
+	if true; then
+		# local_bg_bin
+		dat_type=$(data_type ${local_bg_bin})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -l <local_bg_bin> should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		# bin_size
+		dat_type=$(data_type ${bin_size})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -b <bin_size> should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		# nthreads
+		dat_type=$(data_type ${nthreads})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -p <nthreads> should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		# train
+		if true; then
+			dat_type=$(data_type ${train})
+			if [[ ${dat_type} != "gt0_Integer" ]]; then
+				echo "The -t <train> should be a positive integer greater than 0."
+				exit 100
+			fi
+
+			if [[ ${train} -gt 150 ]]; then
+				echo -e "The -t <train> should not be set too large, the maximum setting is 150. \nReset it to the default: -t 100"
+				train=100
+			fi
+		fi
+
+		# trainsz
+		if true; then
+			dat_type=$(data_type ${trainsz})
+			if [[ ${dat_type} != "gt0_Integer" ]]; then
+				echo "The -S <trainsz> should be a positive integer greater than 0."
+				exit 100
+			fi
+			
+			n_bin=$(cut -f2 ${genomesizes} | awk 'BEGIN{sum=0} {sum=sum+$1} END{print sum}')
+			n_bin=$(expr ${n_bin} / ${bin_size})
+			n_bin_rs=$(echo "${n_bin}*0.6" | bc | cut -d "." -f1)
+			if [[ ${trainsz} -gt ${n_bin} ]]; then
+				echo -e "Invalid -S <trainsz>: exceeds bedgraph rows. \nReset it to 60% rows: -s ${n_bin_rs}"
+				trainsz=${n_bin_rs}
+			fi
+		fi
+
+		# C
+		dat_type=$(data_type ${C})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -C <num> should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		# G
+		dat_type=$(data_type ${trainsz})
+		if [[ ${G} != 0 ]]; then
+			if [[ ${dat_type} != "gt0_Integer" ]]; then
+				echo "The -G <num> should be a positive integer greater than 0."
+				exit 100
+			fi
+		fi
+
+		# burnin
+		dat_type=$(data_type ${burnin})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -N <burnin> should be a positive integer greater than 0."
+			exit 100
+		fi
+
+		# mcmc
+		dat_type=$(data_type ${mcmc})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -M <mcmc> should be a positive integer greater than 0."
+			exit 100
+		fi
+	fi
+
+	# numeric: minerr
+	if [[ ${minerr} != "0.5" ]]; then
+		max_minerr=$(echo "${minerr}*10000" | bc | cut -d "." -f1)
+		if [[ $? -ne 0 ]]; then
+			echo "The -e minerr should between (0,1], please check"
+			exit 100
+		fi
+		if [[ ${max_minerr} -gt 10000 ]]; then
+			echo -e "The -e minerr should between (0,1]. ${minerr} is too large."
+			exit 100
+		elif [[ ${max_minerr} -eq 0 ]]; then
+			echo -e "The -e minerr should between (0,1]. It cannot be 0."
+			exit 100
+		fi
+	fi
+fi
+
+##################################################################
+# chromIDEAS
+if true; then
+	# s3v2Norm
+	if true; then
+		# get value 
+		if true; then
+			n_total_f=$(cat ${metadata} | wc -l)
+			n_total_mk=$(cut -f2 ${metadata} | sort -u | wc -l)
+
+			# ${id_name}_bws_RC: n_norm_f n_norm_f_average
+			ls -d ${output}/2.s3v2Norm/${id_name}_bws_RC 1>/dev/null 2>&1
+			if [[ $? -eq 0 ]]; then
+				ls ${output}/2.s3v2Norm/${id_name}_bws_RC/*S3V2.bedgraph.bw 1>/dev/null 2>&1
+				if [[ $? -eq 0 ]]; then
+					n_norm_f=$(ls ${output}/2.s3v2Norm/${id_name}_bws_RC/*S3V2.bedgraph.bw | wc -l)
+				else
+					n_norm_f=0
+				fi
+
+				ls ${output}/2.s3v2Norm/${id_name}_bws_RC/*average_sig.bedgraph.S3V2.ave.bedgraph.bw 1>/dev/null 2>&1
+				if [[ $? -eq 0 ]]; then
+					n_norm_f_average=$(ls ${output}/2.s3v2Norm/${id_name}_bws_RC/*average_sig.bedgraph.S3V2.ave.bedgraph.bw | wc -l)
+				else
+					n_norm_f_average=0
+				fi
+			else
+				n_norm_f=0
+				n_norm_f_average=0
+			fi
+
+			# ${id_name}_bws_NBP: n_norm_nbp_f n_norm_nbp_f_average
+			ls -d ${output}/2.s3v2Norm/${id_name}_bws_NBP 1>/dev/null 2>&1
+			if [[ $? -eq 0 ]]; then
+				ls ${output}/2.s3v2Norm/${id_name}_bws_NBP/*S3V2.bedgraph.NBP.bedgraph.bw 1>/dev/null 2>&1
+				if [[ $? -eq 0 ]]; then
+					n_norm_nbp_f=$(ls ${output}/2.s3v2Norm/${id_name}_bws_NBP/*S3V2.bedgraph.NBP.bedgraph.bw | wc -l)
+				else
+					n_norm_nbp_f=0
+				fi
+
+				ls ${output}/2.s3v2Norm/${id_name}_bws_NBP/*average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph.bw 1>/dev/null 2>&1
+				if [[ $? -eq 0 ]]; then
+					n_norm_nbp_f_average=$(ls ${output}/2.s3v2Norm/${id_name}_bws_NBP/*average_sig.bedgraph.S3V2.ave.bedgraph.NBP.bedgraph.bw | wc -l)
+				else
+					n_norm_nbp_f_average=0
+				fi
+			else
+				n_norm_nbp_f=0
+				n_norm_nbp_f_average=0
+			fi
+		fi
+
+		if [[ ${cont} == "T" && ${n_norm_f} -eq ${n_total_f} && ${n_norm_nbp_f} -eq ${n_total_f} && ${n_norm_f_average} -eq ${n_total_mk} && ${n_norm_nbp_f_average} -eq ${n_total_mk} ]]; then
+			echo "Process (1) genomeWindows done successfully."
+			echo "------------------------------------------------------------------------"
+			echo
+			echo "Process (2) bigWig2bedGraph done successfully."
+			echo "------------------------------------------------------------------------"
+			echo
+			echo "Process (3) s3v2Norm done successfully."
+			echo "------------------------------------------------------------------------"
+			echo
+		else
+			if [[ -z ${blackList} ]]; then
+				s3v2Norm -b ${bin_size} -o ${output} -m ${metadata} -g ${genomesizes} -n ${windows_name} -c -d ${id_name} -p ${nthreads} -l ${local_bg_bin}
+			else
+				s3v2Norm -b ${bin_size} -o ${output} -m ${metadata} -g ${genomesizes} -n ${windows_name} -c -d ${id_name} -B ${blackList} -p ${nthreads} -l ${local_bg_bin}
+			fi
+
+			check_status "${command} (1) s3v2Norm raise error, please check."
+			echo
+		fi
+	fi
+	
+	# mergeBedgraph
+	if true; then
+		# get value 
+		if true; then
+			ls ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/meta.txt 1>/dev/null 2>&1
+			if [[ $? -eq 0 ]]; then
+				mk_n=$(cut -d " " -f 2 ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/meta.txt | sort -u | wc -l)
+				files=$(cut -d " " -f 3 ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/meta.txt)
+				ls ${files} 1>/dev/null 2>&1
+				if [[ $? -eq 0 ]]; then
+					meta_status=0
+				else
+					meta_status=100
+				fi
+
+				if [[ ${mk_n} -eq 1 ]]; then
+					echo "Only a single marker is detected, the chromatin state segmentation analysis cannot be performed."
+					exit 100
+				fi
+			else
+				meta_status=100
+			fi
+		fi
+
+		if [[ ${cont} == "T" && ${meta_status} -eq 0 ]]; then
+			echo "Process (4) mergeBedgraph done successfully."
+		else
+			echo "Now process (4) mergeBedgraph."
+			mkdir -p ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB
+
+			rm -rf ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/{group.7991799.txt,group.7992799.txt}
+			ls ${output}/2.s3v2Norm/${id_name}_bws_NBP/*S3V2.bedgraph.NBP.bedgraph.bw | while read id
+			do
+				bedg=$(basename $id | sed -r "s/.bw$//g")
+				echo -e "${id}\t${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/${bedg}" >> ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/group.7991799.txt
+				
+				cell=$(basename $id | cut -d "_" -f1)
+				mk=$(basename $id | cut -d "." -f2)
+				echo -e "${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/${bedg}\t${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/${cell}.${mk}.S3V2.bedgraph.NBP.txt" >> ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/group.7992799.txt
+			done
+
+			bigWig2bedGraph -n ${windows_name} -f ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/group.7991799.txt -p ${nthreads} -b ${bin_size}
+			check_status "${command} (2) 4.mergeBedgraph.1 raise error, please check." "rm -rf ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB"
+
+			mergeBedgraph -f ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/group.7992799.txt -m median -c pearson -p ${nthreads}
+			check_status "${command} (2) 4.mergeBedgraph.2 raise error, please check." "rm -rf ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB"
+
+			cut -f2 ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/group.7991799.txt | xargs -n1 -i rm -rf {}
+
+			cat ${metadata} | while read cell mk id exp ct
+			do
+				echo "${cell} ${mk} ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/${cell}.${mk}.S3V2.bedgraph.NBP.txt"
+			done | sort -u > ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/meta.txt
+
+			rm -rf ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/group.799[12]799.txt
+
+			echo "Process (4) mergeBedgraph done successfully."
+			echo "------------------------------------------------------------------------"
+			echo
+		fi
+	fi
+
+	# ideasCS
+	if true; then
+		ls ${output}/3.CS_segmentation/{${id_name}.emission.pdf,${id_name}.emission.txt,${id_name}.state} 1>/dev/null 2>&1
+		if [[ ${cont} == "T" && $? -eq 0 ]]; then
+			echo "Process (5) ideasCS done successfully."
+		else
+			echo "Now process (5) ideasCS."
+			ideasCS \
+			-m ${output}/3.CS_segmentation/${id_name}_IDEAS_input_NB/meta.txt \
+			-o ${output}/4.${id_name}_IDEAS_output \
+			-d ${id_name} \
+			-p ${nthreads} \
+			-f ${otherpara} \
+			-I ${impute} \
+			-t ${train} \
+			-s ${trainsz} \
+			-C ${C} \
+			-G ${G} \
+			-e ${minerr} \
+			-B ${burnin} \
+			-M ${mcmc}
+			
+			check_status "${command} (3) 5.ideasCS raise error, please check." "rm -rf ${output}/4.${id_name}_IDEAS_output"
+			echo "Process (5) ideasCS done successfully."
+			echo "------------------------------------------------------------------------"
+			echo
+		fi
+	fi
+fi
+
+
+

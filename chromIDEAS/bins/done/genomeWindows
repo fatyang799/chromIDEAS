@@ -1,0 +1,186 @@
+#!/bin/bash
+
+# Program: genomeWindows
+package_name="chromIDEAS"
+command="genomeWindows"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	bin_size=200
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvb:s:B:g:n:l" opt
+	do
+		case $opt in
+			b) bin_size=${OPTARG} ;;
+			s) species=${OPTARG} ;;
+			B) blackList=${OPTARG} ;;
+			g) genomesizes=${OPTARG} ;;
+			n) windows_name=${OPTARG} ;;
+			l) list_files=T ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if [[ ${list_files} != "T" ]]; then
+	# check the required parameters
+	if ! ( [[ -n ${windows_name} && -n ${genomesizes} ]] || [[ -n ${species} ]] ); then
+		echo "Error: Required parameters missing. "
+		echo -e "\tMust include: -n <windows_name> -g <genomesizes>"
+		echo -e "\tOR"
+		echo -e "\tMust include: -s <species>"
+		exit 100
+	fi
+
+	# species & genomesizes & blackList
+	if true; then
+		if [[ ${species} == "hg38" ]]; then
+			genomesizes=${genomesize_root}/hg38.chrom.1_22XY.sizes
+			blackList=${blacklist_root}/hg38-blacklist.v2.bed
+			if [[ -z ${windows_name} ]]; then
+				windows_name=${species}
+			fi
+		elif [[ ${species} == "hg19" ]]; then
+			genomesizes=${genomesize_root}/hg19.chrom.1_22XY.sizes
+			blackList=${blacklist_root}/hg19-blacklist.v2.bed
+			if [[ -z ${windows_name} ]]; then
+				windows_name=${species}
+			fi
+		elif [[ ${species} == "mm10" ]]; then
+			genomesizes=${genomesize_root}/mm10.chrom.1_19XY.sizes
+			blackList=${blacklist_root}/mm10-blacklist.v2.bed
+			if [[ -z ${windows_name} ]]; then
+				windows_name=${species}
+			fi
+		elif [[ -z ${species} ]]; then
+			if [[ -z ${genomesizes} ]]; then
+				echo "Error: Please provide -s species OR specify your own genomesizes file (-g) and blackList file (-B, not necessary)."
+				exit 100
+			else
+				file_check ${genomesizes}
+				genomesizes=$(getFull_file ${genomesizes})
+				rm_empty ${genomesizes}
+
+				# format check
+				if true; then
+					ntype=$(awk -F "\t" '{print NF}' ${genomesizes} | sort -u | wc -l)
+					ncol=$(awk -F "\t" '{print NF}' ${genomesizes} | sort -u)
+					if [[ ${ntype} != 1 || ${ncol} != 2 ]]; then
+						echo "Error: The genomesizes file should be tab-delimited 2 columns file."
+						exit 100
+					fi
+				fi
+			fi
+			if [[ -z ${windows_name} ]]; then
+				echo "Error: You must provide -n windows_name to specify your own genome Windows database."
+				exit 100
+			fi
+		else
+			echo -e "Error: The program can only auto-provide species: hg19, hg38 and mm10. Your provided species is not supported, you can specify your own genomesizes file (-g) and blackList file (-B, not necessary)."
+			exit 100
+		fi
+
+		if [[ -n ${blackList} ]]; then
+			file_check ${blackList}
+			blackList=$(getFull_file ${blackList})
+			rm_empty ${genomesizes}
+		fi
+	fi
+
+	# bin_size
+	if [[ ${bin_size} =~ ^[0-9]+$ ]]; then
+		if [[ ${bin_size} -lt 1 ]]; then
+			echo "Error: The bin_size must >0, please check."
+			exit 100
+		fi
+	else
+		echo "Error: The bin_size must be a positive integer, please check."
+		exit 100
+	fi
+	
+	out_dir=${windows_root}/${windows_name}/binSize${bin_size}
+	out_dir=$(getFull_dir ${out_dir})
+
+	# record the specific command line
+	(date "+%Y%m%d %H:%M:%S";echo -e "\n${command} \\n\t-b ${bin_size} \\n\t-s ${species} \\n\t-B ${blackList} \\n\t-g ${genomesizes} \\n\t-n ${windows_name}") > ${out_dir}/command_line.log
+fi
+
+# genomeWindows
+if true; then
+	if [[ ${list_files} == T ]]; then
+		(echo -e "date\twindows_name\tbin_size\tspecies\tgenomesizes\tblackList"; ls ${windows_root}/*/*/command_line.log | while read id
+		do
+			time_format=$(head -n1 ${id} | sed "s/ /_/g")
+			bs=$(head -n 4 ${id} | tail -n1 | cut -d " " -f2)
+			sp=$(head -n 5 ${id} | tail -n1 | cut -d " " -f2)
+			bl=$(head -n 6 ${id} | tail -n1 | cut -d " " -f2)
+			gens=$(head -n 7 ${id} | tail -n1 | cut -d " " -f2)
+			wname=$(head -n 8 ${id} | tail -n1 | cut -d " " -f2)
+			if [[ -z ${sp} ]]; then
+				sp=NA
+			fi
+			echo -e "${time_format}\t${wname}\t${bs}\t${sp}\t${gens}\t${bl}"
+		done) | column -t
+	else
+		if [[ -f ${out_dir}/windows.bed && -f ${out_dir}/windowsNoBlack.noid.bed && -f ${out_dir}/windowsNoBlack.withid.bed ]]; then
+			echo "The windows bin files have been successfully generated."
+			exit
+		else
+			## create the windows.bed
+			bedtools makewindows -g ${genomesizes} -w ${bin_size} > ${out_dir}/windows.bed
+			check_status "Error: ${command} 1 raise error, please check." "rm -rf ${out_dir}/windows.bed"
+
+			## create the windowsNoBlack.noid.bed
+			if [[ -z ${blackList} ]]; then
+				cp ${out_dir}/windows.bed ${out_dir}/windowsNoBlack.noid.bed
+			else
+				bedtools subtract -a ${out_dir}/windows.bed -b ${blackList} -A > ${out_dir}/windowsNoBlack.noid.bed
+			fi
+			check_status "Error: ${command} 2 raise error, please check." "rm -rf ${out_dir}/windows.bed ${out_dir}/windowsNoBlack.noid.bed"
+
+			## create the windowsNoBlack.withid.bed
+			awk -F "\t" -v OFS="\t" '{print $0, NR}' ${out_dir}/windowsNoBlack.noid.bed > ${out_dir}/windowsNoBlack.withid.bed
+			check_status "Error: ${command} 3 raise error, please check." "rm -rf ${out_dir}/windows.bed ${out_dir}/windowsNoBlack.noid.bed ${out_dir}/windowsNoBlack.withid.bed"
+		fi
+	fi
+fi

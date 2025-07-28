@@ -1,0 +1,22 @@
+
+Usage example:   
+  ideasCS -m metadata.txt -o 4.chromIDEAS_IDEAS_output -a chromIDEAS -b 1.genomeWindows/windowsNoBlack.withid.bed -p 30
+
+# ------------ Input file format ------------ #
+1. -m metadata [metadata.txt]: separated by tab
+$ cat metadata.txt
+A   H3K36me3  rep1  /FULL/PATH/TO/test_data/A_H3K36me3_rep1_chr10.bw
+A   H3K36me3  rep2  /FULL/PATH/TO/test_data/A_H3K36me3_rep2_chr10.bw
+A   H3K9me3   rep1  /FULL/PATH/TO/test_data/A_H3K9me3_rep1_chr10.bw
+B   H3K36me3  rep1  /FULL/PATH/TO/test_data/B_H3K36me3_rep1_chr10.bw
+B   H3K36me3  rep2  /FULL/PATH/TO/test_data/B_H3K36me3_rep2_chr10.bw
+B   H3K9me3   rep1  /FULL/PATH/TO/test_data/B_H3K9me3_rep1_chr10.bw
+B   H3K9me3   rep2  /FULL/PATH/TO/test_data/B_H3K9me3_rep2_chr10.bw
+
+2. -b bed [1.genomeWindows/windowsNoBlack.withid.bed]: separated by tab
+$ cat 1.genomeWindows/windowsNoBlack.withid.bed
+chr10   45800   46000   1
+chr10   46000   46200   2
+chr10   46200   46400   3
+...
+

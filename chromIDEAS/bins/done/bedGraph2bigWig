@@ -1,0 +1,159 @@
+#!/bin/bash
+
+# Program: bedGraph2bigWig
+package_name="chromIDEAS"
+command="bedGraph2bigWig"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	nthreads=4
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvs:g:f:i:o:p:" opt
+	do
+		case $opt in
+			i) bedgraph=${OPTARG} ;;
+			o) outfile=${OPTARG} ;;
+			f) file_list=${OPTARG} ;;
+			s) species=${OPTARG} ;;
+			g) genomesizes=${OPTARG} ;;
+			p) nthreads=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# check the required parameters
+	if [[ -z ${species} && -z ${genomesizes} ]]; then
+		echo "Error: Required parameters missing. You must provide one of -g <genomesizes> or -s <species>."
+		exit 100
+	fi
+
+	# check the mode is not contradictory
+	if [[ -n ${file_list} && -n ${bedgraph} ]] || [[ -n ${file_list} && -n ${outfile} ]]; then
+		echo "Error: Please choose only one processing mode:"
+		echo -e "\tMultiple File Mode: -i <bedgraph> -o <outfile>"
+		echo -e "\tOR"
+		echo -e "\tSingle File Mode: -f <file_list>"
+		exit 100
+	fi
+
+	# species & genomesizes
+	if true; then
+		if [[ ${species} == "hg38" ]]; then
+			genomesizes=${genomesize_root}/hg38.chrom.1_22XY.sizes
+		elif [[ ${species} == "hg19" ]]; then
+			genomesizes=${genomesize_root}/hg19.chrom.1_22XY.sizes
+		elif [[ ${species} == "mm10" ]]; then
+			genomesizes=${genomesize_root}/mm10.chrom.1_19XY.sizes
+		elif [[ -z ${species} ]]; then
+			if [[ -z ${genomesizes} ]]; then
+				echo "Error: Please provide -s <species> OR specify your own genomesizes file (-g)."
+				exit 100
+			else
+				file_check ${genomesizes}
+				genomesizes=$(getFull_file ${genomesizes})
+				rm_empty ${genomesizes}
+			fi
+		else
+			echo -e "Error: The program can only auto-provide species: hg19, hg38 and mm10. Your provided species is not supported, you can specify your own genomesizes file (-g)."
+			exit 100
+		fi
+	fi
+
+	# check file: bedgraph & file_list
+	if true; then
+		# bedgraph
+		if [[ -n ${bedgraph} ]]; then
+			file_check ${bedgraph}
+			bedgraph=$(getFull_file ${bedgraph})
+			rm_empty ${bedgraph}
+		fi
+
+		# file_list
+		if [[ -n ${file_list} ]]; then
+			file_check ${file_list}
+			file_list=$(getFull_file ${file_list})
+			rm_empty ${file_list}
+			cat ${file_list} | while read i o
+			do
+				file_check ${i}
+				dir_check $(dirname ${o})
+			done
+		fi
+	fi
+
+	# check the directory: outfile
+	if [[ -n ${outfile} ]]; then
+		dir_check $(dirname ${outfile})
+	fi
+
+	# integer: nthreads
+	if true; then
+		# nthreads
+		dat_type=$(data_type ${nthreads})
+		if [[ ${dat_type} != "gt0_Integer" ]]; then
+			echo "The -p nthreads should be a positive integer greater than 0."
+			exit 100
+		fi
+	fi
+fi
+
+# bedGraph2bigWig
+if true; then
+	if [[ -n ${bedgraph} ]]; then
+		# single file mode
+
+		# bigwig to bedgraph
+		bash ${bin_root}/get_bw.sh ${genomesizes} "${bedgraph} ${outfile}"
+		check_status "${input} fail to convert to bigwig format, please check."
+	else
+		# multiple file mode
+
+		# bigwig to bedgraph
+		cat ${file_list} | xargs -n1 -i -P ${nthreads} bash ${bin_root}/get_bw.sh ${genomesizes} {}
+		check_status "${input} multiple file mode fail to convert to bigwig format, please check."
+
+		echo "All bedGraph files have been convert to bigWig."
+	fi
+fi
