@@ -76,7 +76,7 @@ chromIDEAS builds on:
 
 # 🏷 Logo Design
 
-<div style="float: right;" > <img src="README.assets/chromIDEAS_logo.jpg" alt="chromIDEAS_long_logo" style="zoom:50%;" align="right"/> </div>
+<div style="float: right;" > <img src="figures/chromIDEAS_logo.jpg" alt="chromIDEAS_long_logo" style="zoom:50%;" align="right"/> </div>
 
 - **The helical strand below the circle**: Represents a stylized nucleosome model using DNA double helix imagery, symbolizing the fundamental structural unit of chromatin states.
 - **The four interconnected dots above**: Depict molecular polymerization architecture while simultaneously conveying the conceptual duality of "cluster relationships" and "clustered state networks".
