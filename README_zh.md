@@ -1,4 +1,10 @@
-<img src="figures/chromIDEAS_long_logo.jpg" style="zoom: 50%;" />
+<div style="text-align: center;">
+    <img 
+        src="figures/chromIDEAS_long_logo.jpg" 
+        alt="chromIDEAS_long_logo" 
+        style="max-width: 100%; width: 9in; height: auto; display: inline-block;"
+    />
+</div>
 
 **Chromatin Informative Dynamic Epigenomic Annotation Suite**（简称**chromIDEAS**）是一款针对染色质状态分析的多功能软件包，支持**一键计算染色质状态、绘制染色质状态在基因组上信号分布以及根据功能对染色质状态进行无监督聚类分析**。
 
@@ -10,7 +16,13 @@
 
 鉴于表观遗传调控在癌症中的重要性，**传统癌症研究通常从鉴定差异表达基因入手，进而将这些变化与某些表观遗传信号相关联（例如H3K27me3或者H3K4me3）**。然而<strong style="color:red;">表观遗传调控本质上是一个高度复杂且相互关联的网络系统</strong>，孤立分析单个标记难以站在表观遗传学的<strong style="color:red;">整体角度</strong>来阐明疾病驱动机制。这一局限性在白血病等恶性肿瘤中尤为明显，其发病机制通常涉及全表观基因组的多种修饰信号失调而非单一修饰异常。而<strong style="color:red;">染色质状态（Chromatin States，CSs）被定义为多种不同表观遗传信号的复现性组合模式</strong>。如下图所示：
 
-<img src="figures/chromatin_state_definition.jpg" alt="chromatin state definition" style="zoom:40%;" />
+<div style="text-align: center;">
+    <img 
+        src="figures/chromatin_state_definition.jpg"
+        alt="chromatin_state_definition" 
+        style="max-width: 100%; width: 6in; height: auto; display: inline-block;"
+    />
+</div>
 
 > 一共绘制了2种细胞中3种不同表观信号的分布模式。其中有些区域总是只出现没有任何信号出现，这些区域的染色质状态定义为S0；有些区域则总是仅有Epi3信号，我们将其定义为S1；此外还有很多区域同时有3种信号同时出现，我们将其定义为S2。
 >
@@ -22,7 +34,13 @@
 
 在单细胞基因组学的分析中，通过将转录表达模式的细胞归类为功能相似的群体，细胞聚类分析既能增强细胞群之间的差异分辨率，又可降低细胞群内的噪声波动。受到该分析的启发，又基于<strong style="color:red;">染色质功能与其表观组成及基因组分布模式密切相关的特性</strong>，我们将单细胞算法中的聚类思想拓展到染色质状态分析，提出假设：<strong style="color:red;">同时具有相似表观信号组成 + 相似基因组分布模式的染色质状态功能相似</strong>。据此原理，我们开发了chromIDEAS，该计算框架通过整合（1）染色质状态的表观信号组成（来自Emission Table），决定各种染色质状态的定义；（2）染色质状态在基因组上分布模式，反映染色质状态的功能，对所有染色质状态进行无监督功能聚类。
 
-<img src="figures/graph_summary.jpg" alt="graph_summary" style="zoom:35%;" />
+<div style="text-align: center;">
+    <img 
+        src="figures/graph_summary.jpg"
+        alt="graph_summary" 
+        style="max-width: 100%; width: 11in; height: auto; display: inline-block;"
+    />
+</div>
 
 
 
@@ -47,14 +65,28 @@ chromIDEAS支持的功能如下：
 -  ✅   **（5）差异染色质状态基因鉴定：** 以染色质状态群为基本比较单元，对不同细胞进行差异鉴定，识别具有差异染色质状态群区域的基因。
 -  ✅   **（6）差异染色质区域分布：** 对识别到的差异染色质状态基因进行分布区域鉴定，分析差异区域出现的概率分布。
 
-<a href="https://chromideas.readthedocs.io" target="_blank"><img src="figures/chromIDEAS_usage.jpg" alt="chromIDEAS_usage" style="zoom:40%;" /></a>
+<div style="text-align: center;">
+    <a href="https://chromideas.readthedocs.io" target="_blank">
+    <img 
+        src="figures/chromIDEAS_usage.jpg"
+        alt="chromIDEAS_usage" 
+        style="max-width: 100%; width: 11in; height: auto; display: inline-block;"
+    />
+</div>
 
 
 拓展功能：
 
 ✅   **染色质状态空间衔接模式：** 根据染色质状态在基因组上的分布模式，计算从TSS到TES范围内，所有染色质状态的衔接顺序。
 
-<a href="https://chromideas.readthedocs.io" target="_blank"><img src="figures/monocle3_usage.jpg" alt="monocle3_usage" style="zoom:35%;" /></a>
+<div style="text-align: center;">
+    <a href="https://chromideas.readthedocs.io" target="_blank">
+    <img 
+        src="figures/monocle3_usage.jpg"
+        alt="monocle3_usage" 
+        style="max-width: 100%; width: 11in; height: auto; display: inline-block;"
+    />
+</div>
 
 > 具体算法原理及使用方法请阅读chromIDEAS教程：<https://chromideas.readthedocs.io>
 
@@ -72,7 +104,13 @@ chromIDEAS支持的功能如下：
 
 # 🏷 Logo含义
 
-<div style="float: right;" > <img src="figures/chromIDEAS_logo.jpg" alt="chromIDEAS_long_logo" style="zoom:50%;" align="right"/> </div>
+<div style="float: right;">
+    <img 
+        src="figures/chromIDEAS_logo.jpg"
+        alt="chromIDEAS_logo" 
+        style="max-width: 100%; width: 2in; height: auto; display: inline-block;"
+    />
+</div>
 
 - **圆圈中的主图案**是用DNA双螺旋代表简化版的核小体模型，表示染色质状态的基本结构。
 - **上方连接的四个圆点**：模拟分子聚合结构，同时也寓意“聚类关系”和“状态网络”。
@@ -746,12 +784,11 @@ starting worker pid=12013 on localhost:11944 at 15:56:57.848
 ############################################# Done #############################################
 ```
 
-<div style="display: inline-block;">
-    <img src="figures/tss.jpg" alt="tss" style="zoom: 18.5%;" />
+<div style="text-align: center; white-space: nowrap;">
+    <img src="figures/tss.jpg" alt="tss" style="max-width: 100%; width: 6in; height: auto; display: inline-block; margin: 0 10px;"/>
+    <img src="figures/body.jpg" alt="body" style="max-width: 100%; width: 6in; height: auto; display: inline-block; margin: 0 10px;"/>
 </div>
-<div style="display: inline-block;">
-    <img src="figures/body.jpg" alt="body" style="zoom: 18.5%;" />
-</div>
+
 
 
 
