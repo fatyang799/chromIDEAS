@@ -600,24 +600,14 @@ user    111m7.597s
 sys     10m7.581s
 ```
 
-> 作为比较，我们采用相同的参数，相同的数据，使用S3V2（https://github.com/guanjue/S3V2_IDEAS_ESMP）处理。由于S3V2中对于线程设置上最高只能为4，我们将其设置为最高线程。我们同样统计了运行时间：
->
-> ```shell
-> real    52m54.052s
-> user    129m33.996s
-> sys     13m47.043s
-> ```
->
-> 可以看到，经过优化后的chromIDEAS在运行数据标准化时，消耗的时间为11m41.485s，而原始S3V2处理相同数据时则消耗更多的时间52m54.052s。
->
 > For comparison, we processed the identical dataset with the same parameters using the S3V2 software (https://github.com/guanjue/S3V2_IDEAS_ESMP). Due to the maximum thread setting of 4 in S3V2, we set it to the maximum allowed (thread=4).
 >
 > We also recorded the runtime:
->
+> 
 > ```shell
 > real    52m54.052s
 > user    129m33.996s
-> sys     13m47.043s
+>sys     13m47.043s
 > ```
 >
 > It can be seen that the chromIDEAS consumes 11m41.485s of time when running data standardization, while the original S3V2 consumes 52m44.052s when processing the same data.
