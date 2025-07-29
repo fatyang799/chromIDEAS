@@ -1,10 +1,10 @@
-<div style="text-align: center;">
-    <img 
-        src="figures/chromIDEAS_long_logo.jpg" 
-        alt="chromIDEAS_long_logo" 
-        style="max-width: 100%; width: 9in; height: auto; display: inline-block;"
-    />
-</div>
+<p align="center">
+  <img
+    src="figures/chromIDEAS_long_logo.jpg"
+    alt="chromIDEAS_long_logo"
+    style="max-width: 100%; width: 9in; height: auto;"
+  />
+</p>
 
 **Chromatin Informative Dynamic Epigenomic Annotation Suite (chromIDEAS)** is a versatile software package for chromatin state analysis, supporting:
 
@@ -12,7 +12,7 @@
 - ✅ **Genome-wide signal distribution visualization**
 - ✅ **Unsupervised functional clustering of chromatin states**
 
-Language: [[English]](https://github.com/fatyang799/chromIDEAS/blob/main/README.md) [[中文]](https://github.com/fatyang799/chromIDEAS/blob/main/README_zh.md)
+Language: [[English]](https://github.com/fatyang799/chromIDEAS) [[中文]](https://github.com/fatyang799/chromIDEAS/blob/main/README_zh.md)
 
 # ♕ Biological Background
 
@@ -20,13 +20,14 @@ The eukaryotic genome is packaged into chromatin, whose functional states are dy
 
 Given the critical role of epigenetic regulation in cancer, **traditional approaches in cancer research often begin by identifying differentially expressed genes (DEGs) and subsequently correlating these changes with individual epigenetic signals**. However, epigenetic regulation operates as <strong style="color:red;">a highly complex and interconnected network</strong>, rendering isolated analyses of individual marks insufficient for elucidating disease-driving mechanisms. This limitation is particularly evident in malignancies like leukemia, where dysregulation typically involves combinatorial patterns across the epigenome rather than isolated modifications. <strong style="color:red;">Chromatin states (CSs), defined by recurrent co-occurrence patterns of epigenetic signals, offer a more holistic insight to address this challenge</strong>. As shown below: 
 
-<div style="text-align: center;">
-    <img 
-        src="figures/chromatin_state_definition.jpg"
-        alt="chromatin_state_definition" 
-        style="max-width: 100%; width: 6in; height: auto; display: inline-block;"
-    />
-</div>
+<p align="center">
+  <img
+    src="figures/chromatin_state_definition.jpg"
+    alt="chromatin_state_definition"
+    style="max-width: 100%; width: 6in; height: auto;"
+  />
+</p>
+
 
 > For example: the distribution patterns of three distinct epigenetic signals were mapped across two cell types. Genomic regions exhibiting no signals were classified as chromatin state S0, while regions showing only Epi3 signal were designated S1. Additionally, numerous regions displayed concurrent presence of all three signals, which we defined as state S2.
 >
@@ -38,13 +39,14 @@ Despite their utility, current CS analyses suffer from **three major limitations
 
 Recent advances in single-cell genomics present clustering as a compelling solution to these limitations. By grouping cells with similar transcriptomes into functionally coherent populations, <strong style="color:red;">clustering enhances the resolution of inter-population differences while reducing intra-population noise</strong>. We extended this framework to CSs, **based on the close relationship between CS function and both its epigenetic compositions and genomic distributions**. Specifically, we hypothesized that <strong style="color:red;">CSs sharing these molecular features would exhibit coherent functional properties</strong>. This principle prompted the development of chromIDEAS (Chromatin Informative Dynamic Epigenomic Annotation Suite), a computational framework that classifies CSs into functionally coherent clusters by integrating multi-dimensional features.
 
-<div style="text-align: center;">
-    <img 
-        src="figures/graph_summary.jpg"
-        alt="graph_summary" 
-        style="max-width: 100%; width: 11in; height: auto; display: inline-block;"
-    />
-</div>
+<p align="center">
+  <img
+    src="figures/graph_summary.jpg"
+    alt="graph_summary"
+    style="max-width: 100%; width: 11in; height: auto;"
+  />
+</p>
+
 
 
 
@@ -70,14 +72,15 @@ chromIDEAS builds on:
 -  ✅ **(6) Differential Chromatin State Cluster Gene Analysis:** Performs differential analysis between cell types using chromatin state clusters as functional units, identifying genes associated with divergent state regions.
 -  ✅ **(7) Differential Region Mapping:** Maps genomic locations of differentially regulated genes and quantifies the probability distribution of differential regions.
 
-<div style="text-align: center;">
-    <a href="https://chromideas.readthedocs.io" target="_blank">
-    <img 
-        src="figures/chromIDEAS_usage.jpg"
-        alt="chromIDEAS_usage" 
-        style="max-width: 100%; width: 11in; height: auto; display: inline-block;"
-    />
-</div>
+<p align="center">
+  <a href="https://chromideas.readthedocs.io" target="_blank">
+  <img
+    src="figures/chromIDEAS_usage.jpg"
+    alt="chromIDEAS_usage"
+    style="max-width: 100%; width: 11in; height: auto;"
+  />
+</p>
+
 
 
 
@@ -85,14 +88,15 @@ chromIDEAS builds on:
 
 ✅ **Chromatin State Pseudo Locaon Spatial Transition Analysis**: Sequential patterns of CSs from TSS to TES.
 
-<div style="text-align: center;">
-    <a href="https://chromideas.readthedocs.io" target="_blank">
-    <img 
-        src="figures/monocle3_usage.jpg"
-        alt="monocle3_usage" 
-        style="max-width: 100%; width: 11in; height: auto; display: inline-block;"
-    />
-</div>
+<p align="center">
+  <a href="https://chromideas.readthedocs.io" target="_blank">
+  <img
+    src="figures/monocle3_usage.jpg"
+    alt="monocle3_usage"
+    style="max-width: 100%; width: 11in; height: auto;"
+  />
+</p>
+
 
 > For details, see the chromIDEAS tutorial: <https://chromideas.readthedocs.io>
 
@@ -110,14 +114,14 @@ chromIDEAS builds on:
 
 # 🏷 Logo Design
 
-<div style="float: right;">
-    <img 
-        src="figures/chromIDEAS_logo.jpg"
-        alt="chromIDEAS_logo" 
-        style="max-width: 100%; width: 2in; height: auto; display: inline-block;"
-    />
-</div>
-
+<p>
+  <img
+    src="figures/chromIDEAS_logo.jpg"
+    alt="chromIDEAS_logo"
+    style="max-width: 100%; width: 1.2in; height: auto;"
+    align="right"
+  />
+</p>
 - **The helical strand below the circle**: Represents a stylized nucleosome model using DNA double helix imagery, symbolizing the fundamental structural unit of chromatin states.
 - **The four interconnected dots above**: Depict molecular polymerization architecture while simultaneously conveying the conceptual duality of "cluster relationships" and "clustered state networks".
 
@@ -790,10 +794,19 @@ starting worker pid=12013 on localhost:11944 at 15:56:57.848
 ############################################# Done #############################################
 ```
 
-<div style="text-align: center; white-space: nowrap;">
-    <img src="figures/tss.jpg" alt="tss" style="max-width: 100%; width: 6in; height: auto; display: inline-block; margin: 0 10px;"/>
-    <img src="figures/body.jpg" alt="body" style="max-width: 100%; width: 6in; height: auto; display: inline-block; margin: 0 10px;"/>
-</div>
+<p align="center">
+  <img
+    src="figures/tss.jpg"
+    alt="tss"
+    style="max-width: 100%; width: 5in; height: auto; display: inline-block;"
+  />
+  <img
+    src="figures/body.jpg"
+    alt="body"
+    style="max-width: 100%; width: 5in; height: auto; display: inline-block;"
+  />
+</p>
+
 
 
 
