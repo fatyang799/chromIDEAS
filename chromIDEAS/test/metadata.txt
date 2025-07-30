@@ -1,7 +1,0 @@
-A	H3K36me3	rep1	test_data/A_H3K36me3_rep1_chr10.bw
-A	H3K36me3	rep2	test_data/A_H3K36me3_rep2_chr10.bw
-A	H3K9me3	rep1	test_data/A_H3K9me3_rep1_chr10.bw
-B	H3K36me3	rep1	test_data/B_H3K36me3_rep1_chr10.bw
-B	H3K36me3	rep2	test_data/B_H3K36me3_rep2_chr10.bw
-B	H3K9me3	rep1	test_data/B_H3K9me3_rep1_chr10.bw
-B	H3K9me3	rep2	test_data/B_H3K9me3_rep2_chr10.bw

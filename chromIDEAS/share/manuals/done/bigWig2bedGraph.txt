@@ -46,5 +46,4 @@ Optional arguments:
                                 chr1  200 3000
                                 ...
 
-For more information visit: https://github.com/YenLab
-
+For more information visit: https://github.com/fatyang799/chromIDEAS

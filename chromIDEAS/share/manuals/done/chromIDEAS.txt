@@ -85,5 +85,4 @@ Optional arguments:
   -M <mcmc>                 The number of steps for maximization. Increasing the number will increase computing and only 
                             slightly increase accuracy. [Default: 5]
 
-For more information visit: https://github.com/YenLab/chromIDEAS
-
+For more information visit: https://github.com/fatyang799/chromIDEAS

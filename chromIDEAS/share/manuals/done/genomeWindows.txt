@@ -33,5 +33,4 @@ Optional arguments:
   -h                        Show help message and exit.
   -v                        Show version number and exit.
 
-For more information visit: https://github.com/YenLab
-
+For more information visit: https://github.com/fatyang799/chromIDEAS
