@@ -10,7 +10,7 @@ source:
 
 build:
   number: 0
-  script: build.sh
+  skip: True  # [not linux]
 
 requirements:
   run:
@@ -24,7 +24,7 @@ requirements:
     - r-r.utils >2.5.1
     - r-foreach >1.4.0
     - r-doparallel >1.0.0
-    - r-ggplot >=3.4
+    - r-ggplot2 >=3.4.1
     - bioconductor-genomicranges >=1.50.0
     - r-seurat >4.3.0
 
