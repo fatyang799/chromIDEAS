@@ -7,21 +7,23 @@ package_name="chromIDEAS"
 set -e
 set -o pipefail
 
-# cp additional scripts file to ${CONDA_PREFIX}/share
-# bin:			${CONDA_PREFIX}/share/${package_name}/bin
-# blacklist:	${CONDA_PREFIX}/share/${package_name}/blacklist
-# genomesize:	${CONDA_PREFIX}/share/${package_name}/genomesize
-# gsl:			${CONDA_PREFIX}/share/${package_name}/gsl
-# manuals:		${CONDA_PREFIX}/share/${package_name}/manuals
-mkdir -p ${CONDA_PREFIX}/share/${package_name}
-mkdir -p ${CONDA_PREFIX}/bin/
+# cp additional scripts file to ${PREFIX}/share
+# bin:			${PREFIX}/share/${package_name}/bin
+# blacklist:	${PREFIX}/share/${package_name}/blacklist
+# genomesize:	${PREFIX}/share/${package_name}/genomesize
+# gsl:			${PREFIX}/share/${package_name}/gsl
+# manuals:		${PREFIX}/share/${package_name}/manuals
+mkdir -p ${PREFIX}/share/${package_name}
+if [[ ! -d ${PREFIX}/bin ]]; then
+	mkdir -p ${PREFIX}/bin/
+fi
 
-cp -rf ${SRC_DIR}/share/bin ${CONDA_PREFIX}/share/${package_name}
-cp -rf ${SRC_DIR}/share/blacklist ${CONDA_PREFIX}/share/${package_name}
-cp -rf ${SRC_DIR}/share/genomesize ${CONDA_PREFIX}/share/${package_name}
-cp -rf ${SRC_DIR}/share/manuals ${CONDA_PREFIX}/share/${package_name}
-cp -rf ${SRC_DIR}/share/gsl ${CONDA_PREFIX}/share/${package_name}
-tar xf ${CONDA_PREFIX}/share/${package_name}/gsl/gsl_221.tar.gz -C ${CONDA_PREFIX}/share/${package_name}/gsl/
-rm -rf ${CONDA_PREFIX}/share/${package_name}/gsl/gsl_221.tar.gz
+cp -rf ${SRC_DIR}/share/bin ${PREFIX}/share/${package_name}
+cp -rf ${SRC_DIR}/share/blacklist ${PREFIX}/share/${package_name}
+cp -rf ${SRC_DIR}/share/genomesize ${PREFIX}/share/${package_name}
+cp -rf ${SRC_DIR}/share/manuals ${PREFIX}/share/${package_name}
+cp -rf ${SRC_DIR}/share/gsl ${PREFIX}/share/${package_name}
+tar xf ${PREFIX}/share/${package_name}/gsl/gsl_221.tar.gz -C ${PREFIX}/share/${package_name}/gsl/
+rm -rf ${PREFIX}/share/${package_name}/gsl/gsl_221.tar.gz
 
-cp -rf ${SRC_DIR}/bins/* ${CONDA_PREFIX}/bin/
+cp -rf ${SRC_DIR}/bins/* ${PREFIX}/bin/
