@@ -33,5 +33,5 @@ test:
 about:
   home: https://github.com/fatyang799/chromIDEAS
   license: MIT
+  license_file: LICENSE
   summary: "Chromatin Informative Dynamic Epigenomic Annotation Suite (chromIDEAS): an ultra-fast all-in-one Chromatin State Analyzer"
-
