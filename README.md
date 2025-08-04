@@ -48,8 +48,6 @@ Recent advances in single-cell genomics present clustering as a compelling solut
 </p>
 
 
-
-
 ## 🔗 Computational Foundations
 
 chromIDEAS builds on:
@@ -68,9 +66,9 @@ chromIDEAS builds on:
 -  ✅ **(2) Chromatin State Distribution Visualization:** Visualizes chromatin state patterns across specified genomic regions or predefined gene sets.
 -  ✅ **(3) Chromatin State Functional Clustering:** Applies Weighted Nearest Neighbor (WNN) algorithm to cluster chromatin states based on both genomic distribution patterns and epigenetic signal composition.
 -  ✅ **(4) Chromatin State Cluster Annotation:** Identifies distinctive epigenetic signatures for each chromatin state cluster.
--  ✅ **(5) Chromatin State Similarity Assessment:** Evaluate the similarity of chromatin status among different cells across genome.
--  ✅ **(6) Differential Chromatin State Cluster Gene Analysis:** Performs differential analysis between cell types using chromatin state clusters as functional units, identifying genes associated with divergent state regions.
--  ✅ **(7) Differential Region Mapping:** Maps genomic locations of differentially regulated genes and quantifies the probability distribution of differential regions.
+-  ✅ **(5) Differential Chromatin State Cluster Gene Analysis:** Performs differential analysis between cell types using chromatin state clusters as functional units, identifying genes associated with divergent state regions.
+-  ✅ **(6) Differential Region Mapping:** Maps genomic locations of differentially regulated genes and quantifies the probability distribution of differential regions.
+-  ✅ **(7) Chromatin State Similarity Assessment:** Evaluate the similarity of chromatin status among different cells across genome.
 
 <p align="center">
   <a href="https://chromideas.readthedocs.io" target="_blank">
@@ -80,8 +78,6 @@ chromIDEAS builds on:
     style="max-width: 100%; width: 11in; height: auto;"
   />
 </p>
-
-
 
 
 ### Extended Features:
@@ -96,8 +92,6 @@ chromIDEAS builds on:
     style="max-width: 100%; width: 11in; height: auto;"
   />
 </p>
-
-
 > For details, see the chromIDEAS tutorial: <https://chromideas.readthedocs.io>
 
 
@@ -807,8 +801,6 @@ starting worker pid=12013 on localhost:11944 at 15:56:57.848
     style="max-width: 100%; width: 5in; height: auto; display: inline-block;"
   />
 </p>
-
-
 
 
 ### 3.3 Chromatin State Similarity Assessment

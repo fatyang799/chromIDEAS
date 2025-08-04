@@ -44,8 +44,6 @@
 </p>
 
 
-
-
 ## 🔗 软件设计基础
 
 chromIDEAS的实施奠基于一些已有工具，包括：
@@ -66,6 +64,7 @@ chromIDEAS支持的功能如下：
 -  ✅   **（4）染色质状态群功能鉴定：** 根据染色质状态的分群结果，对得到的染色质状态群进行表观信号特征的鉴定。
 -  ✅   **（5）差异染色质状态基因鉴定：** 以染色质状态群为基本比较单元，对不同细胞进行差异鉴定，识别具有差异染色质状态群区域的基因。
 -  ✅   **（6）差异染色质区域分布：** 对识别到的差异染色质状态基因进行分布区域鉴定，分析差异区域出现的概率分布。
+-  ✅   **（7）染色质状态相似性评估：** 对不同细胞间的染色质状态进行相似性评估。
 
 <p align="center">
   <a href="https://chromideas.readthedocs.io" target="_blank">
@@ -75,8 +74,6 @@ chromIDEAS支持的功能如下：
     style="max-width: 100%; width: 11in; height: auto;"
   />
 </p>
-
-
 
 拓展功能：
 
@@ -90,8 +87,6 @@ chromIDEAS支持的功能如下：
     style="max-width: 100%; width: 11in; height: auto;"
   />
 </p>
-
-
 > 具体算法原理及使用方法请阅读chromIDEAS教程：<https://chromideas.readthedocs.io>
 
 
@@ -116,14 +111,8 @@ chromIDEAS支持的功能如下：
     align="right"
   />
 </p>
-
-
 - **圆圈中的主图案**是用DNA双螺旋代表简化版的核小体模型，表示染色质状态的基本结构。
 - **上方连接的四个圆点**：模拟分子聚合结构，同时也寓意“聚类关系”和“状态网络”。
-
-
-
-
 
 
 
@@ -802,8 +791,6 @@ starting worker pid=12013 on localhost:11944 at 15:56:57.848
     style="max-width: 100%; width: 5in; height: auto; display: inline-block;"
   />
 </p>
-
-
 
 
 ### 3.3 染色质状态相似性评估
