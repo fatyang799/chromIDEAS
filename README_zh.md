@@ -134,7 +134,7 @@ chromIDEAS支持的功能如下：
 chromIDEAS软件已经上架 conda 平台，可以通过 conda 进行一键安装：
 
 ```bash
-conda install chromideas
+conda install fatyang::chromideas
 ```
 
 

@@ -135,7 +135,7 @@ chromIDEAS builds on:
 The chromIDEAS has been upon on the conda platform, allowing for one-click installation via conda:
 
 ```bash
-conda install chromideas
+conda install fatyang::chromideas
 ```
 
 
