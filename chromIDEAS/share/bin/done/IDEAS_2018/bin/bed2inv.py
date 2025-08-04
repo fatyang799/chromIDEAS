@@ -68,12 +68,12 @@ def main(argv):
 	try:
 		opts, args = getopt.getopt(argv,"hi:o:")
 	except getopt.GetoptError:
-		print 'time python3 bed2inv.py -i input.bed -o output.inv'
+		print('time python3 bed2inv.py -i input.bed -o output.inv')
 		sys.exit(2)
 
 	for opt,arg in opts:
 		if opt=="-h":
-			print 'time python3 bed2inv.py -i input.bed -o output.inv'
+			print('time python3 bed2inv.py -i input.bed -o output.inv')
 			sys.exit()
 		elif opt=="-i":
 			input_bed=str(arg.strip())
