@@ -20,7 +20,7 @@ Required arguments:
                                 293T H3K27ac  rep1  /PATH/TO/H3K27ac_rep1.bw
                                 ...
   -s <species>              Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the 
-                            corresponding  genomesizes file and blacklist file. If your species is not listed, manually 
+                            corresponding genomesizes file and blacklist file. If your species is not listed, manually 
                             provide these files via -g <genome_sizes> -n <windows_name> [-B <blackList>]. [Default: None]
   -g <genomesizes>          Required if -s is unspecified. Path to a genomesizes file (tab-delimited) listing chromosome 
                             lengths [Default: None]. Example:

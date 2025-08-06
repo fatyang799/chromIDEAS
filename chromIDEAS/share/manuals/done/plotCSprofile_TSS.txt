@@ -21,7 +21,7 @@ Required arguments:
                                 3 chr1 793000 793200 0 0
                                 4 chr1 793200 793400 0 0
   -o <output_figure>        File name to save the image. The file ending will be used to determine the image format. 
-                            The available options are: “png”, “jpg, “pdf” and “svg”, e.g., MyHeatmap.png. [Default: None]
+                            The available options are: "png", "jpg", "pdf" and "svg", e.g., CSprofile.png. [Default: None]
   -r <regionFile>           File name or names, in BED or GTF format, containing the regions to plot. The GTF format is 
                             recommended. To ensure result accuracy, for BED format inputs, it is required to include strand 
                             information in column 4. If the strand is uncertain, use '*' to represent it [Default: None].
@@ -43,7 +43,7 @@ Optional arguments:
   -u <up_num>               Number of bins covering the upstream region of the transcription start site. [Default: 5]
   -d <down_num>             Number of bins covering the downstream region of the transcription end site. [Default: 5]
   -l <refPointLabel>        [only for TSS mode] Label shown in the plot for the TSS. Default is the TSS, but could be 
-                            anything, e.g. “peak start”.
+                            anything, e.g. "peak start".
   -z <scale_type>           Mode for calculating chromatin state proportions. Possible choices: "genomic" and "state". 
                             "genomic" will compute the local proportion of each chromatin state at every site. 
                             (Example: For Site 1 with 100 "S1" out of 1,000 total values → "S1" = 100/1,000 = 10%); 

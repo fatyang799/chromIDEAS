@@ -21,7 +21,7 @@ Required arguments:
                                 3 chr1 793000 793200 0 0
                                 4 chr1 793200 793400 0 0
   -o <output_figure>        File name to save the image. The file ending will be used to determine the image format. 
-                            The available options are: “png”, “jpg, “pdf” and “svg”, e.g., MyHeatmap.png. [Default: None]
+                            The available options are: "png", "jpg", "pdf" and "svg", e.g., CSprofile.png. [Default: None]
   -r <regionFile>           File name or names, in BED or GTF format, containing the regions to plot. The GTF format is 
                             recommended. To ensure result accuracy, for BED format inputs, it is required to include strand 
                             information in column 4. If the strand is uncertain, use '*' to represent it [Default: None].
