@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; Try Sphinx V1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c4e650ba" />
+
+  
+      <script src="../../_static/documentation_options.js?v=d43430bd"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Try Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../list_of_tools.html">The tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Try Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/content/tools/11.s3v2Norm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <dl class="simple">
+<dt>Description:</dt><dd><p>s3v2Norm is a tool to Simultaneously normalize the Signal in peak regions and the Signal in background regions of</p>
+</dd>
+</dl>
+<p>epigenomic data sets. Detail algorithms can be viewed: <a class="reference external" href="https://doi.org/10.1093/nar/gkaa105">https://doi.org/10.1093/nar/gkaa105</a></p>
+<dl class="simple">
+<dt>Usage:   s3v2Norm [options] -o &lt;output&gt; -m &lt;metadata&gt; -n &lt;windows_name&gt; [-b &lt;bin_size&gt;]</dt><dd><p>or:   s3v2Norm [options] -o &lt;output&gt; -m &lt;metadata&gt; -b &lt;bin_size&gt; -s &lt;species&gt; [-n &lt;windows_name&gt;]
+or:   s3v2Norm [options] -o &lt;output&gt; -m &lt;metadata&gt; -b &lt;bin_size&gt; -g &lt;genomesizes&gt; -n &lt;windows_name&gt; [-B &lt;blackList&gt;]</p>
+</dd>
+</dl>
+<p>Version: 1.0</p>
+<dl class="simple">
+<dt>Required arguments:</dt><dd><p>Option                    Description</p>
+</dd>
+</dl>
+<blockquote>
+<div><dl class="option-list">
+<dt><kbd><span class="option">-m <var>&lt;metadata&gt;</var></span></kbd></dt>
+<dd><p>Path to a metadata file (tab-delimited) for normalization, containing the Cell, Marker, ID,
+Exp_bigwig file, and CT_bigwig (optional) file info [Default: None]. Example:</p>
+<blockquote>
+<div><p>293T H3K4me3  rep1  /PATH/TO/H3K4me3_rep1.bw   /PATH/TO/H3K4me3_rep1_CT.bw
+293T H3K27ac  rep1  /PATH/TO/H3K27ac_rep1.bw
+…</p>
+</div></blockquote>
+</dd>
+<dt><kbd><span class="option">-s <var>&lt;species&gt;</var></span></kbd></dt>
+<dd><p>Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the
+corresponding  genomesizes file and blacklist file. If your species is not listed, manually
+provide these files via -g &lt;genome_sizes&gt; -n &lt;windows_name&gt; [-B &lt;blackList&gt;]. [Default: None]</p>
+</dd>
+<dt><kbd><span class="option">-g <var>&lt;genomesizes&gt;</var></span></kbd></dt>
+<dd><p>Required if -s is unspecified. Path to a genomesizes file (tab-delimited) listing chromosome
+lengths [Default: None]. Example:</p>
+<blockquote>
+<div><p>chr1  249250621
+…</p>
+</div></blockquote>
+</dd>
+<dt><kbd><span class="option">-n <var>&lt;windows_name&gt;</var></span></kbd></dt>
+<dd><p>Required if -s is unspecified. A unique name to identify the generated window bins for
+downstream processing. [Default: None]</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Optional arguments:</dt><dd><p>Option                    Description</p>
+</dd>
+</dl>
+<blockquote>
+<div><dl class="option-list">
+<dt><kbd><span class="option">-d <var>&lt;id_name&gt;</var></span></kbd></dt>
+<dd><p>Project name. [Default: chromIDEAS]
+The output results will be placed into:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>${out_dir}/${id_name}_bws_RC/: normalized signal files.</p></li>
+<li><dl class="simple">
+<dt>${out_dir}/${id_name}_bws_NBP/: used for downstream chromatin state segmentation</dt><dd><p>analysis.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</dd>
+<dt><kbd><span class="option">-B <var>&lt;blackList&gt;</var></span></kbd></dt>
+<dd><p>Path to the blacklist file (tab-delimited). If -s is set to hg38/hg19/mm10, the default
+blacklist is used [Default: None]. Example:</p>
+<blockquote>
+<div><p>chr1  200 3000
+…</p>
+</div></blockquote>
+</dd>
+<dt><kbd><span class="option">-p <var>&lt;nthreads&gt;</var></span></kbd></dt>
+<dd><p>Number of parallel processes. [Default: 4]</p>
+</dd>
+<dt><kbd><span class="option">-l <var>&lt;local_bg_bin&gt;</var></span></kbd></dt>
+<dd><p>Local background bin number. If set local_bg_bin=5, this means when the target bin is bin10,
+the surrounding background bins are bin5-9 and bin11-15 [Default: 5]</p>
+</dd>
+<dt><kbd><span class="option">-h</span></kbd></dt>
+<dd><p>Show this help message and exit.</p>
+</dd>
+<dt><kbd><span class="option">-v</span></kbd></dt>
+<dd><p>Show program’s version number and exit.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>For more information visit: <a class="reference external" href="https://github.com/fatyang799/chromIDEAS">https://github.com/fatyang799/chromIDEAS</a></p>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, fatyang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

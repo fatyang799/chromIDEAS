@@ -1,0 +1,76 @@
+s3v2Norm
+========
+
+s3v2Norm is a tool to Simultaneously normalize the Signal in peak regions and the Signal in background regions of 
+epigenomic data sets. Detail algorithms can be viewed: https://doi.org/10.1093/nar/gkaa105
+
+.. code-block:: sh
+
+    Usage: s3v2Norm [options] -o <output> -m <metadata> -n <windows_name> [-b <bin_size>]
+           s3v2Norm [options] -o <output> -m <metadata> -b <bin_size> -s <species> [-n <windows_name>]
+           s3v2Norm [options] -o <output> -m <metadata> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]
+
+Content
+=======
+
+.. contents:: 
+    :local:
+
+Required arguments
+^^^^^^^^^^^^^^^^^^
+
+
+``-b <bin_size>``
+  Bin size (in base pairs). **[Default: 200]**
+
+``-o <output>``
+  Output directory path. **[Default: ./]**
+
+``-m <metadata>``
+  Path to a metadata file (tab-delimited) for normalization, containing the Cell, Marker, ID, Exp_bigwig file, and CT_bigwig (optional) file info **[Default: None]**. Example::
+
+    293T H3K4me3  rep1  /PATH/TO/H3K4me3_rep1.bw   /PATH/TO/H3K4me3_rep1_CT.bw
+    293T H3K27ac  rep1  /PATH/TO/H3K27ac_rep1.bw
+    ...
+
+``-s <species>``
+  Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the corresponding  genomesizes file and blacklist file. If your species is not listed, manually provide these files via ``-g <genome_sizes> -n <windows_name> [-B <blackList>]``. **[Default: None]**
+
+``-g <genomesizes>``
+  Required if ``-s`` is unspecified. Path to a genomesizes file (tab-delimited) listing chromosome lengths **[Default: None]**. Example::
+
+    chr1  249250621
+    ...
+
+``-n <windows_name>``
+  Required if ``-s`` is unspecified. A unique name to identify the generated window bins for downstream processing. **[Default: None]**
+
+Optional arguments
+^^^^^^^^^^^^^^^^^^
+
+``-c``
+  Continue running a partially finished normalization process. Use this option to resume a normalization process interrupted by an error. **[Default: false]**
+
+``-d <id_name>``
+  Project name **[Default: chromIDEAS]**. The output results will be placed into:
+
+  - ${out_dir}/${id_name}_bws_RC/: normalized signal files.
+  - ${out_dir}/${id_name}_bws_NBP/: used for downstream chromatin state segmentation analysis.
+
+``-B <blackList>``
+  Path to the blacklist file (tab-delimited). If ``-s`` is set to hg38/hg19/mm10, the default blacklist is used **[Default: None]**. Example::
+
+    chr1  200 3000
+    ...
+
+``-p <nthreads>``
+  Number of parallel processes. **[Default: 4]**
+
+``-l <local_bg_bin>``
+  Local background bin number. If set local_bg_bin=5, this means when the target bin is bin10, the surrounding background bins are bin5-9 and bin11-15. **[Default: 5]**
+
+``-h``
+  Show this help message and exit.
+
+``-v``
+  Show program's version number and exit.

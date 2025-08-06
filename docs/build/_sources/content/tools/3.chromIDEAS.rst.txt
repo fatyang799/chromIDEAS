@@ -1,0 +1,81 @@
+chromIDEAS
+==========
+
+DESCRIPTION:
+    chromIDEAS is a suite of tools particularly developed for the efficient analysis of chromatin states. You can use 
+chromIDEAS to do s3v2 normalization and chromatin state segmentation all at once, or you can finish these analysis one 
+by one, using the specific subcommands.
+
+Usage:   chromIDEAS [options] -m <metadata> -o <output> -n <windows_name> [-b <bin_size>]
+   or:   chromIDEAS [options] -m <metadata> -o <output> -b <bin_size> -s <species> [-n <windows_name>]
+   or:   chromIDEAS [options] -m <metadata> -o <output> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]
+
+Version: 1.0
+
+Required arguments:
+  Option                    Description
+-----------------------------------------------------------------------------------------------------------------------
+  -b <bin_size>             Bin size (in base pairs). [Default: 200]
+  -o <output>               Output directory path. [Default: ./]
+  -m <metadata>             Path to a metadata file (tab-delimited), containing the Cell, Marker, ID, Exp_bigwig file, 
+                            and CT_bigwig (optional) file info [Default: None]. Example:
+                                293T H3K4me3  rep1  /PATH/TO/H3K4me3_rep1.bw   /PATH/TO/H3K4me3_rep1_CT.bw
+                                293T H3K27ac  rep1  /PATH/TO/H3K27ac_rep1.bw
+                                ...
+  -s <species>              Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the 
+                            corresponding  genomesizes file and blacklist file. If your species is not listed, manually 
+                            provide these files via -g <genome_sizes> -n <windows_name> [-B <blackList>]. [Default: None]
+  -g <genomesizes>          Required if -s is unspecified. Path to a genomesizes file (tab-delimited) listing chromosome 
+                            lengths [Default: None]. Example:
+                                chr1  249250621
+                                ...
+  -n <windows_name>         Required if -s is unspecified. A unique name to identify the generated window bins for 
+                            downstream processing. [Default: None]
+
+  Option                    Description
+-----------------------------------------------------------------------------------------------------------------------
+Optional arguments:
+  -c                        Continue running a partially finished process. Use this option to resume a process interrupted 
+                            by an error. [Default: false]
+  -d <id_name>              Project name. [Default: chromIDEAS]
+  -B <blackList>            Path to the blacklist file (tab-delimited). If -s is set to hg38/hg19/mm10, the default 
+                            blacklist is used [Default: None]. Example:
+                                chr1  200 3000
+                                ...
+  -p <nthreads>             Number of parallel processes. [Default: 4]
+  -z                        Compress output files in gzip format. [Default: false]
+  -h                        Show this help message and exit.
+  -v                        Show program's version number and exit.
+  
+======================== [[ Normalization Parameters ]] ========================
+  -l <local_bg_bin>         Local background bin number. If set local_bg_bin=5, this means when the target bin is bin10, 
+                            the surrounding background bins are bin5-9 and bin11-15 [Default: 5]
+                          
+================= [[ Chromatin States Assignment Parameters ]] =================
+  -f <otherpara>            This allows you to use .para file from previous run as priors for the Gaussian distribution 
+                            parameters in the current job (Example: -f ${out_dir}/${prefix}.para). However, currently 
+                            we assume that the set of marks and their orders in input are the same between previous and 
+                            current data. [Default: None]
+  -I <impute>               Imputation for missing marker data. You can set it as "None" or "All" or the markers you 
+                            want to impute. All markers to be imputed are separated by commas (e.g. "H3K4me3,H3K9me3"). 
+                            [Default: None]
+  -t <train>                The number of random starts used to select the state, which determines the number of times 
+                            to pre-train the HMM model. The higher the value, the more stable the model is, but at the 
+                            same time the computation consumes more time. [Default: 100]
+  -S <trainsz>              The bin number used to pre-train model. The higher the value, the more stable the model is, 
+                            but at the same time the computation consumes more time. CAUTION: <trainsz> must be less 
+                            than row number of signal file specified in <metadata>. If <trainsz> exceeds file row count, 
+                            it will be set to 60% of row count. [Default: 500000]
+  -C <num>                  Specify number of states at the initialization stage. We recommend setting the initial number 
+                            of states slightly larger than the number of states you expect or are willing to handle. 
+                            [Default: 100]
+  -G <num>                  Specify the number of states to be inferred. The final number of inferred states may be smaller 
+                            than the number you specified. 0: let program determine. [Default: 0]
+  -e <minerr>               Specify the minimum standard deviation for the emission Gaussian distribution, usually between 
+                            (0,1]. [Default: 0.5]
+  -N <burnin>               The number of burnins. Increasing the number will increase computing and only slightly increase 
+                            accuracy. [Default: 20]
+  -M <mcmc>                 The number of steps for maximization. Increasing the number will increase computing and only 
+                            slightly increase accuracy. [Default: 5]
+
+For more information visit: https://github.com/fatyang799/chromIDEAS

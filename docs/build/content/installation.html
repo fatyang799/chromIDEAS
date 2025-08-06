@@ -1,0 +1,147 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; Try Sphinx V1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c4e650ba" />
+
+  
+      <script src="../_static/documentation_options.js?v=d43430bd"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The tools" href="list_of_tools.html" />
+    <link rel="prev" title="chromIDEAS: Chromatin Informative Dynamic Epigenomic Annotation Suite" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Try Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-installation-using-conda">Command line installation using <code class="docutils literal notranslate"><span class="pre">conda</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-installation-using-source-code">Command line installation using source code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="list_of_tools.html">The tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage.html">Usage Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Try Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/content/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#command-line-installation-using-conda" id="id1">Command line installation using <code class="docutils literal notranslate"><span class="pre">conda</span></code></a></p></li>
+<li><p><a class="reference internal" href="#command-line-installation-using-source-code" id="id2">Command line installation using source code</a></p></li>
+</ul>
+</nav>
+<section id="command-line-installation-using-conda">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Command line installation using <code class="docutils literal notranslate"><span class="pre">conda</span></code></a><a class="headerlink" href="#command-line-installation-using-conda" title="Link to this heading">¶</a></h2>
+<p>The recommended way to install chromIDEAS (including its requirements) is via <a class="reference external" href="https://www.anaconda.com/docs/getting-started/miniconda/main">miniconda</a> or <a class="reference external" href="https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html/">micromamba</a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>conda<span class="w"> </span>install<span class="w"> </span>fatyang::chromideas
+</pre></div>
+</div>
+</section>
+<section id="command-line-installation-using-source-code">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Command line installation using source code</a><a class="headerlink" href="#command-line-installation-using-source-code" title="Link to this heading">¶</a></h2>
+<p>chromIDEAS can also be installed step by step.</p>
+<ol class="arabic simple">
+<li><p>Download the software package source code file from GitHub:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>wget<span class="w"> </span>-c<span class="w"> </span>https://github.com/fatyang799/chromIDEAS/releases/download/v1.0-0/chromideas-1.0-0.tar.gz
+$<span class="w"> </span>tar<span class="w"> </span>xzf<span class="w"> </span>chromideas-1.0-0.tar.gz
+$<span class="w"> </span>cp<span class="w"> </span>-r<span class="w"> </span>chromIDEAS<span class="w"> </span>/PATH/TO/TARGET/
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Configure system settings:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># replace the &#39;/PATH/TO/TARGET/&#39; with your actual target path</span>
+$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;export CONDA_PREFIX=&#39;/PATH/TO/TARGET/&#39;&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.bashrc
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="chromIDEAS: Chromatin Informative Dynamic Epigenomic Annotation Suite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="list_of_tools.html" class="btn btn-neutral float-right" title="The tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, fatyang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

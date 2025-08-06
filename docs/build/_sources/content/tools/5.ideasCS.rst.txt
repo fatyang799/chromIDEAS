@@ -1,0 +1,57 @@
+
+Description:
+    ideasCS is a Integrative and Discriminative Epigenome Annotation System tool. It learns chromatin state 
+models from the normalized epigenomic signals simultaneously along the genome and across cell types to improve 
+consistency of state assignments across different cell types. Detail algorithms can be viewed: 
+https://doi.org/10.1093/nar/gkw278
+
+Usage:   ideasCS [options] ...
+Version: 1.0
+
+Required arguments:
+  Option                    Description
+-----------------------------------------------------------------------------------------------------------------------
+  -m <metadata>             Path to a metadata file (space-delimited) for CS segmentation, containing the Cell, Marker, 
+                            Signal file info [Default: None]. Example:
+                                cell1 H3K4me3 file1.bedgraph
+                                cell2 H3K4me3 file2.bedgraph
+                                cell1 H3K9me3 file3.bedgraph
+                                cell2 H3K9me3 file4.bedgraph
+                                ...
+  -o <out_dir>              Output directory. [Default: ./]
+  -d <id_name>              Output filename prefix. [Default: chromIDEAS]
+
+Optional arguments:
+  Option                    Description
+-----------------------------------------------------------------------------------------------------------------------
+  -f <otherpara>            This allows you to use .para file from previous run as priors for the Gaussian distribution 
+                            parameters in the current job (Example: -f ${out_dir}/${prefix}.para). However, currently 
+                            we assume that the set of marks and their orders in input are the same between previous and 
+                            current data. [Default: None]
+  -p <nthreads>             Number of parallel processes. [Default: 4]
+  -I <impute>               Imputation for missing marker data. You can set it as "None" or "All" or the markers you 
+                            want to impute. All markers to be imputed are separated by commas (e.g. "H3K4me3,H3K9me3"). 
+                            [Default: None]
+  -t <train>                The number of random starts used to select the state, which determines the number of times 
+                            to pre-train the HMM model. The higher the value, the more stable the model is, but at the 
+                            same time the computation consumes more time. [Default: 100]
+  -s <trainsz>              The bin number used to pre-train model. The higher the value, the more stable the model is, 
+                            but at the same time the computation consumes more time. CAUTION: <trainsz> must be less 
+                            than row number of signal file specified in <metadata>. If <trainsz> exceeds file row count, 
+                            it will be set to 60% of row count. [Default: 500000]
+  -C <num>                  Specify number of states at the initialization stage. We recommend setting the initial number 
+                            of states slightly larger than the number of states you expect or are willing to handle. 
+                            [Default: 100]
+  -G <num>                  Specify the number of states to be inferred. The final number of inferred states may be smaller 
+                            than the number you specified. 0: let program determine. [Default: 0]
+  -e <minerr>               Specify the minimum standard deviation for the emission Gaussian distribution, usually between 
+                            (0,1]. [Default: 0.5]
+  -B <burnin>               The number of burnins. Increasing the number will increase computing and only slightly increase 
+                            accuracy. [Default: 20]
+  -M <mcmc>                 The number of steps for maximization. Increasing the number will increase computing and only 
+                            slightly increase accuracy. [Default: 5]
+  -z                        Compress output files in gzip format. [Default: false]
+  -h                        Show this help message and exit.
+  -v                        Show program's version number and exit.
+
+For more information visit: https://github.com/fatyang799/chromIDEAS

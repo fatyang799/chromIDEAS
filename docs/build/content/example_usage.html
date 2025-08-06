@@ -1,0 +1,803 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage Manual &mdash; Try Sphinx V1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c4e650ba" />
+
+  
+      <script src="../_static/documentation_options.js?v=d43430bd"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="About" href="about.html" />
+    <link rel="prev" title="The tools" href="list_of_tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Try Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="list_of_tools.html">The tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#content">Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">1. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-data">2. Test Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-chromideas">3. Running chromIDEAS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#input-preparation">3.1 Input Preparation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#metadata-txt">3.1.1 metadata.txt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#genome-length">3.1.2 Genome Length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#blacklist-optional">3.1.3 Blacklist (optional)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-management">3.1.4 File management</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chromatin-state-segmentation">3.2 Chromatin State Segmentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#one-command-execution">3.2.1 One-command execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-by-step">3.2.2 Step-by-step</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chromatin-state-distribution-visualization">3.2 Chromatin State Distribution Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#chromatin-state-similarity-assessment">3.3 Chromatin State Similarity Assessment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Try Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage Manual</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/content/example_usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage-manual">
+<h1>Usage Manual<a class="headerlink" href="#usage-manual" title="Link to this heading">¶</a></h1>
+<section id="content">
+<h2>Content<a class="headerlink" href="#content" title="Link to this heading">¶</a></h2>
+</section>
+<section id="installation">
+<h2>1. Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p>The chromIDEAS has been upon on the conda platform, allowing for one-click installation via conda:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>fatyang::chromideas
+</pre></div>
+</div>
+</section>
+<section id="test-data">
+<h2>2. Test Data<a class="headerlink" href="#test-data" title="Link to this heading">¶</a></h2>
+<p>We provide various epigenetic signal data from human umbilical cord blood HSPC cells (CD34+) and human leukemia cell line (THP1). For the convenience of calculation, we only use the data on <strong>chr1</strong>.</p>
+<p>The test data can be downloaded through the following link:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>wget<span class="w"> </span>-U<span class="w"> </span><span class="s2">&quot;Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0&quot;</span><span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;https://figshare.com/ndownloader/files/56572916&quot;</span><span class="w"> </span>-O<span class="w"> </span>chr1_cd34_thp1.tar.gz
+$<span class="w"> </span>tar<span class="w"> </span>xzf<span class="w"> </span>chr1_cd34_thp1.tar.gz
+</pre></div>
+</div>
+</section>
+<section id="running-chromideas">
+<h2>3. Running chromIDEAS<a class="headerlink" href="#running-chromideas" title="Link to this heading">¶</a></h2>
+<section id="input-preparation">
+<h3>3.1 Input Preparation<a class="headerlink" href="#input-preparation" title="Link to this heading">¶</a></h3>
+<section id="metadata-txt">
+<h4>3.1.1 metadata.txt<a class="headerlink" href="#metadata-txt" title="Link to this heading">¶</a></h4>
+<p>When running chromatin state segmentation, we need to provide a metadata file to inform the program of the files corresponding to different epigenetic signals in different cells.</p>
+<p>We will create a new file named <cite>metadata.txt</cite>, and then add the following content to it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd34</span>  <span class="n">H3K27ac</span> <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27ac_rep3_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep18_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27ac</span> <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27ac_rep4_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep5_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27ac</span> <span class="n">rep5</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27ac_rep5_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep15_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep11</span>   <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep11_SE</span><span class="o">.</span><span class="n">bw</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep18_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep1</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep1_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep2_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep2_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep8_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep3_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep1_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep4_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep12_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep5</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep5_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep5_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep6</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep6_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep6_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep7</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep7_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep4_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep8</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep8_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep10_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep9</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep9_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep11_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K36me3</span>        <span class="n">rep10</span>   <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K36me3_rep10_SE</span><span class="o">.</span><span class="n">bw</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep18_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K36me3</span>        <span class="n">rep1</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K36me3_rep1_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep1_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K36me3</span>        <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K36me3_rep2_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep4_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K36me3</span>        <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K36me3_rep3_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep12_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K36me3</span>        <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K36me3_rep4_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep5_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K36me3</span>        <span class="n">rep6</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K36me3_rep6_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep2_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K36me3</span>        <span class="n">rep7</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K36me3_rep7_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep3_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K36me3</span>        <span class="n">rep8</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K36me3_rep8_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep10_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K36me3</span>        <span class="n">rep9</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K36me3_rep9_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep11_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me1</span> <span class="n">rep1</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me1_rep1_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep2_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me1</span> <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me1_rep2_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep3_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me1</span> <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me1_rep3_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep4_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me1</span> <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me1_rep4_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep10_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me1</span> <span class="n">rep5</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me1_rep5_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep5_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me1</span> <span class="n">rep6</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me1_rep6_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep8_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me1</span> <span class="n">rep7</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me1_rep7_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep1_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me1</span> <span class="n">rep8</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me1_rep8_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep11_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me1</span> <span class="n">rep9</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me1_rep9_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep15_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep10</span>   <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep10_SE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep11_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep1</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep1_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep2_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep2_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep3_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep3_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep8_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep4_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep9_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep5</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep5_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep1_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep6</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep6_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep4_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep7</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep7_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep12_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep8</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep8_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep6_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep9</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep9_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep10_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K9me3</span> <span class="n">rep1</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K9me3_rep1_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep4_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K9me3</span> <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K9me3_rep2_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep1_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K9me3</span> <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K9me3_rep3_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep12_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K9me3</span> <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K9me3_rep4_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep6_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K9me3</span> <span class="n">rep5</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K9me3_rep5_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep5_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K9me3</span> <span class="n">rep6</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K9me3_rep6_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep8_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K9me3</span> <span class="n">rep7</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K9me3_rep7_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep2_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K9me3</span> <span class="n">rep8</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K9me3_rep8_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep3_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K9me3</span> <span class="n">rep9</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K9me3_rep9_SE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep10_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep12</span>   <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep12_PE</span><span class="o">.</span><span class="n">bw</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep19_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep13</span>   <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep13_PE</span><span class="o">.</span><span class="n">bw</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep20_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep14</span>   <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep14_PE</span><span class="o">.</span><span class="n">bw</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep21_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K27me3</span>        <span class="n">rep15</span>   <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K27me3_rep15_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep11</span>   <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep11_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep19_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep12</span>   <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep12_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep20_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K4me3</span> <span class="n">rep13</span>   <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K4me3_rep13_SE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K79me2</span>        <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K79me2_rep2_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep19_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K79me2</span>        <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K79me2_rep3_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep20_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">H3K79me2</span>        <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_H3K79me2_rep4_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_input_rep21_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K36me3</span>        <span class="n">rep1</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K36me3_rep1_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_mock_rep1_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K36me3</span>        <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K36me3_rep2_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_mock_rep1_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K36me3</span>        <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K36me3_rep3_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_mock_rep2_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K36me3</span>        <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K36me3_rep4_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_mock_rep2_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K79me2</span>        <span class="n">rep1</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K79me2_rep1_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep3_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K27me3</span>        <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K27me3_rep3_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K27me3</span>        <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K27me3_rep4_PE</span><span class="o">.</span><span class="n">bw</span>     <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K27ac</span> <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K27ac_rep2_PE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K27ac</span> <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K27ac_rep3_PE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K4me1</span> <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K4me1_rep2_PE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K4me1</span> <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K4me1_rep3_PE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K4me3</span> <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K4me3_rep2_PE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K4me3</span> <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K4me3_rep3_PE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K9me3</span> <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K9me3_rep3_PE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">H3K9me3</span> <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_H3K9me3_rep4_PE</span><span class="o">.</span><span class="n">bw</span>      <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_input_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">ATAC</span>    <span class="n">rep1</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_ATAC_rep1_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">cd34</span>  <span class="n">ATAC</span>    <span class="n">rep2</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">cd34_ATAC_rep2_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">ATAC</span>    <span class="n">rep3</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_ATAC_rep3_PE</span><span class="o">.</span><span class="n">bw</span>
+<span class="n">thp1</span>  <span class="n">ATAC</span>    <span class="n">rep4</span>    <span class="o">./</span><span class="mf">1.</span><span class="n">raw_bw</span><span class="o">/</span><span class="n">thp1_ATAC_rep4_PE</span><span class="o">.</span><span class="n">bw</span>
+</pre></div>
+</div>
+<p>Each row represents a dataset of epigenetic modification signals for cells, separated by “tab”. The format is described as follows:</p>
+<ul class="simple">
+<li><p>col1: Cell type</p></li>
+<li><p>col2: Epigenetic modification type</p></li>
+<li><p>col3: biological replicate</p></li>
+<li><p>col4: Address of the experimental group dataset</p></li>
+<li><p>col5: (Optional) Corresponding control dataset address</p></li>
+</ul>
+</section>
+<section id="genome-length">
+<h4>3.1.2 Genome Length<a class="headerlink" href="#genome-length" title="Link to this heading">¶</a></h4>
+<p>Since we only used data from chr1 here, we need to specify the specific genome length.</p>
+<p>We can create a new file, name it <cite>chr1.txt</cite>, and fill it with the following content:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chr1</span>  <span class="mi">248956422</span>
+</pre></div>
+</div>
+<p>Each line represents the length of a piece of chromatin, separated by “tab”. The format is described as follows:</p>
+<ul class="simple">
+<li><p>col1: chromosome number</p></li>
+<li><p>col2: Chromosome length</p></li>
+</ul>
+</section>
+<section id="blacklist-optional">
+<h4>3.1.3 Blacklist (optional)<a class="headerlink" href="#blacklist-optional" title="Link to this heading">¶</a></h4>
+<p>We can exclude some potentially problematic areas by specifying a blacklist file. The specific file can be downloaded as specified below:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>wget<span class="w"> </span>https://github.com/Boyle-Lab/Blacklist/raw/master/lists/hg38-blacklist.v2.bed.gz
+$<span class="w"> </span>gunzip<span class="w"> </span>https://github.com/Boyle-Lab/Blacklist/raw/master/lists/hg38-blacklist.v2.bed.gz
+</pre></div>
+</div>
+</section>
+<section id="file-management">
+<h4>3.1.4 File management<a class="headerlink" href="#file-management" title="Link to this heading">¶</a></h4>
+<p>Before starting the operation, let’s organize the relevant files that have been prepared:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="m">0</span>.sup_dat<span class="w"> </span><span class="m">1</span>.raw_bw
+$<span class="w"> </span>mv<span class="w"> </span>metadata.txt<span class="w"> </span>chr1.txt<span class="w"> </span>hg38-blacklist.v2.bed<span class="w"> </span><span class="m">0</span>.sup_dat
+$<span class="w"> </span>mv<span class="w"> </span>*.bw<span class="w"> </span><span class="m">1</span>.raw_bw
+$<span class="w"> </span>tree
+.
+├──<span class="w"> </span><span class="m">0</span>.sup_dat
+│<span class="w">   </span>├──<span class="w"> </span>chr1.txt
+│<span class="w">   </span>├──<span class="w"> </span>hg38-blacklist.v2.bed
+│<span class="w">   </span>└──<span class="w"> </span>metadata.txt
+├──<span class="w"> </span><span class="m">1</span>.raw_bw
+│<span class="w">   </span>├──<span class="w"> </span>cd34_ATAC_rep1_PE.bw
+│<span class="w">   </span>├──<span class="w"> </span>cd34_ATAC_rep2_PE.bw
+│<span class="w">   </span>├──<span class="w"> </span>cd34_H3K27ac_rep3_SE.bw
+│<span class="w">   </span>├──<span class="w"> </span>cd34_H3K27ac_rep4_SE.bw
+......
+│<span class="w">   </span>├──<span class="w"> </span>thp1_input_rep4_PE.bw
+│<span class="w">   </span>├──<span class="w"> </span>thp1_mock_rep1_PE.bw
+│<span class="w">   </span>└──<span class="w"> </span>thp1_mock_rep2_PE.bw
+└──<span class="w"> </span>chr1_cd34_thp1.tar.gz
+</pre></div>
+</div>
+</section>
+</section>
+<section id="chromatin-state-segmentation">
+<h3>3.2 Chromatin State Segmentation<a class="headerlink" href="#chromatin-state-segmentation" title="Link to this heading">¶</a></h3>
+<section id="one-command-execution">
+<h4>3.2.1 One-command execution<a class="headerlink" href="#one-command-execution" title="Link to this heading">¶</a></h4>
+<p>We can use the following command to obtain the chromatin state results with one click:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">time</span><span class="w"> </span>chromIDEAS<span class="w"> </span>-m<span class="w"> </span><span class="m">0</span>.sup_dat/metadata.txt<span class="w"> </span>-o<span class="w"> </span><span class="m">2</span>.CS_Segmentation/<span class="w"> </span>-b<span class="w"> </span><span class="m">200</span><span class="w"> </span>-g<span class="w"> </span><span class="m">0</span>.sup_dat/chr1.txt<span class="w"> </span>-n<span class="w"> </span>hg38_chr1<span class="w"> </span>-B<span class="w"> </span><span class="m">0</span>.sup_dat/hg38-blacklist.v2.bed<span class="w"> </span>-c<span class="w"> </span>-d<span class="w"> </span>chr1<span class="w"> </span>-p<span class="w"> </span><span class="m">20</span>
+Now<span class="w"> </span>process<span class="w"> </span><span class="o">(</span><span class="m">1</span><span class="o">)</span><span class="w"> </span>genomeWindows.
+Process<span class="w"> </span><span class="o">(</span><span class="m">1</span><span class="o">)</span><span class="w"> </span>genomeWindows<span class="w"> </span><span class="k">done</span><span class="w"> </span>successfully.
+------------------------------------------------------------------------
+
+Now<span class="w"> </span>process<span class="w"> </span><span class="o">(</span><span class="m">2</span><span class="o">)</span><span class="w"> </span>bigWig2bedGraph.
+The<span class="w"> </span>/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph<span class="w"> </span>directory<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>exist.<span class="w"> </span>The<span class="w"> </span>program<span class="w"> </span>will<span class="w"> </span>create<span class="w"> </span>it.
+<span class="c1">################# Multiple mode #################</span>
+./1.raw_bw/cd34_H3K27me3_rep2_SE.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+./1.raw_bw/cd34_H3K27me3_rep13_PE.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+./1.raw_bw/cd34_H3K27ac_rep5_SE.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+...
+All<span class="w"> </span>bigWig<span class="w"> </span>files<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>convert<span class="w"> </span>to<span class="w"> </span>bedGraph.
+Process<span class="w"> </span><span class="o">(</span><span class="m">2</span><span class="o">)</span><span class="w"> </span>bigWig2bedGraph<span class="w"> </span><span class="k">done</span><span class="w"> </span>successfully.
+------------------------------------------------------------------------
+
+The<span class="w"> </span>/share/home/fatyang/2.CS_Segmentation/2.s3v2Norm<span class="w"> </span>directory<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>exist.<span class="w"> </span>The<span class="w"> </span>program<span class="w"> </span>will<span class="w"> </span>create<span class="w"> </span>it.
+Now<span class="w"> </span>process<span class="w"> </span><span class="o">(</span><span class="m">3</span><span class="o">)</span><span class="w"> </span>s3v2norm.
+<span class="c1">########################## s3v2Norm Start ##########################</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span><span class="w"> </span><span class="s2">&quot;/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K9me3.rep1.ip.idsort.bedgraph.gz&quot;</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span><span class="w"> </span><span class="s2">&quot;/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K27ac.rep3.ip.idsort.bedgraph.gz&quot;</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span><span class="w"> </span><span class="s2">&quot;/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K79me2.rep2.ip.idsort.bedgraph.gz&quot;</span>
+...
+<span class="m">1</span>.Get<span class="w"> </span>cpk<span class="w"> </span>cbg<span class="w"> </span>allpk<span class="w"> </span>average_sig<span class="w"> </span><span class="k">done</span>
+<span class="m">2</span>.S3norm<span class="w"> </span>average<span class="w"> </span>across<span class="w"> </span>marks<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>ATAC<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K27ac<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K27me3<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K36me3<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K4me1<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K4me3<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K79me2<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K9me3<span class="w"> </span><span class="k">done</span>
+<span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w"> </span>with<span class="w"> </span>same<span class="w"> </span>mk<span class="w"> </span><span class="k">done</span>
+<span class="m">4</span>.S3V2<span class="w"> </span>across<span class="w"> </span>CT<span class="w"> </span>samples<span class="w"> </span><span class="k">done</span>
+<span class="m">5</span>.Get<span class="w"> </span>NBP<span class="w"> </span><span class="k">for</span><span class="w"> </span>S3V2<span class="w"> </span>normalized<span class="w"> </span>data<span class="w"> </span><span class="k">done</span>
+All<span class="w"> </span>bedGraph<span class="w"> </span>files<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>convert<span class="w"> </span>to<span class="w"> </span>bigWig.
+<span class="m">6</span>.Convert<span class="w"> </span>the<span class="w"> </span>bedgraph<span class="w"> </span>file<span class="w"> </span>into<span class="w"> </span>bigWig<span class="w"> </span>format.
+<span class="c1">########################## s3v2Norm End ##########################</span>
+
+Summary<span class="w"> </span><span class="k">for</span><span class="w"> </span>normalization:
+Ready<span class="w"> </span>to<span class="w"> </span>show<span class="w"> </span>Summary:<span class="w"> </span>3s
+Ready<span class="w"> </span>to<span class="w"> </span>show<span class="w"> </span>Summary:<span class="w"> </span>2s
+Ready<span class="w"> </span>to<span class="w"> </span>show<span class="w"> </span>Summary:<span class="w"> </span>1s
+<span class="c1">#=============================================Summary for normalization=============================================#</span>
+<span class="c1">############# 1: get cpk cbg allpk average_sig #############</span>
+Nothing<span class="w"> </span>requiring<span class="w"> </span>additional<span class="w"> </span>attention
+
+
+<span class="c1">############# 2: S3norm average across marks #############</span>
+The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">(</span><span class="nv">norm</span><span class="o">=</span>A*raw^B<span class="o">)</span>:
+<span class="w">        </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>ATAC:
+<span class="w">                </span>Mean_ratio<span class="w">           </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.31912402579647464<span class="w">  </span><span class="m">0</span>.6911416007650284<span class="w">  </span><span class="m">0</span>.5208180030840445
+<span class="w">        </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>H3K27ac:
+<span class="w">                </span>Mean_ratio<span class="w">          </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.2642206363218819<span class="w">  </span><span class="m">0</span>.6683547414300661<span class="w">  </span><span class="m">0</span>.5435931404498152
+<span class="w">        </span><span class="m">3</span><span class="o">)</span><span class="w"> </span>H3K27me3:
+<span class="w">                </span>Mean_ratio<span class="w">          </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.4239141842940278<span class="w">  </span><span class="m">1</span>.0985441458588523<span class="w">  </span><span class="m">0</span>.4174344884621977
+<span class="w">        </span><span class="m">4</span><span class="o">)</span><span class="w"> </span>H3K36me3:
+<span class="w">                </span>Mean_ratio<span class="w">          </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.5963609714221206<span class="w">  </span><span class="m">1</span>.0686476970950924<span class="w">  </span><span class="m">0</span>.6252879289145848
+<span class="w">        </span><span class="m">5</span><span class="o">)</span><span class="w"> </span>H3K4me1:
+<span class="w">                </span>Mean_ratio<span class="w">          </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.4325845586543525<span class="w">  </span><span class="m">0</span>.9183362183254749<span class="w">  </span><span class="m">0</span>.5464312537007742
+<span class="w">        </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>H3K4me3:
+<span class="w">                </span>Mean_ratio<span class="w">           </span>S3norm_B<span class="w">           </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.42192289933009874<span class="w">  </span><span class="m">0</span>.665722690663896<span class="w">  </span><span class="m">0</span>.720874862499352
+<span class="w">        </span><span class="m">7</span><span class="o">)</span><span class="w"> </span>H3K79me2:
+<span class="w">                </span>Mean_ratio<span class="w">           </span>S3norm_B<span class="w">           </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.20716204795844023<span class="w">  </span><span class="m">0</span>.854490378839077<span class="w">  </span><span class="m">0</span>.2992704109344474
+<span class="w">        </span><span class="m">8</span><span class="o">)</span><span class="w"> </span>H3K9me3:
+<span class="w">                </span>Mean_ratio<span class="w">           </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.49297130091515795<span class="w">  </span><span class="m">1</span>.0498449905490717<span class="w">  </span><span class="m">0</span>.4729004821135292
+
+
+<span class="c1">############# 3: S3V2 across samples with same mk #############</span>
+The<span class="w"> </span>normalization<span class="w"> </span>parameters:
+<span class="nv">norm_dat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>norm_pk<span class="w"> </span>+<span class="w"> </span>norm_bg
+<span class="w">        </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>cd34_rep10.H3K36me3.S3V2.bedgraph:
+<span class="w">                </span>Pk<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>exponential<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=(</span><span class="m">2</span>^A<span class="o">)</span>*<span class="o">(</span>raw^B<span class="o">)]</span>:
+<span class="w">                        </span>pk_b<span class="w">               </span>pk_a
+<span class="w">                        </span><span class="m">0</span>.860268522487943<span class="w">  </span><span class="m">0</span>
+<span class="w">                </span>Bg<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>linear<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=</span>B*raw+A<span class="o">]</span>:
+<span class="w">                        </span>bg_b<span class="w">               </span>bg_a
+<span class="w">                        </span><span class="m">0</span>.379774849916617<span class="w">  </span>-0.054080182987012
+<span class="w">        </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>cd34_rep10.H3K4me3.S3V2.bedgraph:
+<span class="w">                </span>Pk<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>exponential<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=(</span><span class="m">2</span>^A<span class="o">)</span>*<span class="o">(</span>raw^B<span class="o">)]</span>:
+<span class="w">                        </span>pk_b<span class="w">               </span>pk_a
+<span class="w">                        </span><span class="m">0</span>.831459440130634<span class="w">  </span><span class="m">0</span>
+<span class="w">                </span>Bg<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>linear<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=</span>B*raw+A<span class="o">]</span>:
+<span class="w">                        </span>bg_b<span class="w">               </span>bg_a
+<span class="w">                        </span><span class="m">0</span>.831817269539945<span class="w">  </span>-0.0950225927820069
+<span class="w">        </span><span class="m">3</span><span class="o">)</span><span class="w"> </span>cd34_rep11.H3K27me3.S3V2.bedgraph:
+<span class="w">                </span>Pk<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>exponential<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=(</span><span class="m">2</span>^A<span class="o">)</span>*<span class="o">(</span>raw^B<span class="o">)]</span>:
+<span class="w">                        </span>pk_b<span class="w">               </span>pk_a
+<span class="w">                        </span><span class="m">0</span>.937802347054138<span class="w">  </span><span class="m">0</span>
+<span class="w">                </span>Bg<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>linear<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=</span>B*raw+A<span class="o">]</span>:
+<span class="w">                        </span>bg_b<span class="w">               </span>bg_a
+<span class="w">                        </span><span class="m">0</span>.788937931828074<span class="w">  </span>-0.56781334660776
+...
+
+
+<span class="c1">############# 4: S3V2 across CT samples #############</span>
+The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>linear<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=</span>B*raw+A<span class="o">]</span>:
+<span class="w">        </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>cd34.ATAC.rep1.ctrl.idsort.bedgraph.gz.norm.bedgraph:
+<span class="w">                </span>B<span class="w">  </span>A
+<span class="w">                </span><span class="m">1</span><span class="w">  </span><span class="m">0</span>
+<span class="w">        </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>cd34.ATAC.rep2.ctrl.idsort.bedgraph.gz.norm.bedgraph:
+<span class="w">                </span>B<span class="w">  </span>A
+<span class="w">                </span><span class="m">1</span><span class="w">  </span><span class="m">0</span>
+<span class="w">        </span><span class="m">3</span><span class="o">)</span><span class="w"> </span>cd34.H3K27ac.rep3.ctrl.idsort.bedgraph.gz.norm.bedgraph:
+<span class="w">                </span>B<span class="w">                 </span>A
+<span class="w">                </span><span class="m">2</span>.08476397079908<span class="w">  </span>-8.09980879317122
+...
+
+
+<span class="c1">############# 5: Get NBP for S3V2 normalized data #############</span>
+Fit<span class="w"> </span>the<span class="w"> </span>s3v2<span class="w"> </span>norm<span class="w"> </span>data<span class="w"> </span>to<span class="w"> </span>NB<span class="w"> </span>model:
+<span class="w">        </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>ATAC:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.903295995216867<span class="w">  </span><span class="m">8</span>.72511681090712<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K27ac:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.839476840723447<span class="w">  </span><span class="m">9</span>.03072014304272<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">3</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K27me3:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.902594813746805<span class="w">  </span><span class="m">17</span>.7791989962796<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">4</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K36me3:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.760129737927078<span class="w">  </span><span class="m">7</span>.60914042205539<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">5</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K4me1:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.571775852101361<span class="w">  </span><span class="m">3</span>.82876573811324<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K4me3:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">   </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.57108169816322<span class="w">  </span><span class="m">2</span>.68410297948551<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">7</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K79me2:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.733551180969329<span class="w">  </span><span class="m">3</span>.71929718967958<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">8</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K9me3:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.937901568499601<span class="w">  </span><span class="m">22</span>.8114694786224<span class="w">  </span><span class="m">1</span>
+
+
+Process<span class="w"> </span><span class="o">(</span><span class="m">3</span><span class="o">)</span><span class="w"> </span>s3v2Norm<span class="w"> </span><span class="k">done</span><span class="w"> </span>successfully.
+------------------------------------------------------------------------
+
+Now<span class="w"> </span>process<span class="w"> </span><span class="o">(</span><span class="m">4</span><span class="o">)</span><span class="w"> </span>mergeBedgraph.
+<span class="c1">################# Multiple mode #################</span>
+/share/home/fatyang/2.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep1.ATAC.S3V2.bedgraph.NBP.bedgraph.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+/share/home/fatyang/2.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep10.H3K4me3.S3V2.bedgraph.NBP.bedgraph.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+/share/home/fatyang/2.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep13.H3K4me3.S3V2.bedgraph.NBP.bedgraph.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+...
+All<span class="w"> </span>bigWig<span class="w"> </span>files<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>convert<span class="w"> </span>to<span class="w"> </span>bedGraph.
+Process<span class="w"> </span><span class="o">(</span><span class="m">4</span><span class="o">)</span><span class="w"> </span>mergeBedgraph<span class="w"> </span><span class="k">done</span><span class="w"> </span>successfully.
+------------------------------------------------------------------------
+
+Now<span class="w"> </span>process<span class="w"> </span><span class="o">(</span><span class="m">5</span><span class="o">)</span><span class="w"> </span>ideasCS.
+
+real<span class="w">    </span>45m48.857s
+user<span class="w">    </span>711m49.403s
+sys<span class="w">     </span>14m19.501s
+Process<span class="w"> </span><span class="o">(</span><span class="m">5</span><span class="o">)</span><span class="w"> </span>ideasCS<span class="w"> </span><span class="k">done</span><span class="w"> </span>successfully.
+------------------------------------------------------------------------
+
+
+real<span class="w">    </span>59m3.904s
+user<span class="w">    </span>841m18.733s
+sys<span class="w">     </span>28m10.912s
+</pre></div>
+</div>
+</section>
+<section id="step-by-step">
+<h4>3.2.2 Step-by-step<a class="headerlink" href="#step-by-step" title="Link to this heading">¶</a></h4>
+<p>We can also proceed in three steps.</p>
+<p><strong>(1) Normalization：</strong></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">time</span><span class="w"> </span>s3v2Norm<span class="w"> </span>-b<span class="w"> </span><span class="m">200</span><span class="w"> </span>-o<span class="w"> </span><span class="m">2</span>.CS_Segmentation/<span class="w"> </span>-m<span class="w"> </span><span class="m">0</span>.sup_dat/metadata.txt<span class="w"> </span>-n<span class="w"> </span>hg38_chr1<span class="w"> </span>-c<span class="w"> </span>-d<span class="w"> </span>chr1<span class="w"> </span>-p<span class="w"> </span><span class="m">20</span><span class="w"> </span>-g<span class="w"> </span><span class="m">0</span>.sup_dat/chr1.txt<span class="w"> </span>-B<span class="w"> </span><span class="m">0</span>.sup_dat/hg38-blacklist.v2.bed
+Now<span class="w"> </span>process<span class="w"> </span><span class="o">(</span><span class="m">1</span><span class="o">)</span><span class="w"> </span>genomeWindows.
+Process<span class="w"> </span><span class="o">(</span><span class="m">1</span><span class="o">)</span><span class="w"> </span>genomeWindows<span class="w"> </span><span class="k">done</span><span class="w"> </span>successfully.
+------------------------------------------------------------------------
+
+Now<span class="w"> </span>process<span class="w"> </span><span class="o">(</span><span class="m">2</span><span class="o">)</span><span class="w"> </span>bigWig2bedGraph.
+The<span class="w"> </span>/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph<span class="w"> </span>directory<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>exist.<span class="w"> </span>The<span class="w"> </span>program<span class="w"> </span>will<span class="w"> </span>create<span class="w"> </span>it.
+<span class="c1">################# Multiple mode #################</span>
+./1.raw_bw/cd34_H3K27ac_rep4_SE.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+./1.raw_bw/cd34_H3K27me3_rep1_SE.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+./1.raw_bw/cd34_H3K27ac_rep3_SE.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+......
+All<span class="w"> </span>bigWig<span class="w"> </span>files<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>convert<span class="w"> </span>to<span class="w"> </span>bedGraph.
+Process<span class="w"> </span><span class="o">(</span><span class="m">2</span><span class="o">)</span><span class="w"> </span>bigWig2bedGraph<span class="w"> </span><span class="k">done</span><span class="w"> </span>successfully.
+------------------------------------------------------------------------
+
+The<span class="w"> </span>/share/home/fatyang/2.CS_Segmentation/2.s3v2Norm<span class="w"> </span>directory<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>exist.<span class="w"> </span>The<span class="w"> </span>program<span class="w"> </span>will<span class="w"> </span>create<span class="w"> </span>it.
+Now<span class="w"> </span>process<span class="w"> </span><span class="o">(</span><span class="m">3</span><span class="o">)</span><span class="w"> </span>s3v2norm.
+<span class="c1">########################## s3v2Norm Start ##########################</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span><span class="w"> </span><span class="s2">&quot;/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K4me3.rep10.ip.idsort.bedgraph.gz&quot;</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span><span class="w"> </span><span class="s2">&quot;/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K27ac.rep3.ip.idsort.bedgraph.gz&quot;</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span><span class="w"> </span><span class="s2">&quot;/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.ATAC.rep1.ip.idsort.bedgraph.gz&quot;</span>
+...
+<span class="m">1</span>.Get<span class="w"> </span>cpk<span class="w"> </span>cbg<span class="w"> </span>allpk<span class="w"> </span>average_sig<span class="w"> </span><span class="k">done</span>
+<span class="m">2</span>.S3norm<span class="w"> </span>average<span class="w"> </span>across<span class="w"> </span>marks<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>ATAC<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K27ac<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K27me3<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K36me3<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K4me1<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K4me3<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K79me2<span class="w"> </span><span class="k">done</span>
+<span class="w">        </span><span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w">   </span>H3K9me3<span class="w"> </span><span class="k">done</span>
+<span class="m">3</span>.S3V2<span class="w"> </span>across<span class="w"> </span>samples<span class="w"> </span>with<span class="w"> </span>same<span class="w"> </span>mk<span class="w"> </span><span class="k">done</span>
+<span class="m">4</span>.S3V2<span class="w"> </span>across<span class="w"> </span>CT<span class="w"> </span>samples<span class="w"> </span><span class="k">done</span>
+<span class="m">5</span>.Get<span class="w"> </span>NBP<span class="w"> </span><span class="k">for</span><span class="w"> </span>S3V2<span class="w"> </span>normalized<span class="w"> </span>data<span class="w"> </span><span class="k">done</span>
+All<span class="w"> </span>bedGraph<span class="w"> </span>files<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>convert<span class="w"> </span>to<span class="w"> </span>bigWig.
+<span class="m">6</span>.Convert<span class="w"> </span>the<span class="w"> </span>bedgraph<span class="w"> </span>file<span class="w"> </span>into<span class="w"> </span>bigWig<span class="w"> </span>format.
+<span class="c1">########################## s3v2Norm End ##########################</span>
+
+Summary<span class="w"> </span><span class="k">for</span><span class="w"> </span>normalization:
+Ready<span class="w"> </span>to<span class="w"> </span>show<span class="w"> </span>Summary:<span class="w"> </span>3s
+Ready<span class="w"> </span>to<span class="w"> </span>show<span class="w"> </span>Summary:<span class="w"> </span>2s
+Ready<span class="w"> </span>to<span class="w"> </span>show<span class="w"> </span>Summary:<span class="w"> </span>1s
+<span class="c1">#=============================================Summary for normalization=============================================#</span>
+<span class="c1">############# 1: get cpk cbg allpk average_sig #############</span>
+Nothing<span class="w"> </span>requiring<span class="w"> </span>additional<span class="w"> </span>attention
+
+
+<span class="c1">############# 2: S3norm average across marks #############</span>
+The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">(</span><span class="nv">norm</span><span class="o">=</span>A*raw^B<span class="o">)</span>:
+<span class="w">        </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>ATAC:
+<span class="w">                </span>Mean_ratio<span class="w">           </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.31912402579647464<span class="w">  </span><span class="m">0</span>.6911416007650284<span class="w">  </span><span class="m">0</span>.5208180030840445
+<span class="w">        </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>H3K27ac:
+<span class="w">                </span>Mean_ratio<span class="w">          </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.2642206363218819<span class="w">  </span><span class="m">0</span>.6683547414300661<span class="w">  </span><span class="m">0</span>.5435931404498152
+<span class="w">        </span><span class="m">3</span><span class="o">)</span><span class="w"> </span>H3K27me3:
+<span class="w">                </span>Mean_ratio<span class="w">          </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.4239141842940278<span class="w">  </span><span class="m">1</span>.0985441458588523<span class="w">  </span><span class="m">0</span>.4174344884621977
+<span class="w">        </span><span class="m">4</span><span class="o">)</span><span class="w"> </span>H3K36me3:
+<span class="w">                </span>Mean_ratio<span class="w">          </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.5963609714221206<span class="w">  </span><span class="m">1</span>.0686476970950924<span class="w">  </span><span class="m">0</span>.6252879289145848
+<span class="w">        </span><span class="m">5</span><span class="o">)</span><span class="w"> </span>H3K4me1:
+<span class="w">                </span>Mean_ratio<span class="w">          </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.4325845586543525<span class="w">  </span><span class="m">0</span>.9183362183254749<span class="w">  </span><span class="m">0</span>.5464312537007742
+<span class="w">        </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>H3K4me3:
+<span class="w">                </span>Mean_ratio<span class="w">           </span>S3norm_B<span class="w">           </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.42192289933009874<span class="w">  </span><span class="m">0</span>.665722690663896<span class="w">  </span><span class="m">0</span>.720874862499352
+<span class="w">        </span><span class="m">7</span><span class="o">)</span><span class="w"> </span>H3K79me2:
+<span class="w">                </span>Mean_ratio<span class="w">           </span>S3norm_B<span class="w">           </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.20716204795844023<span class="w">  </span><span class="m">0</span>.854490378839077<span class="w">  </span><span class="m">0</span>.2992704109344474
+<span class="w">        </span><span class="m">8</span><span class="o">)</span><span class="w"> </span>H3K9me3:
+<span class="w">                </span>Mean_ratio<span class="w">           </span>S3norm_B<span class="w">            </span>S3norm_A
+<span class="w">                </span><span class="m">0</span>.49297130091515795<span class="w">  </span><span class="m">1</span>.0498449905490717<span class="w">  </span><span class="m">0</span>.4729004821135292
+
+
+<span class="c1">############# 3: S3V2 across samples with same mk #############</span>
+The<span class="w"> </span>normalization<span class="w"> </span>parameters:
+<span class="nv">norm_dat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>norm_pk<span class="w"> </span>+<span class="w"> </span>norm_bg
+<span class="w">        </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>cd34_rep10.H3K36me3.S3V2.bedgraph:
+<span class="w">                </span>Pk<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>exponential<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=(</span><span class="m">2</span>^A<span class="o">)</span>*<span class="o">(</span>raw^B<span class="o">)]</span>:
+<span class="w">                        </span>pk_b<span class="w">               </span>pk_a
+<span class="w">                        </span><span class="m">0</span>.860268522487943<span class="w">  </span><span class="m">0</span>
+<span class="w">                </span>Bg<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>linear<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=</span>B*raw+A<span class="o">]</span>:
+<span class="w">                        </span>bg_b<span class="w">               </span>bg_a
+<span class="w">                        </span><span class="m">0</span>.379774849916617<span class="w">  </span>-0.054080182987012
+<span class="w">        </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>cd34_rep10.H3K4me3.S3V2.bedgraph:
+<span class="w">                </span>Pk<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>exponential<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=(</span><span class="m">2</span>^A<span class="o">)</span>*<span class="o">(</span>raw^B<span class="o">)]</span>:
+<span class="w">                        </span>pk_b<span class="w">               </span>pk_a
+<span class="w">                        </span><span class="m">0</span>.831459440130634<span class="w">  </span><span class="m">0</span>
+<span class="w">                </span>Bg<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>linear<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=</span>B*raw+A<span class="o">]</span>:
+<span class="w">                        </span>bg_b<span class="w">               </span>bg_a
+<span class="w">                        </span><span class="m">0</span>.831817269539945<span class="w">  </span>-0.0950225927820069
+<span class="w">        </span><span class="m">3</span><span class="o">)</span><span class="w"> </span>cd34_rep11.H3K27me3.S3V2.bedgraph:
+<span class="w">                </span>Pk<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>exponential<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=(</span><span class="m">2</span>^A<span class="o">)</span>*<span class="o">(</span>raw^B<span class="o">)]</span>:
+<span class="w">                        </span>pk_b<span class="w">               </span>pk_a
+<span class="w">                        </span><span class="m">0</span>.937802347054138<span class="w">  </span><span class="m">0</span>
+<span class="w">                </span>Bg<span class="w"> </span>region<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>linear<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=</span>B*raw+A<span class="o">]</span>:
+<span class="w">                        </span>bg_b<span class="w">               </span>bg_a
+<span class="w">                        </span><span class="m">0</span>.788937931828074<span class="w">  </span>-0.56781334660776
+...
+
+
+<span class="c1">############# 4: S3V2 across CT samples #############</span>
+The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="o">[</span>linear<span class="w"> </span>regression:<span class="w"> </span><span class="nv">norm</span><span class="o">=</span>B*raw+A<span class="o">]</span>:
+<span class="w">        </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>cd34.ATAC.rep1.ctrl.idsort.bedgraph.gz.norm.bedgraph:
+<span class="w">                </span>B<span class="w">  </span>A
+<span class="w">                </span><span class="m">1</span><span class="w">  </span><span class="m">0</span>
+<span class="w">        </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>cd34.ATAC.rep2.ctrl.idsort.bedgraph.gz.norm.bedgraph:
+<span class="w">                </span>B<span class="w">  </span>A
+<span class="w">                </span><span class="m">1</span><span class="w">  </span><span class="m">0</span>
+<span class="w">        </span><span class="m">3</span><span class="o">)</span><span class="w"> </span>cd34.H3K27ac.rep3.ctrl.idsort.bedgraph.gz.norm.bedgraph:
+<span class="w">                </span>B<span class="w">                 </span>A
+<span class="w">                </span><span class="m">2</span>.08476397079908<span class="w">  </span>-8.09980879317122
+...
+
+
+<span class="c1">############# 5: Get NBP for S3V2 normalized data #############</span>
+Fit<span class="w"> </span>the<span class="w"> </span>s3v2<span class="w"> </span>norm<span class="w"> </span>data<span class="w"> </span>to<span class="w"> </span>NB<span class="w"> </span>model:
+<span class="w">        </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>ATAC:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.903295995216867<span class="w">  </span><span class="m">8</span>.72511681090712<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K27ac:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.839476840723447<span class="w">  </span><span class="m">9</span>.03072014304272<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">3</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K27me3:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.902594813746805<span class="w">  </span><span class="m">17</span>.7791989962796<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">4</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K36me3:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.760129737927078<span class="w">  </span><span class="m">7</span>.60914042205539<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">5</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K4me1:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.571775852101361<span class="w">  </span><span class="m">3</span>.82876573811324<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K4me3:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">   </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.57108169816322<span class="w">  </span><span class="m">2</span>.68410297948551<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">7</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K79me2:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.733551180969329<span class="w">  </span><span class="m">3</span>.71929718967958<span class="w">  </span><span class="m">1</span>
+<span class="w">        </span><span class="m">8</span><span class="o">)</span><span class="w"> </span>The<span class="w"> </span>normalization<span class="w"> </span>parameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>average<span class="w"> </span>signal<span class="w"> </span>of<span class="w"> </span>H3K9me3:
+<span class="w">                </span>AVEmat_cbg_prob<span class="w">    </span>AVEmat_cbg_size<span class="w">   </span>scale_down
+<span class="w">                </span><span class="m">0</span>.937901568499601<span class="w">  </span><span class="m">22</span>.8114694786224<span class="w">  </span><span class="m">1</span>
+
+
+Process<span class="w"> </span><span class="o">(</span><span class="m">3</span><span class="o">)</span><span class="w"> </span>s3v2norm<span class="w"> </span><span class="k">done</span><span class="w"> </span>successfully.
+------------------------------------------------------------------------
+
+
+real<span class="w">    </span>11m41.485s
+user<span class="w">    </span>111m7.597s
+sys<span class="w">     </span>10m7.581s
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>For comparison, we processed the identical dataset with the same parameters using the <a class="reference external" href="https://github.com/guanjue/S3V2_IDEAS_ESMP">S3V2 software</a>. Due to the maximum thread setting of 4 in S3V2, we set it to the maximum allowed (thread=4).</p>
+<p>We also recorded the runtime:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>real<span class="w">    </span>52m54.052s
+user<span class="w">    </span>129m33.996s
+sys<span class="w">     </span>13m47.043s
+</pre></div>
+</div>
+<p>It can be seen that the chromIDEAS consumes 11m41.485s of time when running data standardization, while the original S3V2 consumes 52m44.052s when processing the same data.</p>
+<p><strong>(2) Merge Replicates：</strong></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="m">2</span>.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB
+$<span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="m">2</span>.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/group.799<span class="o">[</span><span class="m">12</span><span class="o">]</span><span class="m">799</span>.txt
+$<span class="w"> </span>ls<span class="w"> </span><span class="m">2</span>.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/*S3V2.bedgraph.NBP.bedgraph.bw<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>id
+<span class="k">do</span>
+<span class="w">    </span><span class="nv">bedg</span><span class="o">=</span><span class="k">$(</span>basename<span class="w"> </span><span class="nv">$id</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-r<span class="w"> </span><span class="s2">&quot;s/.bw</span>$<span class="s2">//g&quot;</span><span class="k">)</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">id</span><span class="si">}</span><span class="s2">\t2.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/</span><span class="si">${</span><span class="nv">bedg</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="m">2</span>.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/group.7991799.txt
+
+<span class="w">    </span><span class="nv">cell</span><span class="o">=</span><span class="k">$(</span>basename<span class="w"> </span><span class="nv">$id</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;_&quot;</span><span class="w"> </span>-f1<span class="k">)</span>
+<span class="w">    </span><span class="nv">mk</span><span class="o">=</span><span class="k">$(</span>basename<span class="w"> </span><span class="nv">$id</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;.&quot;</span><span class="w"> </span>-f2<span class="k">)</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;2.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/</span><span class="si">${</span><span class="nv">bedg</span><span class="si">}</span><span class="s2">\t2.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/</span><span class="si">${</span><span class="nv">cell</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">mk</span><span class="si">}</span><span class="s2">.S3V2.bedgraph.NBP.txt&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="m">2</span>.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/group.7992799.txt
+<span class="k">done</span>
+
+$<span class="w"> </span>bigWig2bedGraph<span class="w"> </span>-n<span class="w"> </span>hg38_chr1<span class="w"> </span>-f<span class="w"> </span><span class="m">2</span>.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/group.7991799.txt<span class="w"> </span>-p<span class="w"> </span><span class="m">20</span><span class="w"> </span>-b<span class="w"> </span><span class="m">200</span>
+<span class="c1">################# Multiple mode #################</span>
+<span class="m">2</span>.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep1.H3K36me3.S3V2.bedgraph.NBP.bedgraph.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+<span class="m">2</span>.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep12.H3K4me3.S3V2.bedgraph.NBP.bedgraph.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+<span class="m">2</span>.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep1.H3K27me3.S3V2.bedgraph.NBP.bedgraph.bw<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>converted<span class="w"> </span>to<span class="w"> </span>bedgraph<span class="w"> </span>format<span class="w"> </span>succussfully.
+...
+All<span class="w"> </span>bigWig<span class="w"> </span>files<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>convert<span class="w"> </span>to<span class="w"> </span>bedGraph.
+
+$<span class="w"> </span>mergeBedgraph<span class="w"> </span>-f<span class="w"> </span><span class="m">2</span>.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/group.7992799.txt<span class="w"> </span>-m<span class="w"> </span>median<span class="w"> </span>-c<span class="w"> </span>pearson<span class="w"> </span>-p<span class="w"> </span><span class="m">20</span>
+$<span class="w"> </span>cut<span class="w"> </span>-f2<span class="w"> </span><span class="m">2</span>.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/group.7991799.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n1<span class="w"> </span>-i<span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="o">{}</span>
+$<span class="w"> </span>cat<span class="w"> </span><span class="m">0</span>.sup_dat/metadata.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>cell<span class="w"> </span>mk<span class="w"> </span>id<span class="w"> </span>exp<span class="w"> </span>ct
+<span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">cell</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">mk</span><span class="si">}</span><span class="s2"> 2.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/</span><span class="si">${</span><span class="nv">cell</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">mk</span><span class="si">}</span><span class="s2">.S3V2.bedgraph.NBP.txt&quot;</span>
+<span class="k">done</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u<span class="w"> </span>&gt;<span class="w"> </span><span class="m">2</span>.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/meta.txt
+
+$<span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="m">2</span>.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/group.799<span class="o">[</span><span class="m">12</span><span class="o">]</span><span class="m">799</span>.txt
+</pre></div>
+</div>
+<p><strong>(3) State Segmentation：</strong></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ideasCS<span class="w"> </span>-m<span class="w"> </span>s3v2/3.CS_segmentation/chr1_IDEAS_input_NB/meta.txt<span class="w"> </span>-o<span class="w"> </span>s3v2/4.chr1_IDEAS_output<span class="w"> </span>-d<span class="w"> </span>chr1<span class="w"> </span>-p<span class="w"> </span><span class="m">20</span>
+
+real<span class="w">    </span>44m22.538s
+user<span class="w">    </span>712m10.945s
+sys<span class="w">     </span>11m7.006s
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>For comparison, we processed the identical dataset with the same parameters using the <a class="reference external" href="https://github.com/guanjue/S3V2_IDEAS_ESMP">S3V2 software</a>. Due to the maximum thread setting of 4 in S3V2, we set it to the maximum allowed (thread=4).</p>
+<p>We also recorded the runtime:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>real<span class="w">    </span>132m56.320s
+user<span class="w">    </span>788m50.320s
+sys<span class="w">     </span>15m58.419s
+</pre></div>
+</div>
+<p>It can be seen that the chromIDEAS consumes 44m22.538s of time when running state segmentation, while the original S3V2 consumes 132m56.320s when processing the same data.</p>
+</section>
+</section>
+<section id="chromatin-state-distribution-visualization">
+<h3>3.2 Chromatin State Distribution Visualization<a class="headerlink" href="#chromatin-state-distribution-visualization" title="Link to this heading">¶</a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz</span>
+<span class="c1"># gunzip gencode.v40.annotation.gtf.gz</span>
+
+$<span class="w"> </span>awk<span class="w"> </span>-F<span class="w"> </span><span class="s2">&quot;\t&quot;</span><span class="w"> </span><span class="s1">&#39;{if($1 == &quot;chr1&quot;) {print $0}}&#39;</span><span class="w"> </span>/share/home/fatyang/Genomes/GENCODE/Human/hg38/gtf/gencode.v40.annotation.gtf<span class="w"> </span>&gt;<span class="w"> </span>chr1.gtf
+$<span class="w"> </span>plotCSprofile<span class="w"> </span>TSS<span class="w"> </span>-i<span class="w"> </span><span class="m">2</span>.CS_Segmentation/4.chr1_IDEAS_output/chr1.state<span class="w"> </span>-o<span class="w"> </span>tss.jpg<span class="w"> </span>-r<span class="w"> </span>chr1.gtf<span class="w"> </span>-W<span class="w"> </span><span class="m">10</span><span class="w"> </span>-H<span class="w"> </span><span class="m">10</span>
+<span class="c1">############################## Prepare the CS matrix ##############################</span>
+U5<span class="w"> </span>U4<span class="w"> </span>U3<span class="w"> </span>U2<span class="w"> </span>U1<span class="w"> </span>TSS<span class="w"> </span>D1<span class="w"> </span>D2<span class="w"> </span>D3<span class="w"> </span>D4<span class="w"> </span>D5
+<span class="c1">###################################### Done #######################################</span>
+
+<span class="c1">############################## Calculate cell specific CS matrix ##############################</span>
+cd34:
+thp1:
+<span class="c1">############################################ Done #############################################</span>
+
+<span class="c1">############################## Plot cell specific CS distribution ##############################</span>
+<span class="c1">############################################# Done #############################################</span>
+
+$<span class="w"> </span>plotCSprofile<span class="w"> </span>Body<span class="w"> </span>-i<span class="w"> </span><span class="m">2</span>.CS_Segmentation/4.chr1_IDEAS_output/chr1.state<span class="w"> </span>-o<span class="w"> </span>body.jpg<span class="w"> </span>-r<span class="w"> </span>chr1.gtf<span class="w"> </span>-p<span class="w"> </span><span class="m">20</span><span class="w"> </span>-W<span class="w"> </span><span class="m">10</span><span class="w"> </span>-H<span class="w"> </span><span class="m">10</span>
+<span class="c1">############################## Prepare the CS matrix ##############################</span>
+There<span class="w"> </span>are<span class="w"> </span><span class="m">21630</span>/21800<span class="w"> </span>TSSs<span class="w"> </span>of<span class="w"> </span>target<span class="w"> </span>regions<span class="w"> </span>have<span class="w"> </span>chromatin<span class="w"> </span>state<span class="w"> </span>info.
+There<span class="w"> </span>are<span class="w"> </span><span class="m">21651</span>/21800<span class="w"> </span>TESs<span class="w"> </span>of<span class="w"> </span>target<span class="w"> </span>regions<span class="w"> </span>have<span class="w"> </span>chromatin<span class="w"> </span>state<span class="w"> </span>info.
+There<span class="w"> </span>are<span class="w"> </span><span class="m">21628</span><span class="w"> </span>target<span class="w"> </span>regions<span class="w"> </span>where<span class="w"> </span>both<span class="w"> </span>the<span class="w"> </span>TSS<span class="w"> </span><span class="o">(</span><span class="m">21630</span><span class="o">)</span><span class="w"> </span>and<span class="w"> </span>TES<span class="w"> </span><span class="o">(</span><span class="m">21651</span><span class="o">)</span><span class="w"> </span>have<span class="w"> </span>chromatin<span class="w"> </span>state<span class="w"> </span>information.
+The<span class="w"> </span>minimum<span class="w"> </span>length<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>more<span class="w"> </span>than<span class="w"> </span><span class="m">3</span>,<span class="w"> </span>including<span class="w"> </span>at<span class="w"> </span>least<span class="w"> </span>tss,<span class="w"> </span>tes,<span class="w"> </span>and<span class="w"> </span>a<span class="w"> </span>gene<span class="w"> </span>body<span class="w"> </span>bin.
+Filter<span class="w"> </span>out<span class="w"> </span><span class="m">898</span>/21628<span class="w"> </span><span class="o">(</span><span class="m">4</span>.15%<span class="o">)</span><span class="w"> </span>regions,<span class="w"> </span>whose<span class="w"> </span>length<span class="w"> </span>is<span class="w"> </span>less<span class="w"> </span>than<span class="w"> </span><span class="m">3</span><span class="w"> </span>bins.
+U5<span class="w"> </span>U4<span class="w"> </span>U3<span class="w"> </span>U2<span class="w"> </span>U1<span class="w"> </span>TSS<span class="w"> </span>B1<span class="w"> </span>B2<span class="w"> </span>B3<span class="w"> </span>B4<span class="w"> </span>B5<span class="w"> </span>B6<span class="w"> </span>B7<span class="w"> </span>B8<span class="w"> </span>B9<span class="w"> </span>B10<span class="w"> </span>TES<span class="w"> </span>D1<span class="w"> </span>D2<span class="w"> </span>D3<span class="w"> </span>D4<span class="w"> </span>D5
+<span class="c1">###################################### Done #######################################</span>
+
+<span class="c1">############################## Calculate cell specific CS matrix ##############################</span>
+cd34:
+<span class="p">|</span>----------------------------------------------------------------------------------------------------<span class="p">|</span>
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10546</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.874
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10539</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.899
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10545</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.901
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10532</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.901
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10538</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.905
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10534</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.905
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10535</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.906
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10540</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.912
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10543</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.913
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10544</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.919
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10533</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.921
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10549</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.922
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10542</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.923
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10551</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.924
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10536</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.926
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10548</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.929
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10541</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.933
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10547</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.933
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10537</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.933
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">10550</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:37.937
+<span class="p">|</span>***************************************************************************************************<span class="p">|</span>
+*thp1:
+<span class="p">|</span>----------------------------------------------------------------------------------------------------<span class="p">|</span>
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12018</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.811
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12016</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.812
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12023</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.819
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12021</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.822
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12030</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.824
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12017</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.824
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12029</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.825
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12011</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.826
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12028</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.825
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12024</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.826
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12015</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.826
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12019</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.830
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12025</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.831
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12022</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.832
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12020</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.834
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12012</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.835
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12026</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.840
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12014</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.842
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12027</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.842
+starting<span class="w"> </span>worker<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">12013</span><span class="w"> </span>on<span class="w"> </span>localhost:11944<span class="w"> </span>at<span class="w"> </span><span class="m">15</span>:56:57.848
+<span class="p">|</span>****************************************************************************************************<span class="p">|</span>
+<span class="c1">############################################ Done #############################################</span>
+
+<span class="c1">############################## Plot cell specific CS distribution ##############################</span>
+<span class="c1">############################################# Done #############################################</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>TSS Distribution</p></th>
+<th class="head"><p>Body Distribution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><a class="reference internal image-reference" href="../_images/tss.jpg"><img alt="../_images/tss.jpg" src="../_images/tss.jpg" style="width: 100%;" />
+</a>
+</td>
+<td><a class="reference internal image-reference" href="../_images/body.jpg"><img alt="../_images/body.jpg" src="../_images/body.jpg" style="width: 100%;" />
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="chromatin-state-similarity-assessment">
+<h3>3.3 Chromatin State Similarity Assessment<a class="headerlink" href="#chromatin-state-similarity-assessment" title="Link to this heading">¶</a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>stateCompare<span class="w"> </span>-f<span class="w"> </span><span class="m">2</span>.CS_Segmentation/4.chr1_IDEAS_output/chr1.state<span class="w"> </span>-a<span class="w"> </span>cd34<span class="w"> </span>-b<span class="w"> </span>thp1<span class="w"> </span>-m<span class="w"> </span>All
+<span class="w">  </span>H_Cell1<span class="w">   </span>H_Cell2<span class="w">        </span>RI<span class="w">       </span>ARI<span class="w">        </span>MI<span class="w">        </span>VI<span class="w">       </span>NVI<span class="w">        </span>ID
+<span class="m">1</span>.8314815<span class="w"> </span><span class="m">1</span>.9278631<span class="w"> </span><span class="m">0</span>.6957417<span class="w"> </span><span class="m">0</span>.2335242<span class="w"> </span><span class="m">0</span>.6470431<span class="w"> </span><span class="m">2</span>.4652584<span class="w"> </span><span class="m">0</span>.7921014<span class="w"> </span><span class="m">1</span>.2808200
+<span class="w">      </span>NID<span class="w">       </span>NMI
+<span class="m">0</span>.6643729<span class="w"> </span><span class="m">0</span>.3356271
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="list_of_tools.html" class="btn btn-neutral float-left" title="The tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="about.html" class="btn btn-neutral float-right" title="About" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, fatyang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
