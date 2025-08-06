@@ -60,7 +60,7 @@ The implementation of chromIDEAS relies on the following tools:
 - Seurat (`DOI: 10.1016/j.cell.2021.04.048 <https://doi.org/10.1016/j.cell.2021.04.048>`_): Weighted Nearest Neighbor (WNN) algorithm to integrate multi-modal data (the genomic spatial distribution of chromatin states and their epigenetic signal compositions) (https://github.com/satijalab/seurat).
 
 
-Please cite chromIDEAS2 as follows:
+Please cite chromIDEAS as follows:
 
 Liu Yang, Shan Liu, Ting Lu, Shaokang Mo, Bin Qi and Kuangyu Yen. 
 **"chromIDEAS Reveals Epigenetic Dynamics via Multi-Dimensional Clustering of Chromatin States"**
