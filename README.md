@@ -117,6 +117,8 @@ chromIDEAS builds on:
   />
 </p>
 
+
+
 - **The helical strand below the circle**: Represents a stylized nucleosome model using DNA double helix imagery, symbolizing the fundamental structural unit of chromatin states.
 - **The four interconnected dots above**: Depict molecular polymerization architecture while simultaneously conveying the conceptual duality of "cluster relationships" and "clustered state networks".
 
@@ -706,7 +708,7 @@ sys     11m7.006s
 >
 > It can be seen that the chromIDEAS consumes 44m22.538s of time when running state segmentation, while the original S3V2 consumes 132m56.320s when processing the same data.
 
-### 3.2 Chromatin State Distribution Visualization
+### 3.3 Chromatin State Distribution Visualization
 
 ```shell
 # wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz
@@ -803,7 +805,7 @@ starting worker pid=12013 on localhost:11944 at 15:56:57.848
 </p>
 
 
-### 3.3 Chromatin State Similarity Assessment
+### 3.4 Chromatin State Similarity Assessment
 
 ```shell
 $ stateCompare -f 2.CS_Segmentation/4.chr1_IDEAS_output/chr1.state -a cd34 -b thp1 -m All

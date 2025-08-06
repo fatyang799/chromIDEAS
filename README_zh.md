@@ -111,6 +111,8 @@ chromIDEAS支持的功能如下：
     align="right"
   />
 </p>
+
+
 - **圆圈中的主图案**是用DNA双螺旋代表简化版的核小体模型，表示染色质状态的基本结构。
 - **上方连接的四个圆点**：模拟分子聚合结构，同时也寓意“聚类关系”和“状态网络”。
 
@@ -696,7 +698,7 @@ sys     11m7.006s
 >
 > 可以看到，经过优化后的chromIDEAS在识别染色质状态时，消耗的时间为44m22.538s，而原始S3V2处理相同数据时则消耗更多的时间132m56.320s。
 
-### 3.2 染色质状态基因组分布模式的绘制
+### 3.3 染色质状态基因组分布模式的绘制
 
 ```shell
 # wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz
@@ -793,7 +795,7 @@ starting worker pid=12013 on localhost:11944 at 15:56:57.848
 </p>
 
 
-### 3.3 染色质状态相似性评估
+### 3.4 染色质状态相似性评估
 
 ```shell
 $ stateCompare -f 2.CS_Segmentation/4.chr1_IDEAS_output/chr1.state -a cd34 -b thp1 -m All
