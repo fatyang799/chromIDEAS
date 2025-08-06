@@ -63,4 +63,4 @@ The implementation of chromIDEAS relies on the following tools:
 Please cite chromIDEAS2 as follows:
 
 Liu Yang, Shan Liu, Ting Lu, Shaokang Mo, Bin Qi and Kuangyu Yen. 
-**"chromIDEAS Reveals Epigenetic Dynamics via Multi-Dimensional Clustering of Chromatin States" Nucleic Acids Research (2025): under review.**
+**"chromIDEAS Reveals Epigenetic Dynamics via Multi-Dimensional Clustering of Chromatin States"**
