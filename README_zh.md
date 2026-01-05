@@ -154,28 +154,10 @@ $ tar xzf chr1_cd34_thp1.tar.gz
 我们新建一个文件，命名为 `metadata.txt`，然后在里面加入下面的内容：
 
 ```bash
-cd34	H3K27ac	rep3	./1.raw_bw/cd34_H3K27ac_rep3_SE.bw	./1.raw_bw/cd34_input_rep18_SE.bw
-cd34	H3K27ac	rep4	./1.raw_bw/cd34_H3K27ac_rep4_SE.bw	./1.raw_bw/cd34_input_rep5_SE.bw
-cd34	H3K27ac	rep5	./1.raw_bw/cd34_H3K27ac_rep5_SE.bw	./1.raw_bw/cd34_input_rep15_SE.bw
-cd34	H3K27me3	rep11	./1.raw_bw/cd34_H3K27me3_rep11_SE.bw	./1.raw_bw/cd34_input_rep18_SE.bw
-cd34	H3K27me3	rep1	./1.raw_bw/cd34_H3K27me3_rep1_SE.bw	./1.raw_bw/cd34_input_rep2_SE.bw
-cd34	H3K27me3	rep2	./1.raw_bw/cd34_H3K27me3_rep2_SE.bw	./1.raw_bw/cd34_input_rep8_SE.bw
-cd34	H3K27me3	rep3	./1.raw_bw/cd34_H3K27me3_rep3_SE.bw	./1.raw_bw/cd34_input_rep1_SE.bw
-cd34	H3K27me3	rep4	./1.raw_bw/cd34_H3K27me3_rep4_SE.bw	./1.raw_bw/cd34_input_rep12_SE.bw
-cd34	H3K27me3	rep5	./1.raw_bw/cd34_H3K27me3_rep5_SE.bw	./1.raw_bw/cd34_input_rep5_SE.bw
-cd34	H3K27me3	rep6	./1.raw_bw/cd34_H3K27me3_rep6_SE.bw	./1.raw_bw/cd34_input_rep6_SE.bw
-cd34	H3K27me3	rep7	./1.raw_bw/cd34_H3K27me3_rep7_SE.bw	./1.raw_bw/cd34_input_rep4_SE.bw
-cd34	H3K27me3	rep8	./1.raw_bw/cd34_H3K27me3_rep8_SE.bw	./1.raw_bw/cd34_input_rep10_SE.bw
-cd34	H3K27me3	rep9	./1.raw_bw/cd34_H3K27me3_rep9_SE.bw	./1.raw_bw/cd34_input_rep11_SE.bw
-cd34	H3K36me3	rep10	./1.raw_bw/cd34_H3K36me3_rep10_SE.bw	./1.raw_bw/cd34_input_rep18_SE.bw
-cd34	H3K36me3	rep1	./1.raw_bw/cd34_H3K36me3_rep1_SE.bw	./1.raw_bw/cd34_input_rep1_SE.bw
-cd34	H3K36me3	rep2	./1.raw_bw/cd34_H3K36me3_rep2_SE.bw	./1.raw_bw/cd34_input_rep4_SE.bw
-cd34	H3K36me3	rep3	./1.raw_bw/cd34_H3K36me3_rep3_SE.bw	./1.raw_bw/cd34_input_rep12_SE.bw
-cd34	H3K36me3	rep4	./1.raw_bw/cd34_H3K36me3_rep4_SE.bw	./1.raw_bw/cd34_input_rep5_SE.bw
-cd34	H3K36me3	rep6	./1.raw_bw/cd34_H3K36me3_rep6_SE.bw	./1.raw_bw/cd34_input_rep2_SE.bw
-cd34	H3K36me3	rep7	./1.raw_bw/cd34_H3K36me3_rep7_SE.bw	./1.raw_bw/cd34_input_rep3_SE.bw
-cd34	H3K36me3	rep8	./1.raw_bw/cd34_H3K36me3_rep8_SE.bw	./1.raw_bw/cd34_input_rep10_SE.bw
-cd34	H3K36me3	rep9	./1.raw_bw/cd34_H3K36me3_rep9_SE.bw	./1.raw_bw/cd34_input_rep11_SE.bw
+cd34	ATAC	rep1	./1.raw_bw/cd34_ATAC_rep1_PE.bw
+cd34	ATAC	rep2	./1.raw_bw/cd34_ATAC_rep2_PE.bw
+thp1	ATAC	rep3	./1.raw_bw/thp1_ATAC_rep3_PE.bw
+thp1	ATAC	rep4	./1.raw_bw/thp1_ATAC_rep4_PE.bw
 cd34	H3K4me1	rep1	./1.raw_bw/cd34_H3K4me1_rep1_SE.bw	./1.raw_bw/cd34_input_rep2_SE.bw
 cd34	H3K4me1	rep2	./1.raw_bw/cd34_H3K4me1_rep2_SE.bw	./1.raw_bw/cd34_input_rep3_SE.bw
 cd34	H3K4me1	rep3	./1.raw_bw/cd34_H3K4me1_rep3_SE.bw	./1.raw_bw/cd34_input_rep4_SE.bw
@@ -185,6 +167,8 @@ cd34	H3K4me1	rep6	./1.raw_bw/cd34_H3K4me1_rep6_SE.bw	./1.raw_bw/cd34_input_rep8_
 cd34	H3K4me1	rep7	./1.raw_bw/cd34_H3K4me1_rep7_SE.bw	./1.raw_bw/cd34_input_rep1_SE.bw
 cd34	H3K4me1	rep8	./1.raw_bw/cd34_H3K4me1_rep8_SE.bw	./1.raw_bw/cd34_input_rep11_SE.bw
 cd34	H3K4me1	rep9	./1.raw_bw/cd34_H3K4me1_rep9_SE.bw	./1.raw_bw/cd34_input_rep15_SE.bw
+thp1	H3K4me1	rep2	./1.raw_bw/thp1_H3K4me1_rep2_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
+thp1	H3K4me1	rep3	./1.raw_bw/thp1_H3K4me1_rep3_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
 cd34	H3K4me3	rep10	./1.raw_bw/cd34_H3K4me3_rep10_SE.bw	./1.raw_bw/cd34_input_rep11_SE.bw
 cd34	H3K4me3	rep1	./1.raw_bw/cd34_H3K4me3_rep1_SE.bw	./1.raw_bw/cd34_input_rep2_SE.bw
 cd34	H3K4me3	rep2	./1.raw_bw/cd34_H3K4me3_rep2_SE.bw	./1.raw_bw/cd34_input_rep3_SE.bw
@@ -195,6 +179,11 @@ cd34	H3K4me3	rep6	./1.raw_bw/cd34_H3K4me3_rep6_SE.bw	./1.raw_bw/cd34_input_rep4_
 cd34	H3K4me3	rep7	./1.raw_bw/cd34_H3K4me3_rep7_SE.bw	./1.raw_bw/cd34_input_rep12_SE.bw
 cd34	H3K4me3	rep8	./1.raw_bw/cd34_H3K4me3_rep8_SE.bw	./1.raw_bw/cd34_input_rep6_SE.bw
 cd34	H3K4me3	rep9	./1.raw_bw/cd34_H3K4me3_rep9_SE.bw	./1.raw_bw/cd34_input_rep10_SE.bw
+cd34	H3K4me3	rep11	./1.raw_bw/cd34_H3K4me3_rep11_PE.bw	./1.raw_bw/cd34_input_rep19_PE.bw
+cd34	H3K4me3	rep12	./1.raw_bw/cd34_H3K4me3_rep12_PE.bw	./1.raw_bw/cd34_input_rep20_PE.bw
+cd34	H3K4me3	rep13	./1.raw_bw/cd34_H3K4me3_rep13_SE.bw
+thp1	H3K4me3	rep2	./1.raw_bw/thp1_H3K4me3_rep2_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
+thp1	H3K4me3	rep3	./1.raw_bw/thp1_H3K4me3_rep3_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
 cd34	H3K9me3	rep1	./1.raw_bw/cd34_H3K9me3_rep1_SE.bw	./1.raw_bw/cd34_input_rep4_SE.bw
 cd34	H3K9me3	rep2	./1.raw_bw/cd34_H3K9me3_rep2_SE.bw	./1.raw_bw/cd34_input_rep1_SE.bw
 cd34	H3K9me3	rep3	./1.raw_bw/cd34_H3K9me3_rep3_SE.bw	./1.raw_bw/cd34_input_rep12_SE.bw
@@ -204,35 +193,46 @@ cd34	H3K9me3	rep6	./1.raw_bw/cd34_H3K9me3_rep6_SE.bw	./1.raw_bw/cd34_input_rep8_
 cd34	H3K9me3	rep7	./1.raw_bw/cd34_H3K9me3_rep7_SE.bw	./1.raw_bw/cd34_input_rep2_SE.bw
 cd34	H3K9me3	rep8	./1.raw_bw/cd34_H3K9me3_rep8_SE.bw	./1.raw_bw/cd34_input_rep3_SE.bw
 cd34	H3K9me3	rep9	./1.raw_bw/cd34_H3K9me3_rep9_SE.bw	./1.raw_bw/cd34_input_rep10_SE.bw
+thp1	H3K9me3	rep3	./1.raw_bw/thp1_H3K9me3_rep3_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
+thp1	H3K9me3	rep4	./1.raw_bw/thp1_H3K9me3_rep4_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
+cd34	H3K27ac	rep3	./1.raw_bw/cd34_H3K27ac_rep3_SE.bw	./1.raw_bw/cd34_input_rep18_SE.bw
+cd34	H3K27ac	rep4	./1.raw_bw/cd34_H3K27ac_rep4_SE.bw	./1.raw_bw/cd34_input_rep5_SE.bw
+cd34	H3K27ac	rep5	./1.raw_bw/cd34_H3K27ac_rep5_SE.bw	./1.raw_bw/cd34_input_rep15_SE.bw
+thp1	H3K27ac	rep2	./1.raw_bw/thp1_H3K27ac_rep2_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
+thp1	H3K27ac	rep3	./1.raw_bw/thp1_H3K27ac_rep3_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
+cd34	H3K27me3	rep11	./1.raw_bw/cd34_H3K27me3_rep11_SE.bw	./1.raw_bw/cd34_input_rep18_SE.bw
+cd34	H3K27me3	rep1	./1.raw_bw/cd34_H3K27me3_rep1_SE.bw	./1.raw_bw/cd34_input_rep2_SE.bw
+cd34	H3K27me3	rep2	./1.raw_bw/cd34_H3K27me3_rep2_SE.bw	./1.raw_bw/cd34_input_rep8_SE.bw
+cd34	H3K27me3	rep3	./1.raw_bw/cd34_H3K27me3_rep3_SE.bw	./1.raw_bw/cd34_input_rep1_SE.bw
+cd34	H3K27me3	rep4	./1.raw_bw/cd34_H3K27me3_rep4_SE.bw	./1.raw_bw/cd34_input_rep12_SE.bw
+cd34	H3K27me3	rep5	./1.raw_bw/cd34_H3K27me3_rep5_SE.bw	./1.raw_bw/cd34_input_rep5_SE.bw
+cd34	H3K27me3	rep6	./1.raw_bw/cd34_H3K27me3_rep6_SE.bw	./1.raw_bw/cd34_input_rep6_SE.bw
+cd34	H3K27me3	rep7	./1.raw_bw/cd34_H3K27me3_rep7_SE.bw	./1.raw_bw/cd34_input_rep4_SE.bw
+cd34	H3K27me3	rep8	./1.raw_bw/cd34_H3K27me3_rep8_SE.bw	./1.raw_bw/cd34_input_rep10_SE.bw
+cd34	H3K27me3	rep9	./1.raw_bw/cd34_H3K27me3_rep9_SE.bw	./1.raw_bw/cd34_input_rep11_SE.bw
 cd34	H3K27me3	rep12	./1.raw_bw/cd34_H3K27me3_rep12_PE.bw	./1.raw_bw/cd34_input_rep19_PE.bw
 cd34	H3K27me3	rep13	./1.raw_bw/cd34_H3K27me3_rep13_PE.bw	./1.raw_bw/cd34_input_rep20_PE.bw
 cd34	H3K27me3	rep14	./1.raw_bw/cd34_H3K27me3_rep14_PE.bw	./1.raw_bw/cd34_input_rep21_PE.bw
 cd34	H3K27me3	rep15	./1.raw_bw/cd34_H3K27me3_rep15_SE.bw
-cd34	H3K4me3	rep11	./1.raw_bw/cd34_H3K4me3_rep11_PE.bw	./1.raw_bw/cd34_input_rep19_PE.bw
-cd34	H3K4me3	rep12	./1.raw_bw/cd34_H3K4me3_rep12_PE.bw	./1.raw_bw/cd34_input_rep20_PE.bw
-cd34	H3K4me3	rep13	./1.raw_bw/cd34_H3K4me3_rep13_SE.bw
-cd34	H3K79me2	rep2	./1.raw_bw/cd34_H3K79me2_rep2_PE.bw	./1.raw_bw/cd34_input_rep19_PE.bw
-cd34	H3K79me2	rep3	./1.raw_bw/cd34_H3K79me2_rep3_PE.bw	./1.raw_bw/cd34_input_rep20_PE.bw
-cd34	H3K79me2	rep4	./1.raw_bw/cd34_H3K79me2_rep4_PE.bw	./1.raw_bw/cd34_input_rep21_PE.bw
+thp1	H3K27me3	rep3	./1.raw_bw/thp1_H3K27me3_rep3_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
+thp1	H3K27me3	rep4	./1.raw_bw/thp1_H3K27me3_rep4_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
+cd34	H3K36me3	rep10	./1.raw_bw/cd34_H3K36me3_rep10_SE.bw	./1.raw_bw/cd34_input_rep18_SE.bw
+cd34	H3K36me3	rep1	./1.raw_bw/cd34_H3K36me3_rep1_SE.bw	./1.raw_bw/cd34_input_rep1_SE.bw
+cd34	H3K36me3	rep2	./1.raw_bw/cd34_H3K36me3_rep2_SE.bw	./1.raw_bw/cd34_input_rep4_SE.bw
+cd34	H3K36me3	rep3	./1.raw_bw/cd34_H3K36me3_rep3_SE.bw	./1.raw_bw/cd34_input_rep12_SE.bw
+cd34	H3K36me3	rep4	./1.raw_bw/cd34_H3K36me3_rep4_SE.bw	./1.raw_bw/cd34_input_rep5_SE.bw
+cd34	H3K36me3	rep6	./1.raw_bw/cd34_H3K36me3_rep6_SE.bw	./1.raw_bw/cd34_input_rep2_SE.bw
+cd34	H3K36me3	rep7	./1.raw_bw/cd34_H3K36me3_rep7_SE.bw	./1.raw_bw/cd34_input_rep3_SE.bw
+cd34	H3K36me3	rep8	./1.raw_bw/cd34_H3K36me3_rep8_SE.bw	./1.raw_bw/cd34_input_rep10_SE.bw
+cd34	H3K36me3	rep9	./1.raw_bw/cd34_H3K36me3_rep9_SE.bw	./1.raw_bw/cd34_input_rep11_SE.bw
 thp1	H3K36me3	rep1	./1.raw_bw/thp1_H3K36me3_rep1_PE.bw	./1.raw_bw/thp1_mock_rep1_PE.bw
 thp1	H3K36me3	rep2	./1.raw_bw/thp1_H3K36me3_rep2_PE.bw	./1.raw_bw/thp1_mock_rep1_PE.bw
 thp1	H3K36me3	rep3	./1.raw_bw/thp1_H3K36me3_rep3_PE.bw	./1.raw_bw/thp1_mock_rep2_PE.bw
 thp1	H3K36me3	rep4	./1.raw_bw/thp1_H3K36me3_rep4_PE.bw	./1.raw_bw/thp1_mock_rep2_PE.bw
+cd34	H3K79me2	rep2	./1.raw_bw/cd34_H3K79me2_rep2_PE.bw	./1.raw_bw/cd34_input_rep19_PE.bw
+cd34	H3K79me2	rep3	./1.raw_bw/cd34_H3K79me2_rep3_PE.bw	./1.raw_bw/cd34_input_rep20_PE.bw
+cd34	H3K79me2	rep4	./1.raw_bw/cd34_H3K79me2_rep4_PE.bw	./1.raw_bw/cd34_input_rep21_PE.bw
 thp1	H3K79me2	rep1	./1.raw_bw/thp1_H3K79me2_rep1_PE.bw	./1.raw_bw/thp1_input_rep3_PE.bw
-thp1	H3K27me3	rep3	./1.raw_bw/thp1_H3K27me3_rep3_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
-thp1	H3K27me3	rep4	./1.raw_bw/thp1_H3K27me3_rep4_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
-thp1	H3K27ac	rep2	./1.raw_bw/thp1_H3K27ac_rep2_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
-thp1	H3K27ac	rep3	./1.raw_bw/thp1_H3K27ac_rep3_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
-thp1	H3K4me1	rep2	./1.raw_bw/thp1_H3K4me1_rep2_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
-thp1	H3K4me1	rep3	./1.raw_bw/thp1_H3K4me1_rep3_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
-thp1	H3K4me3	rep2	./1.raw_bw/thp1_H3K4me3_rep2_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
-thp1	H3K4me3	rep3	./1.raw_bw/thp1_H3K4me3_rep3_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
-thp1	H3K9me3	rep3	./1.raw_bw/thp1_H3K9me3_rep3_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
-thp1	H3K9me3	rep4	./1.raw_bw/thp1_H3K9me3_rep4_PE.bw	./1.raw_bw/thp1_input_rep4_PE.bw
-cd34	ATAC	rep1	./1.raw_bw/cd34_ATAC_rep1_PE.bw
-cd34	ATAC	rep2	./1.raw_bw/cd34_ATAC_rep2_PE.bw
-thp1	ATAC	rep3	./1.raw_bw/thp1_ATAC_rep3_PE.bw
-thp1	ATAC	rep4	./1.raw_bw/thp1_ATAC_rep4_PE.bw
 ```
 
 其中每一行代表细胞的一个表观修饰信号数据集，以 "tab" 分割，格式说明如下：
@@ -264,7 +264,7 @@ chr1	248956422
 
 ```shell
 $ wget https://github.com/Boyle-Lab/Blacklist/raw/master/lists/hg38-blacklist.v2.bed.gz
-$ gunzip https://github.com/Boyle-Lab/Blacklist/raw/master/lists/hg38-blacklist.v2.bed.gz
+$ gunzip hg38-blacklist.v2.bed.gz
 ```
 
 #### 3.1.4 文件总结
@@ -300,28 +300,27 @@ $ tree
 然后我们可以使用下面的命令，一键得到染色质状态的结果：
 
 ```shell
-$ time chromIDEAS -m 0.sup_dat/metadata.txt -o 2.CS_Segmentation/ -b 200 -g 0.sup_dat/chr1.txt -n hg38_chr1 -B 0.sup_dat/hg38-blacklist.v2.bed -c -d chr1 -p 20
-Now process (1) genomeWindows.
+$ time chromIDEAS -m 0.sup_dat/metadata.txt -o 3.one_key_CS_Segmentation/ -b 200 -g 0.sup_dat/chr1.txt -n hg38_chr1 -B 0.sup_dat/hg38-blacklist.v2.bed -c -d chr1 -p 20
 Process (1) genomeWindows done successfully.
 ------------------------------------------------------------------------
 
 Now process (2) bigWig2bedGraph.
-The /share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph directory is not exist. The program will create it.
+The /share/home/fatyang/0.Test/10.chromIDEAS/3.one_key_CS_Segmentation/1.bigWig2bedGraph directory is not exist. The program will create it.
 ################# Multiple mode #################
-./1.raw_bw/cd34_H3K27me3_rep2_SE.bw has been converted to bedgraph format succussfully.
-./1.raw_bw/cd34_H3K27me3_rep13_PE.bw has been converted to bedgraph format succussfully.
-./1.raw_bw/cd34_H3K27ac_rep5_SE.bw has been converted to bedgraph format succussfully.
+/share/home/fatyang/0.Test/10.chromIDEAS/1.raw_bw/cd34_H3K27me3_rep13_PE.bw has been converted to bedgraph format succussfully.
+/share/home/fatyang/0.Test/10.chromIDEAS/1.raw_bw/cd34_H3K27ac_rep5_SE.bw has been converted to bedgraph format succussfully.
+/share/home/fatyang/0.Test/10.chromIDEAS/1.raw_bw/cd34_H3K27me3_rep8_SE.bw has been converted to bedgraph format succussfully.
 ...
 All bigWig files have been convert to bedGraph.
 Process (2) bigWig2bedGraph done successfully.
 ------------------------------------------------------------------------
 
-The /share/home/fatyang/2.CS_Segmentation/2.s3v2Norm directory is not exist. The program will create it.
+The /share/home/fatyang/0.Test/10.chromIDEAS/3.one_key_CS_Segmentation/2.s3v2Norm directory is not exist. The program will create it.
 Now process (3) s3v2norm.
 ########################## s3v2Norm Start ##########################
-[1] "/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K9me3.rep1.ip.idsort.bedgraph.gz"
-[1] "/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K27ac.rep3.ip.idsort.bedgraph.gz"
-[1] "/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K79me2.rep2.ip.idsort.bedgraph.gz"
+[1] "/share/home/fatyang/0.Test/10.chromIDEAS/3.one_key_CS_Segmentation/1.bigWig2bedGraph/cd34.H3K9me3.rep1.ip.idsort.bedgraph.gz"
+[1] "/share/home/fatyang/0.Test/10.chromIDEAS/3.one_key_CS_Segmentation/1.bigWig2bedGraph/cd34.H3K79me2.rep2.ip.idsort.bedgraph.gz"
+[1] "/share/home/fatyang/0.Test/10.chromIDEAS/3.one_key_CS_Segmentation/1.bigWig2bedGraph/cd34.H3K36me3.rep10.ip.idsort.bedgraph.gz"
 ...
 1.Get cpk cbg allpk average_sig done
 2.S3norm average across marks done
@@ -414,7 +413,7 @@ The normalization parameters [linear regression: norm=B*raw+A]:
                 1  0
         3) cd34.H3K27ac.rep3.ctrl.idsort.bedgraph.gz.norm.bedgraph:
                 B                 A
-                2.08476397079908  -8.09980879317122
+                2.08476397079908  -8.09980879317118
 ...
 
 
@@ -431,7 +430,7 @@ Fit the s3v2 norm data to NB model:
                 0.902594813746805  17.7791989962796  1
         4) The normalization parameters for average signal of H3K36me3:
                 AVEmat_cbg_prob    AVEmat_cbg_size   scale_down
-                0.760129737927078  7.60914042205539  1
+                0.760129737927078  7.60914042205538  1
         5) The normalization parameters for average signal of H3K4me1:
                 AVEmat_cbg_prob    AVEmat_cbg_size   scale_down
                 0.571775852101361  3.82876573811324  1
@@ -449,11 +448,12 @@ Fit the s3v2 norm data to NB model:
 Process (3) s3v2Norm done successfully.
 ------------------------------------------------------------------------
 
+
 Now process (4) mergeBedgraph.
 ################# Multiple mode #################
-/share/home/fatyang/2.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep1.ATAC.S3V2.bedgraph.NBP.bedgraph.bw has been converted to bedgraph format succussfully.
-/share/home/fatyang/2.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep10.H3K4me3.S3V2.bedgraph.NBP.bedgraph.bw has been converted to bedgraph format succussfully.
-/share/home/fatyang/2.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep13.H3K4me3.S3V2.bedgraph.NBP.bedgraph.bw has been converted to bedgraph format succussfully.
+/share/home/fatyang/0.Test/10.chromIDEAS/3.one_key_CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep1.H3K36me3.S3V2.bedgraph.NBP.bedgraph.bw has been converted to bedgraph format succussfully.
+/share/home/fatyang/0.Test/10.chromIDEAS/3.one_key_CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep11.H3K27me3.S3V2.bedgraph.NBP.bedgraph.bw has been converted to bedgraph format succussfully.
+/share/home/fatyang/0.Test/10.chromIDEAS/3.one_key_CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/cd34_rep12.H3K4me3.S3V2.bedgraph.NBP.bedgraph.bw has been converted to bedgraph format succussfully.
 ...
 All bigWig files have been convert to bedGraph.
 Process (4) mergeBedgraph done successfully.
@@ -461,23 +461,23 @@ Process (4) mergeBedgraph done successfully.
 
 Now process (5) ideasCS.
 
-real    45m48.857s
-user    711m49.403s
-sys     14m19.501s
+real    46m48.756s
+user    742m4.707s
+sys     13m51.547s
 Process (5) ideasCS done successfully.
 ------------------------------------------------------------------------
 
 
-real    59m3.904s
-user    841m18.733s
-sys     28m10.912s
+real    60m4.404s
+user    876m7.955s
+sys     22m45.722s
 ```
 
 #### 3.2.2 分步识别
 
 我们也可以分3步进行。
 
-**（1）数据标准化：**
+**（1）数据标准化**：
 
 ```shell
 $ time s3v2Norm -b 200 -o 2.CS_Segmentation/ -m 0.sup_dat/metadata.txt -n hg38_chr1 -c -d chr1 -p 20 -g 0.sup_dat/chr1.txt -B 0.sup_dat/hg38-blacklist.v2.bed
@@ -486,23 +486,25 @@ Process (1) genomeWindows done successfully.
 ------------------------------------------------------------------------
 
 Now process (2) bigWig2bedGraph.
-The /share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph directory is not exist. The program will create it.
+The /share/home/fatyang/0.Test/10.chromIDEAS/2.CS_Segmentation/1.bigWig2bedGraph directory is not exist. The program will create it.
 ################# Multiple mode #################
-./1.raw_bw/cd34_H3K27ac_rep4_SE.bw has been converted to bedgraph format succussfully.
-./1.raw_bw/cd34_H3K27me3_rep1_SE.bw has been converted to bedgraph format succussfully.
-./1.raw_bw/cd34_H3K27ac_rep3_SE.bw has been converted to bedgraph format succussfully.
-......
+/share/home/fatyang/0.Test/10.chromIDEAS/1.raw_bw/cd34_H3K27me3_rep5_SE.bw has been converted to bedgraph format succussfully.
+/share/home/fatyang/0.Test/10.chromIDEAS/1.raw_bw/cd34_H3K36me3_rep10_SE.bw has been converted to bedgraph format succussfully.
+/share/home/fatyang/0.Test/10.chromIDEAS/1.raw_bw/cd34_H3K27me3_rep12_PE.bw has been converted to bedgraph format succussfully.
+...
+
 All bigWig files have been convert to bedGraph.
 Process (2) bigWig2bedGraph done successfully.
 ------------------------------------------------------------------------
 
-The /share/home/fatyang/2.CS_Segmentation/2.s3v2Norm directory is not exist. The program will create it.
+The /share/home/fatyang/0.Test/10.chromIDEAS/2.CS_Segmentation/2.s3v2Norm directory is not exist. The program will create it.
 Now process (3) s3v2norm.
 ########################## s3v2Norm Start ##########################
-[1] "/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K4me3.rep10.ip.idsort.bedgraph.gz"
-[1] "/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K27ac.rep3.ip.idsort.bedgraph.gz"
-[1] "/share/home/fatyang/2.CS_Segmentation/1.bigWig2bedGraph/cd34.ATAC.rep1.ip.idsort.bedgraph.gz"
+[1] "/share/home/fatyang/0.Test/10.chromIDEAS/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K9me3.rep1.ip.idsort.bedgraph.gz"
+[1] "/share/home/fatyang/0.Test/10.chromIDEAS/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K36me3.rep10.ip.idsort.bedgraph.gz"
+[1] "/share/home/fatyang/0.Test/10.chromIDEAS/2.CS_Segmentation/1.bigWig2bedGraph/cd34.H3K79me2.rep2.ip.idsort.bedgraph.gz"
 ...
+
 1.Get cpk cbg allpk average_sig done
 2.S3norm average across marks done
         3.S3V2 across samples   ATAC done
@@ -594,7 +596,7 @@ The normalization parameters [linear regression: norm=B*raw+A]:
                 1  0
         3) cd34.H3K27ac.rep3.ctrl.idsort.bedgraph.gz.norm.bedgraph:
                 B                 A
-                2.08476397079908  -8.09980879317122
+                2.08476397079908  -8.09980879317118
 ...
 
 
@@ -611,7 +613,7 @@ Fit the s3v2 norm data to NB model:
                 0.902594813746805  17.7791989962796  1
         4) The normalization parameters for average signal of H3K36me3:
                 AVEmat_cbg_prob    AVEmat_cbg_size   scale_down
-                0.760129737927078  7.60914042205539  1
+                0.760129737927078  7.60914042205538  1
         5) The normalization parameters for average signal of H3K4me1:
                 AVEmat_cbg_prob    AVEmat_cbg_size   scale_down
                 0.571775852101361  3.82876573811324  1
@@ -626,30 +628,29 @@ Fit the s3v2 norm data to NB model:
                 0.937901568499601  22.8114694786224  1
 
 
-Process (3) s3v2norm done successfully.
+Process (3) s3v2Norm done successfully.
 ------------------------------------------------------------------------
 
 
-real    11m41.485s
-user    111m7.597s
-sys     10m7.581s
+real    11m27.584s
+user    114m54.271s
+sys     6m23.810s
 ```
 
 > 作为比较，我们采用相同的参数，相同的数据，使用S3V2（https://github.com/guanjue/S3V2_IDEAS_ESMP）处理。由于S3V2中对于线程设置上最高只能为4，我们将其设置为最高线程。我们同样统计了运行时间：
 >
 > ```shell
-> real    52m54.052s
-> user    129m33.996s
-> sys     13m47.043s
+> real    52m41.469s
+> user    137m27.021s
+> sys     6m52.058s
 > ```
 >
-> 可以看到，经过优化后的chromIDEAS在运行数据标准化时，消耗的时间为11m41.485s，而原始S3V2处理相同数据时则消耗更多的时间52m54.052s。
+> 可以看到，经过优化后的chromIDEAS在运行数据标准化时，消耗的时间为11m27.584s，而原始S3V2处理相同数据时则消耗更多的时间52m41.469s。
 
 **（2）合并重复样本：**
 
 ```shell
 $ mkdir -p 2.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB
-$ rm -rf 2.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/group.799[12]799.txt
 $ ls 2.CS_Segmentation/2.s3v2Norm/chr1_bws_NBP/*S3V2.bedgraph.NBP.bedgraph.bw | while read id
 do
     bedg=$(basename $id | sed -r "s/.bw$//g")
@@ -681,7 +682,7 @@ $ rm -rf 2.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/group.799[12]79
 **（3）染色质状态识别：**
 
 ```shell
-$ ideasCS -m s3v2/3.CS_segmentation/chr1_IDEAS_input_NB/meta.txt -o s3v2/4.chr1_IDEAS_output -d chr1 -p 20
+$ ideasCS -m 2.CS_Segmentation/3.CS_segmentation/chr1_IDEAS_input_NB/meta.txt -o 2.CS_Segmentation/4.chr1_IDEAS_output -d chr1 -p 20
 
 real    44m22.538s
 user    712m10.945s
@@ -691,20 +692,206 @@ sys     11m7.006s
 > 作为比较，我们采用相同的参数，相同的数据，使用S3V2（https://github.com/guanjue/S3V2_IDEAS_ESMP）处理。由于S3V2中对于线程设置上最高只能为4，我们将其设置为最高线程。我们同样统计了运行时间：
 >
 > ```shell
-> real    132m56.320s
-> user    788m50.320s
-> sys     15m58.419s
+> real    134m41.655s
+> user    797m32.504s
+> sys     19m35.703s
 > ```
 >
-> 可以看到，经过优化后的chromIDEAS在识别染色质状态时，消耗的时间为44m22.538s，而原始S3V2处理相同数据时则消耗更多的时间132m56.320s。
+> 可以看到，经过优化后的chromIDEAS在识别染色质状态时，消耗的时间为44m22.538s，而原始S3V2处理相同数据时则消耗更多的时间134m41.655s。
 
-### 3.3 染色质状态基因组分布模式的绘制
+#### 3.2.3 结果识别
+
+需要注意的是，对于 `chromIDEAS` 得到的染色质状态识别结果而言，**每次运行的结果不会完全一致**，但是不会影响生物学整体模式。
+
+这是因为底层的 `IDEAS` 工具在计算染色质状态时，会随机从基因组上抽取不同的基因组区域进行计算。
+
+> 该问题具体可参考论文：
+>
+> - DOI: 10.1093/nar/gkx659
+
+对于得到的染色质状态结果，我们可以看到有3个文件，如下所示：
 
 ```shell
-# wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz
-# gunzip gencode.v40.annotation.gtf.gz
+$ tree 2.CS_Segmentation/4.chr1_IDEAS_output/
+2.CS_Segmentation/4.chr1_IDEAS_output/
+├── chr1.emission.pdf
+├── chr1.emission.txt
+├── chr1.state
+├── err.log
+└── std.log
 
-$ awk -F "\t" '{if($1 == "chr1") {print $0}}' /share/home/fatyang/Genomes/GENCODE/Human/hg38/gtf/gencode.v40.annotation.gtf > chr1.gtf
+1 directory, 5 files
+
+$ wc 2.CS_Segmentation/4.chr1_IDEAS_output/chr1.emission.txt
+  40  400 6431 chr1.emission.txt
+```
+
+- `chr1.state`：染色质状态在不同细胞基因组中的分布。
+- `chr1.emission.txt`：染色质状态的具体定义，记录了每种染色质状态中不同表观信号出现的概率。一共有39个染色质状态。
+- `chr1.emission.pdf`：`chr1.emission.txt` 文件的可视化展示。
+
+<p align="center">
+  <a href="https://chromideas.readthedocs.io" target="_blank">
+  <img
+    src="figures/cs_emission.png"
+    alt="cs_emission"
+    style="max-width: 50%; width: 10in; height: auto;"
+  />
+</p>
+
+### 3.3 染色质状态的功能聚类
+
+```shell
+$ mkdir -p 4.CSC
+$ chromIDEAS_CSC \
+-i 2.CS_Segmentation/4.chr1_IDEAS_output/chr1.state \
+-e 2.CS_Segmentation/4.chr1_IDEAS_output/chr1.emission.txt \
+-r chr1.gtf \
+-o 4.CSC/4.CSC \
+-f gtf \
+-t tx \
+-O 0.1 \
+-m 3 \
+-R "0.1-0.9-0.1,1-1.8-0.2,2-5-1"
+(1) Now calculate the region-segment-wise CS occupancy matrix ...
+Warning messages:
+1: package ‘qs’ was built under R version 4.3.3
+2: package ‘GenomicFeatures’ was built under R version 4.3.2
+3: package ‘BiocGenerics’ was built under R version 4.3.2
+4: package ‘S4Vectors’ was built under R version 4.3.3
+5: package ‘IRanges’ was built under R version 4.3.3
+6: package ‘GenomeInfoDb’ was built under R version 4.3.2
+7: package ‘GenomicRanges’ was built under R version 4.3.3
+8: package ‘AnnotationDbi’ was built under R version 4.3.2
+9: package ‘Biobase’ was built under R version 4.3.3
+Import genomic features from the file as a GRanges object ... OK
+Prepare the 'metadata' data frame ... OK
+Make the TxDb object ... OK
+Now we are going to find the non-overlapping transcriptions for downstream analysis.
+|----------------------------------------------------------------------------------------------------|
+|*starting worker pid=21161 on localhost:11712 at 16:16:15.554
+starting worker pid=21160 on localhost:11712 at 16:16:15.562
+starting worker pid=21162 on localhost:11712 at 16:16:15.562
+starting worker pid=21159 on localhost:11712 at 16:16:15.568
+***************************************************************************************************|
+There are 3253 non-overlapping transcripts for downstream analysis
+To ensure that after being divided into 10 segments, each segment contains at least a independent CS label, we filter out transcriptions with length <= 10 bins
+Removing 2133 transcriptions, there are total 1120 transcriptions for downstream analysis
+Warning message:
+In .get_cds_IDX(mcols0$type, mcols0$phase) :
+  The "phase" metadata column contains non-NA values for features of type
+  stop_codon. This information was ignored.
+[1] "G1"
+[1] "G2"
+[1] "G3"
+[1] "G4"
+[1] "G5"
+[1] "G6"
+[1] "G7"
+[1] "G8"
+[1] "G9"
+[1] "G10"
+|----------------------------------------------------------------------------------------------------|
+|*starting worker pid=21449 on localhost:11712 at 16:16:18.888
+starting worker pid=21451 on localhost:11712 at 16:16:18.908
+starting worker pid=21450 on localhost:11712 at 16:16:18.919
+starting worker pid=21452 on localhost:11712 at 16:16:18.941
+***************************************************************************************************|
+|----------------------------------------------------------------------------------------------------|
+|*starting worker pid=21745 on localhost:11712 at 16:16:22.362
+starting worker pid=21744 on localhost:11712 at 16:16:22.364
+starting worker pid=21742 on localhost:11712 at 16:16:22.383
+starting worker pid=21743 on localhost:11712 at 16:16:22.387
+***************************************************************************************************|
+Now calclulate the HITs for cd34 dat:
+|------------|
+|*starting worker pid=22060 on localhost:11712 at 16:16:25.891
+starting worker pid=22063 on localhost:11712 at 16:16:25.910
+starting worker pid=22062 on localhost:11712 at 16:16:25.911
+starting worker pid=22061 on localhost:11712 at 16:16:25.927
+***********|
+Now calclulate the HITs for thp1 dat:
+|------------|
+|*starting worker pid=22362 on localhost:11712 at 16:16:29.035
+starting worker pid=22360 on localhost:11712 at 16:16:29.049
+starting worker pid=22361 on localhost:11712 at 16:16:29.056
+starting worker pid=22363 on localhost:11712 at 16:16:29.060
+***********|
+(2) Now identify functionally coherent chromatin state clusters (CSCs) ...
+Warning messages:
+1: package ‘qs’ was built under R version 4.3.3
+2: package ‘Seurat’ was built under R version 4.3.3
+3: package ‘SeuratObject’ was built under R version 4.3.3
+Warning: Data is of class data.frame. Coercing to dgCMatrix.
+Warning: Data is of class data.frame. Coercing to dgCMatrix.
+Centering and scaling data matrix
+  |======================================================================| 100%
+Centering and scaling data matrix
+  |======================================================================| 100%
+Calculating cell-specific modality weights
+Finding 4 nearest neighbors for each modality.
+Calculating kernel bandwidths
+Finding multimodal neighbors
+Constructing multimodal KNN graph
+Constructing multimodal SNN graph
+Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
+To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
+This message will be shown once per session
+16:16:48 UMAP embedding parameters a = 0.9922 b = 1.112
+16:16:49 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 4
+16:16:49 Initializing from normalized Laplacian + noise (using RSpectra)
+16:16:49 Commencing optimization for 500 epochs, with 196 positive edges
+Using method 'umap'
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+16:16:49 Optimization finished
+Warning message:
+Key ‘PC_’ taken, using ‘apca_’ instead
+```
+
+运行后，我们会得到如下文件：
+
+```shell
+$ tree 4.CSC/
+4.CSC/
+├── 4.CSC.2000_Highly_Informative_Txs.qs
+├── 4.CSC.merge.cluster.csv
+├── 4.CSC.merge.clustree.pdf
+├── 4.CSC.merge.CS_Distance.qs
+├── 4.CSC.tx_Body_10segments_based_on_CSPercentage.cd34.qs
+└── 4.CSC.tx_Body_10segments_based_on_CSPercentage.thp1.qs
+
+1 directory, 6 files
+```
+
+其中：
+
+- `4.CSC.merge.cluster.csv`：记录了在不同CS分群分辨率结果下，CSC的聚类结果。
+- `4.CSC.merge.clustree.pdf`：将不同分辨率下的聚类结果进行合并绘制，如下图所示。
+- `4.CSC.2000_Highly_Informative_Txs.qs`：计算得到的2000高信息量的转录本，以QS文件存放。
+- `4.CSC.merge.CS_Distance.qs`：在WNN高维空间内，不同染色质状态之间的相互距离值，以QS文件存放，用于下游差异染色质状态簇基因分析。
+- `4.CSC.tx_Body_10segments_based_on_CSPercentage.cd34.qs`：CD34细胞中，所有染色质状态在2000高信息量的转录本区域分布的矩阵。
+- `4.CSC.tx_Body_10segments_based_on_CSPercentage.thp1.qs`：THP1细胞中，所有染色质状态在2000高信息量的转录本区域分布的矩阵。
+
+<p align="center">
+  <a href="https://chromideas.readthedocs.io" target="_blank">
+  <img
+    src="figures/clustree.png"
+    alt="clustree"
+    style="max-width: 50%; width: 10in; height: auto;"
+  />
+</p>
+
+可以看到，**39个染色质状态被划分为了5大类CSC**。在分辨率为2时，分群结果最为稳定，且同时维持了相对较高的分辨率结果。
+
+### 3.4 染色质状态基因组分布模式的绘制
+
+```shell
+$ wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz
+$ gunzip gencode.v40.annotation.gtf.gz
+$ awk -F "\t" '{if($1 == "chr1") {print $0}}' gencode.v40.annotation.gtf > chr1.gtf
+
 $ plotCSprofile TSS -i 2.CS_Segmentation/4.chr1_IDEAS_output/chr1.state -o tss.jpg -r chr1.gtf -W 10 -H 10
 ############################## Prepare the CS matrix ##############################
 U5 U4 U3 U2 U1 TSS D1 D2 D3 D4 D5
@@ -793,16 +980,14 @@ starting worker pid=12013 on localhost:11944 at 15:56:57.848
     style="max-width: 100%; width: 5in; height: auto; display: inline-block;"
   />
 </p>
-
-
-### 3.4 染色质状态相似性评估
+### 3.5 染色质状态相似性评估
 
 ```shell
 $ stateCompare -f 2.CS_Segmentation/4.chr1_IDEAS_output/chr1.state -a cd34 -b thp1 -m All
   H_Cell1   H_Cell2        RI       ARI        MI        VI       NVI        ID
-1.8314815 1.9278631 0.6957417 0.2335242 0.6470431 2.4652584 0.7921014 1.2808200
+1.8499284 1.9303757 0.6997782 0.2323963 0.6503011 2.4797019 0.7922363 1.2800746
       NID       NMI
-0.6643729 0.3356271
+0.6631220 0.3368780
 ```
 
 更多使用技巧及方法请参阅教程：<https://chromideas.readthedocs.io>
