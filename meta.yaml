@@ -30,6 +30,7 @@ requirements:
     - r-qs >=0.26.3
     - r-reshape2 >=1.4.4
     - r-stringr >=1.5.0
+    - r-aricode >=1.0.0
     - bioconductor-genomicranges >=1.50.0
 
 test: 
