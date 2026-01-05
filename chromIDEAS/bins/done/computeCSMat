@@ -1,0 +1,167 @@
+#!/bin/bash
+
+# Program: computeCSMat
+package_name="chromIDEAS"
+command="computeCSMat"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	body_bin_num=10
+	length_leveles=10
+	file_type=gtf
+	location_type=tx
+	overlap_cutoff=0.1
+	n_HITs=2000
+	nthreads=4
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvi:r:o:l:z:f:t:O:n:p:" opt
+	do
+		case $opt in
+            i) input_CS=${OPTARG} ;;
+            r) region_file=${OPTARG} ;;
+            o) out_prefix=${OPTARG} ;;
+            l) body_bin_num=${OPTARG} ;;
+            z) length_leveles=${OPTARG} ;;
+            f) file_type=${OPTARG} ;;
+            t) location_type=${OPTARG} ;;
+            O) overlap_cutoff=${OPTARG} ;;
+            n) n_HITs=${OPTARG} ;;
+            p) nthreads=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${command} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit 100 ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# check the required parameters
+	if true; then
+		if [[ -z ${input_CS} ]] || [[ -z ${region_file} ]] || [[ -z ${out_prefix} ]]; then
+			echo "Error: Required parameters missing. "
+			echo "\tUsage:   computeCSMat [options] -i <input_CS> -r <region_file> -o <out_prefix> -f gtf -t tx -O 0.1"
+			echo "\t   or:   computeCSMat [options] -i <input_CS> -r <region_file> -o <out_prefix> -f gtf -t gene"
+			echo "\t   or:   computeCSMat [options] -i <input_CS> -r <region_file> -o <out_prefix> -f bed"
+			exit 100
+		fi
+	fi
+
+	# check file: input_CS & region_file
+	if true; then
+		# input_CS
+		if true; then
+			# exist?
+			if true; then
+				file_check ${input_CS}
+				input_CS=$(getFull_file ${input_CS})
+			fi
+
+			# correct format?
+			if true; then
+				n=$(head ${input_CS} | awk -F " " '{print NF}' | sort -u)
+				if [[ ${n} -lt 5 ]]; then
+					echo "Wrong file format for <input_CS>. The file should be space delimited."
+					exit 100
+				fi
+			fi
+		fi
+		
+		# region_file
+		if true; then
+			# exist?
+			if true; then
+				file_check ${region_file}
+				region_file=$(getFull_file ${region_file})
+			fi
+
+			# correct format?
+			if true; then
+				if [[ ${file_type} == "gtf" ]]; then
+					n=$(head -n 50 ${region_file} | grep -v "^#" | awk -F "\t" '{print NF}' | sort -u)
+					if [[ ${n} -ne 9 ]]; then
+						echo "Wrong file format for <region_file>. The standard GTF file format should be a 9-column tab-delimited file."
+						exit 100
+					fi
+
+					if [[ -z ${location_type} ]] || ( [[ ${location_type} != "gene" ]] && [[ ${location_type} != "tx" ]] ); then
+						echo "Error: The '-t' option must be set to either 'gene' or 'tx' when using GTF format."
+						exit 100
+					fi
+
+					if [[ ${location_type} == "tx" ]]; then
+						if ! [[ "${overlap_cutoff}" =~ ^[0-9]+(\.[0-9]+)?$ ]] || (( $(echo "${overlap_cutoff} < 0" | bc -l) )) || (( $(echo "${overlap_cutoff} > 1" | bc -l) )); then
+							echo "Error: <overlap_cutoff> must be a number between 0 and 1 (inclusive)."
+							exit 101
+						fi
+					fi
+				elif [[ ${file_type} == "bed" ]]; then
+					n=$(head -n 10 ${region_file} | awk -F "\t" '{print NF}' | sort -u)
+					if [[ ${n} -ne 4 ]]; then
+						echo "Wrong file format for <region_file>. The required BED format should contain 4 columns: chrom, chromStart, chromEnd, and strand."
+						exit 100
+					fi
+				fi
+			fi
+		fi
+	fi
+
+	# check directory: out_prefix
+	if true; then
+		output_dir=$(dirname ${out_prefix})
+		output_dir=$(getFull_dir ${output_dir})
+		out_prefix=${output_dir}/$(basename ${out_prefix})
+	fi
+fi
+
+# computeCSMat
+if true; then
+	Rscript ${bin_root}/cell_specific_gene_cs_matrix_preparation.R \
+	${input_CS} \
+	${out_prefix} \
+	${body_bin_num} \
+	${length_leveles} \
+	${nthreads} \
+	${n_HITs} \
+	${region_file} \
+	${file_type} \
+	${location_type} \
+	${overlap_cutoff}
+fi

@@ -58,7 +58,7 @@ Optional arguments:
                             are accepted. The color names should be commas separated, e.g., red,blue. [Default: Auto]
   -N <num_per_row>          Number of plots per row. [Default: 5]
   -O <order_of_CS>          Plot ordering scheme. Available options: (1) By chromatin state name (cs); (2) By chromatin 
-                            state genomic percentage (csgp); (3) Custom order (comma-separated, e.g., s3,s1,s2). 
+                            state genomic percentage (csgp); (3) Custom order (comma-separated, e.g., "s3,s1,s2"). 
                             [Default: cs]
   -R                        Reverse the plot ordering scheme.
   -p <nthreads>             Number of parallel processes. [Default: 4]

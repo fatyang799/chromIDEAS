@@ -3,6 +3,7 @@ Description:
     mergeBedgraph is a tool to merge multiple bedgraph files with multiple replicates.
 
 Usage:   mergeBedgraph [options] ...
+
 Version: 1.0
 
 Required arguments:

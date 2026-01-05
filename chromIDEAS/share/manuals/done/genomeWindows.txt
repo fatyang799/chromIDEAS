@@ -1,7 +1,7 @@
 
 Description:
-    genomeWindows is a tool to segment the genome into equally sized and contiguous bin. The output 
-files are used for downstream S3V2 normalization.
+    genomeWindows is a tool to segment the genome into equally sized and contiguous bin. The output files are used for 
+downstream S3V2 normalization.
 
 Usage:   genomeWindows [options] -b <bin_size> -s <species> [-n <windows_name>]
    or:   genomeWindows [options] -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]

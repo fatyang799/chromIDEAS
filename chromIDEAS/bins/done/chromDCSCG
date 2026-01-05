@@ -1,0 +1,181 @@
+#!/bin/bash
+
+# Program: chromDCSCG
+package_name="chromIDEAS"
+command="chromDCSCG"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	file_type=gtf
+	up_bin_num=3
+	down_bin_num=3
+	nthreads=4
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hvi:c:r:d:o:f:u:w:p:" opt
+	do
+		case $opt in
+			i) input_CS=${OPTARG} ;;
+			c) CS_cluster=${OPTARG} ;;
+			r) region_file=${OPTARG} ;;
+			d) dist_mat=${OPTARG} ;;
+			o) out_prefix=${OPTARG} ;;
+			f) file_type=${OPTARG} ;;
+			u) up_bin_num=${OPTARG} ;;
+			w) down_bin_num=${OPTARG} ;;
+			p) nthreads=${OPTARG} ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${package_name} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# check the required parameters
+	if true; then
+		if [[ -z ${input_CS} ]] || [[ -z ${CS_cluster} ]] || [[ -z ${region_file} ]] || [[ -z ${dist_mat} ]] || [[ -z ${out_prefix} ]]; then
+			echo "Error: Required parameters missing."
+			echo "       The following are always required: -i <input_CS> -c <CS_cluster> -r <region_file> -d <dist_mat> -o <out_prefix>"
+			exit 100
+		fi
+	fi
+
+	# check file: input_CS & CS_cluster & region_file & dist_mat
+	if true; then
+		# input_CS
+		if true; then
+			# exist?
+			if true; then
+				file_check ${input_CS}
+				input_CS=$(getFull_file ${input_CS})
+			fi
+
+			# correct format?
+			if true; then
+				n=$(head ${input_CS} | awk -F " " '{print NF}' | sort -u)
+				if [[ ${n} -lt 6 ]]; then
+					echo "Wrong file format for <input_CS>. The file should be space delimited and has chromatin state info of two cells."
+					exit 100
+				fi
+			fi
+		fi
+
+		# CS_cluster
+		if true; then
+			# exist?
+			if true; then
+				file_check ${CS_cluster}
+				CS_cluster=$(getFull_file ${CS_cluster})
+			fi
+
+			# correct format?
+			if true; then
+				n=$(head ${CS_cluster} | awk -F "," '{print NF}' | sort -u)
+				if [[ ${n} -ne 2 ]]; then
+					echo "Wrong file format for <CS_cluster>. The file must be a comma‑delimited CSV with exactly two columns: state and cluster."
+					exit 100
+				fi
+			fi
+		fi
+
+		# region_file
+		if true; then
+			# exist?
+			if true; then
+				file_check ${region_file}
+				region_file=$(getFull_file ${region_file})
+			fi
+
+			# correct format?
+			if true; then
+				n=$(head -n 10 ${region_file} | grep -v "^#" | awk -F "\t" '{print NF}' | sort -u)
+				if [[ ${file_type} == "gtf" ]]; then
+					if [[ ${n} -ne 9 ]]; then
+						echo "Wrong GTF format for <region_file>. The standard GTF format is a 9-column, tab-delimited file."
+						exit 100
+					fi
+				fi
+
+				if [[ ${file_type} == "bed" ]]; then
+					if [[ ${n} -ne 5 ]]; then
+						echo "Wrong BED format for <region_file>. The required BED format should contain 5 columns: chrom, chromStart, chromEnd, strand, and regionID."
+						exit 100
+					fi
+				fi
+			fi
+		fi
+
+		# dist_mat
+		if true; then
+			file_check ${dist_mat}
+			dist_mat=$(getFull_file ${dist_mat})
+		fi
+	fi
+
+	# check directory: out_prefix
+	if true; then
+		output_dir=$(dirname ${out_prefix})
+		output_dir=$(getFull_dir ${output_dir})
+		out_prefix=${output_dir}/$(basename ${out_prefix})
+	fi
+
+	# file_type
+	if true; then
+		if [[ ${file_type} != "gtf" && ${file_type} != "bed" ]]; then
+			echo "-f <file_type> only support 'gtf' or 'bed' format."
+			exit 100
+		fi
+	fi
+fi
+
+# chromDCSCG
+if true; then
+	Rscript ${bin_root}/chromIDEAS_DCSCG_analysis.R \
+	${input_CS} \
+	${CS_cluster} \
+	${region_file} \
+	${dist_mat} \
+	${out_prefix} \
+	${file_type} \
+	${up_bin_num} \
+	${down_bin_num} \
+	${nthreads}
+fi

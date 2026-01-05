@@ -4,7 +4,9 @@ Description:
 RI (Rand Index), NMI (Normalized Mutual Information) and MI (Mutual Information). Additionally, it generates heatmaps 
 visualization of chromatin state transition patterns across samples. 
 http://jmlr.org/papers/v11/vinh10a.html
+
 Usage:   stateCompare [options] -f <file> -a <cell1> -b <cell2>
+
 Version: 1.0
 
 Required arguments:

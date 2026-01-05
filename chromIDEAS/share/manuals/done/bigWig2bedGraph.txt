@@ -6,6 +6,7 @@ are available:
 2) Single File Mode: Convert individual bigWig files
     
 Usage:   bigWig2bedGraph [options] ...
+
 Version: 1.0
 
 Required arguments:

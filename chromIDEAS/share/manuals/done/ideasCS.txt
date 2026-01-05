@@ -6,6 +6,7 @@ consistency of state assignments across different cell types. Detail algorithms 
 https://doi.org/10.1093/nar/gkw278
 
 Usage:   ideasCS [options] ...
+
 Version: 1.0
 
 Required arguments:
@@ -25,7 +26,7 @@ Optional arguments:
   Option                    Description
 -----------------------------------------------------------------------------------------------------------------------
   -f <otherpara>            This allows you to use .para file from previous run as priors for the Gaussian distribution 
-                            parameters in the current job (Example: -f ${out_dir}/${prefix}.para). However, currently 
+                            parameters in the current job (Example: -f <out_dir>/<prefix>.para). However, currently 
                             we assume that the set of marks and their orders in input are the same between previous and 
                             current data. [Default: None]
   -p <nthreads>             Number of parallel processes. [Default: 4]

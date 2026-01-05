@@ -1,0 +1,273 @@
+#!/bin/bash
+
+# Program: clusterCS
+package_name="chromIDEAS"
+command="clusterCS"
+version="1.0"
+
+# define package related path
+if true; then
+	bin_root=${CONDA_PREFIX}/share/${package_name}/bin
+	blacklist_root=${CONDA_PREFIX}/share/${package_name}/blacklist
+	genomesize_root=${CONDA_PREFIX}/share/${package_name}/genomesize
+	windows_root=${CONDA_PREFIX}/share/${package_name}/bin_windows
+	gsl_root=${CONDA_PREFIX}/share/${package_name}/gsl
+	manual_root=${CONDA_PREFIX}/share/${package_name}/manuals
+fi
+
+# print help
+if [[ -z $1 ]]; then
+	cat ${manual_root}/${command}.txt
+	exit
+fi
+
+# get function from config:
+# - check_status: check $? and if $? -ne 0, print $1 and execute command $2 (can be null), then exit 100
+# - file_check: if ! -f $1, print $1 and exit 100
+# - dir_check: if ! -d $1, print $1 and create it
+# - getFull_file: print $1 full fileName
+# - getFull_dir: if ! -d $1, create $1 and print full dirName, else print $1 full dirName
+# - rm_empty: remove empty line in the file
+# - data_type: check the input is one of gt0_Integer, 0, Character
+if true; then
+	source ${bin_root}/CHROMIDEAS_config.sh
+fi
+
+# default setting
+if true; then
+	mode=3
+	resolutions="0.1-0.9-0.1,1-1.8-0.2,2-5-1"
+	clustree=T
+fi
+
+# get the arguments
+if true; then
+	# get arguments from commandline
+	while getopts ":hve:a:b:H:o:m:r:p:" opt
+	do
+		case $opt in
+			e) emission=${OPTARG} ;;
+			a) cell1_cs_gene=${OPTARG} ;;
+			b) cell2_cs_gene=${OPTARG} ;;
+			H) HITs=${OPTARG} ;;
+			o) output_prefix=${OPTARG} ;;
+			m) mode=${OPTARG} ;;
+			r) resolutions=${OPTARG} ;;
+			p) clustree=F ;;
+
+			h) cat ${manual_root}/${command}.txt
+			   exit ;;
+			v) echo "${package_name} V${version}"
+			   exit ;;
+			*) echo -e "Invalid option -${OPTARG}\n"
+			   exit ;;
+		esac
+	done
+fi
+
+# check the input arguments
+if true; then
+	# check the required parameters
+	if true; then
+		if [[ -z ${emission} ]] || [[ -z ${HITs} ]] || [[ -z ${output_prefix} ]]; then
+			echo "Error: Required parameters missing."
+			echo "       The following are always required: -e <emission> -H <HITs> -o <output_prefix>"
+			exit 100
+		fi
+
+		if [[ -z ${mode} ]] || ! [[ ${mode} =~ ^[1234]$ ]]; then
+			echo "Error: Mode must be specified and be one of: 1, 2, 3, or 4."
+			echo "       Current value: '${mode}'"
+			exit 101
+		fi
+
+		case ${mode} in
+			1)
+				if [[ -z ${cell1_cs_gene} ]]; then
+					echo "Error: Mode 1 requires -a <cell1_cs_gene> parameter."
+					exit 100
+				fi
+
+				file_check ${cell1_cs_gene}
+				cell1_cs_gene=$(getFull_file ${cell1_cs_gene})
+
+				cell2_cs_gene=NULL
+			;;
+			2)
+				if [[ -z ${cell2_cs_gene} ]]; then
+					echo "Error: Mode 2 requires -b <cell2_cs_gene> parameter."
+					exit 100
+				fi
+
+				cell1_cs_gene=NULL
+
+				file_check ${cell2_cs_gene}
+				cell2_cs_gene=$(getFull_file ${cell2_cs_gene})
+			;;
+			3|4)
+				if [[ -z ${cell1_cs_gene} ]] || [[ -z ${cell2_cs_gene} ]]; then
+					echo "Error: Mode ${mode} requires both -a <cell1_cs_gene> and -b <cell2_cs_gene> parameters."
+					exit 100
+				fi
+
+				file_check ${cell1_cs_gene}
+				cell1_cs_gene=$(getFull_file ${cell1_cs_gene})
+
+				file_check ${cell2_cs_gene}
+				cell2_cs_gene=$(getFull_file ${cell2_cs_gene})
+			;;
+		esac
+	fi
+
+	# check file: emission & HITs
+	if true; then
+		# emission
+		if true; then
+			# exist?
+			if true; then
+				file_check ${emission}
+				emission=$(getFull_file ${emission})
+			fi
+
+			# correct format?
+			if true; then
+				n=$(head ${emission} | awk -F "\t" '{print NF}' | sort -u)
+				if [[ ${n} -lt 4 ]]; then
+					echo "Wrong file format for <emission>. The file should be tab delimited and at lease has two markers to define chromatin state."
+					exit 100
+				fi
+			fi
+		fi
+
+		# HITs
+		if true; then
+			# HITs
+			file_check ${HITs}
+			HITs=$(getFull_file ${HITs})
+		fi
+	fi
+
+	# check directory: output_prefix
+	if true; then
+		output_dir=$(dirname ${output_prefix})
+		output_dir=$(getFull_dir ${output_dir})
+		output_prefix=${output_dir}/$(basename ${output_prefix})
+	fi
+
+	# check resolutions
+	if true; then
+		# ============================================
+		# 函数：验证 resolutions 参数
+		# 支持格式：
+		#   1. 单个值: "0.8"
+		#   2. 多个离散值: "0.8,1.0,1.2"
+		#   3. 范围: "0.5-2.0-0.1" (start-end-step)
+		#   4. 混合: "0.5,0.8,1.0-2.0-0.2,3.5"
+		# ============================================
+		validate_resolutions() {
+			local resolutions="$1"
+			
+			# 1. 检查参数是否为空
+			if [[ -z ${resolutions} ]]; then
+				echo "Error: resolutions parameter cannot be empty."
+				return 1
+			fi
+			
+			# 2. 按逗号分割成多个部分
+			IFS=',' read -ra parts <<< ${resolutions}
+			
+			# 3. 验证每个部分
+			for part in "${parts[@]}"
+			do
+				# 移除可能的空格
+				part=$(echo ${part} | tr -d '[:space:]')
+				
+				if [[ -z ${part} ]]; then
+					echo "Error: Empty resolution part found."
+					return 1
+				fi
+				
+				# 检查是否为范围格式 (start-end-step)
+				if [[ "${part}" =~ ^([0-9]*\.?[0-9]+)-([0-9]*\.?[0-9]+)-([0-9]*\.?[0-9]+)$ ]]; then
+					# 范围格式：验证三个数值
+					local start="${BASH_REMATCH[1]}"
+					local end="${BASH_REMATCH[2]}"
+					local step="${BASH_REMATCH[3]}"
+					
+					# 验证数值范围
+					if ! validate_single_resolution "${start}" || ! validate_single_resolution "${end}" || ! validate_single_resolution "${step}"; then
+						echo "Error: Invalid number in range '${part}'. Values must be between 0 and 5."
+						return 1
+					fi
+					
+					# 验证范围逻辑
+					if (( $(echo "${start} >= ${end}" | bc -l) )); then
+						echo "Error: In range '${part}': start (${start}) must be less than end (${end})."
+						return 1
+					fi
+					
+					if (( $(echo "${step} >= (${end} - ${start})" | bc -l) )); then
+						echo "Error: In range '${part}': step (${step}) must be less than the range length ($(echo "${end} - ${start}" | bc))."
+						return 1
+					fi
+					
+					if (( $(echo "${step} <= 0" | bc -l) )); then
+						echo "Error: In range '${part}': step (${step}) must be greater than 0."
+						return 1
+					fi
+					
+					# 计算步数，确保合理
+					local steps_count=$(echo "(${end} - ${start}) / ${step}" | bc -l)
+					if (( $(echo "${steps_count} > 20" | bc -l) )); then
+						echo "Warning: Range '${part}' would generate over 20 resolutions (approximately ${steps_count%.*} steps)."
+						echo "         This may be computationally intensive. Consider increasing step size."
+					fi
+				else
+					# 单个数值格式：验证是否在0-5之间
+					if ! validate_single_resolution ${part}; then
+						echo "Error: Invalid resolution value '${part}'. Must be a number between 0 and 5."
+						return 1
+					fi
+				fi
+			done
+			
+			return 0
+		}
+
+		# 辅助函数：验证单个分辨率值 (0-5之间)
+		validate_single_resolution() {
+			local value="$1"
+			
+			# 检查是否为有效数字
+			if [[ ! ${value} =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+				return 1
+			fi
+			
+			# 检查范围 (0-5之间)
+			if (( $(echo "${value} < 0" | bc -l) )) || (( $(echo "${value} > 5" | bc -l) )); then
+				return 1
+			fi
+			
+			return 0
+		}
+
+		validate_resolutions ${resolutions}
+		if [[ $? -ne 0 ]]; then
+			exit 100
+		fi
+	fi
+fi
+
+# clusterCS
+if true; then
+	Rscript ${bin_root}/chromIDEAS_CS_clustering.R \
+	${emission} \
+	"${cell1_cs_gene}" \
+	"${cell2_cs_gene}" \
+	${HITs} \
+	${output_prefix} \
+	${mode} \
+	${resolutions} \
+	${clustree}
+fi
+

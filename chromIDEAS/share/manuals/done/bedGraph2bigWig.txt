@@ -5,6 +5,7 @@ Description:
 2) Single File Mode: Convert individual bedgraph files
 
 Usage:   bedGraph2bigWig [options] ...
+
 Version: 1.0
 
 Required arguments:
