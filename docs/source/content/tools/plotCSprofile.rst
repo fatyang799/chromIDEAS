@@ -40,7 +40,7 @@ Required arguments
     4 chr1 793200 793400 0 0
 
 ``-o <output_figure>``
-  File name to save the image. The file ending will be used to determine the image format. The available options are: "png", "jpg", "pdf" and "svg", e.g., MyHeatmap.png. **[Default: None]**
+  File name to save the image. The file ending will be used to determine the image format. The available options are: "png", "jpg", "pdf" and "svg", e.g., CSprofile.png. **[Default: None]**
 
 ``-r <regionFile>``
   File name or names, in BED or GTF format, containing the regions to plot. The GTF format is recommended. To ensure result accuracy, for BED format inputs, it is required to include strand information in column 4. If the strand is uncertain, use '*' to represent it **[Default: None]**. Example::
@@ -68,7 +68,7 @@ Optional arguments
   Number of bins covering the downstream region of the transcription end site. **[Default: 5]**
 
 ``-l <refPointLabel>``
-  only for TSS mode] Label shown in the plot for the TSS. Default is the **TSS**, but could be anything, e.g. "peak start".
+  [only for TSS mode] Label shown in the plot for the TSS. Default is the **TSS**, but could be anything, e.g. "peak start".
 
 ``-z <scale_type>``
   Mode for calculating chromatin state proportions. Possible choices: "genomic" and "state". "genomic" will compute the local proportion of each chromatin state at every site. (Example: For Site 1 with 100 "S1" out of 1,000 total values → "S1" = 100/1,000 = 10%); "state" will compute the global contribution of each site to a state’s total occurrences. (Example: If "S1" occurs 50,000 times genome-wide, Site 1’s 100 "S1" values contribute :100/50,000 = 0.2%). **[Default: genomic]**
@@ -116,7 +116,7 @@ Required arguments
     4 chr1 793200 793400 0 0
 
 ``-o <output_figure>``
-  File name to save the image. The file ending will be used to determine the image format. The available options are: "png", "jpg", "pdf" and "svg", e.g., MyHeatmap.png. **[Default: None]**
+  File name to save the image. The file ending will be used to determine the image format. The available options are: "png", "jpg", "pdf" and "svg", e.g., CSprofile.png. **[Default: None]**
 
 ``-r <regionFile>``
   File name or names, in BED or GTF format, containing the regions to plot. The GTF format is recommended. To ensure result accuracy, for BED format inputs, it is required to include strand information in column 4. If the strand is uncertain, use '*' to represent it **[Default: None]**. Example::
@@ -138,7 +138,7 @@ Optional arguments
   When ``<regionFile>`` is specified as a GTF file, select whether to use gene or transcript coordinates for analysis. **[Default: transcript]**
 
 ``-b <body_num>``
-  only for Body mode] Specify the number of bins for dividing the gene body region. **[Default: 10]**
+  [only for Body mode] Specify the number of bins for dividing the gene body region. **[Default: 10]**
 
 ``-u <up_num>``
   Number of bins covering the upstream region of the transcription start site. **[Default: 5]**
@@ -147,10 +147,10 @@ Optional arguments
   Number of bins covering the downstream region of the transcription end site. **[Default: 5]**
 
 ``-s <startLabel>``
-  only for Body mode] Label shown in the plot for the start of the region. **[Default: TSS]**
+  [only for Body mode] Label shown in the plot for the start of the region. **[Default: TSS]**
 
 ``-e <endLabel>``
-  only for Body mode] Label shown in the plot for the region end. **[Default: TES]**
+  [only for Body mode] Label shown in the plot for the region end. **[Default: TES]**
 
 ``-z <scale_type>``
   Mode for calculating chromatin state proportions. Possible choices: "genomic" and "state". "genomic" will compute the local proportion of each chromatin state at every site. (Example: For Site 1 with 100 "S1" out of 1,000 total values → "S1" = 100/1,000 = 10%); "state" will compute the global contribution of each site to a state’s total occurrences. (Example: If "S1" occurs 50,000 times genome-wide, Site 1’s 100 "S1" values contribute :100/50,000 = 0.2%). **[Default: genomic]**

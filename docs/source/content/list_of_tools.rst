@@ -3,30 +3,39 @@ The tools
 
 .. contents:: 
     :local:
+    :depth: 2
 
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
-| Tool                        | Type                                  | Input Files                       | Main Output File(s)                        |
-+=============================+=======================================+===================================+============================================+
-|:doc:`tools/genomeWindows`   | Basic Coordinate Preparation          | a genome length file              | bin-based coordinate                       |
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
-|:doc:`tools/bigWig2bedGraph` | Data Format Conversion                | 1 or more bigWig file(s)          | bedGraph file(s)                           |
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
-|:doc:`tools/bedGraph2bigWig` | Data Format Conversion                | 1 or more bedGraph file(s)        | bigWig file(s)                             |
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
-|:doc:`tools/s3v2Norm`        | Normalization                         | bigWig files and a metadata file  | Normal signal files                        |
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
-|:doc:`tools/mergeBedgraph`   | Data Integration                      | 2 or more bedGraph file(s)        | 1 bedGraph file                            |
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
-|:doc:`tools/mergeBigwig`     | Data Integration                      | 2 or more bigWig file(s)          | 1 bigWig file                              |
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
-|:doc:`tools/ideasCS`         | Chromatin State Segmentation          | output from s3v2Norm              | bin-based chromatin state segmentation     |
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
-|:doc:`tools/chromIDEAS`      | One Step Chromatin State Segmentation | bigWig files and a metadata file  | bin-based chromatin state segmentation     |
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
-|:doc:`tools/plotCSprofile`   | Visualization                         | output from ideasCS or chromIDEAS | chromatin state genomic distribution curve |
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
-|:doc:`tools/stateCompare`    | Statistical Analysis                  | output from ideasCS or chromIDEAS | NULL                                       |
-+-----------------------------+---------------------------------------+-----------------------------------+--------------------------------------------+
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+| Tool                        | Type                                  | Input Files                                                     | Main Output File(s)                           |
++=============================+=======================================+=================================================================+===============================================+
+|:doc:`tools/genomeWindows`   | Basic Coordinate Preparation          | a genome length file                                            | bin-based coordinate                          |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/bigWig2bedGraph` | Data Format Conversion                | 1 or more bigWig file(s)                                        | bedGraph file(s)                              |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/bedGraph2bigWig` | Data Format Conversion                | 1 or more bedGraph file(s)                                      | bigWig file(s)                                |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/s3v2Norm`        | Normalization                         | bigWig files and a metadata file                                | Normal signal files                           |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/mergeBedgraph`   | Data Integration                      | 2 or more bedGraph file(s)                                      | 1 bedGraph file                               |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/mergeBigwig`     | Data Integration                      | 2 or more bigWig file(s)                                        | 1 bigWig file                                 |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/ideasCS`         | Chromatin State Segmentation          | output from s3v2Norm                                            | bin-based chromatin state segmentation        |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/chromIDEAS`      | One Step Chromatin State Segmentation | bigWig files and a metadata file                                | bin-based chromatin state segmentation        |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/plotCSprofile`   | Visualization                         | output from ideasCS or chromIDEAS                               | chromatin state genomic distribution curve    |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/stateCompare`    | Statistical Analysis                  | output from ideasCS or chromIDEAS                               | NULL                                          |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/computeCSMat`    | Preparation for Functional Clustering | CS segmentation + genomic regions                               | segment-wise CS occupancy matrix + HITs       |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/clusterCS`       | Functional Clustering                 | output from computeCSMat + emission table                       | functional clustering of CS + distance matrix |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/chromIDEAS_CSC`  | One Step Functional Clustering        | CS segmentation + genomic regions + emission table              | functional clustering of CS + distance matrix |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
+|:doc:`tools/chromDCSCG`      | Differential CSC Gene Analysis        | CS segmentation + genomic regions + functional clustering of CS | genes with differential CSC                   |
++-----------------------------+---------------------------------------+-----------------------------------------------------------------+-----------------------------------------------+
 
 General principles
 ^^^^^^^^^^^^^^^^^^
@@ -133,4 +142,20 @@ These three parameters are used to construct the coordinate system. The relation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 :doc:`tools/stateCompare`
+"""""""""""""""""""""""""
+
+(8) Tools for Functional Clustering
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+:doc:`tools/computeCSMat`
+"""""""""""""""""""""""""
+:doc:`tools/clusterCS`
+""""""""""""""""""""""""""
+:doc:`tools/chromIDEAS_CSC`
+""""""""""""""""""""""""""
+
+(9) Tools for Differential CSC Gene Analysis
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+:doc:`tools/chromDCSCG`
 """""""""""""""""""""""""

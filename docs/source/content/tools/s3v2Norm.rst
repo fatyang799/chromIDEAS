@@ -6,9 +6,9 @@ epigenomic data sets. Detail algorithms can be viewed: https://doi.org/10.1093/n
 
 .. code-block:: sh
 
-    Usage: s3v2Norm [options] -o <output> -m <metadata> -n <windows_name> [-b <bin_size>]
-           s3v2Norm [options] -o <output> -m <metadata> -b <bin_size> -s <species> [-n <windows_name>]
-           s3v2Norm [options] -o <output> -m <metadata> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]
+    Usage:   s3v2Norm [options] -o <output> -m <metadata> -n <windows_name> [-b <bin_size>]
+       or:   s3v2Norm [options] -o <output> -m <metadata> -b <bin_size> -s <species> [-n <windows_name>]
+       or:   s3v2Norm [options] -o <output> -m <metadata> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]
 
 Content
 =======
@@ -18,7 +18,6 @@ Content
 
 Required arguments
 ^^^^^^^^^^^^^^^^^^
-
 
 ``-b <bin_size>``
   Bin size (in base pairs). **[Default: 200]**
@@ -34,7 +33,7 @@ Required arguments
     ...
 
 ``-s <species>``
-  Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the corresponding  genomesizes file and blacklist file. If your species is not listed, manually provide these files via ``-g <genome_sizes> -n <windows_name> [-B <blackList>]``. **[Default: None]**
+  Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the corresponding genomesizes file and blacklist file. If your species is not listed, manually provide these files via ``-g <genome_sizes> -n <windows_name> [-B <blackList>]``. **[Default: None]**
 
 ``-g <genomesizes>``
   Required if ``-s`` is unspecified. Path to a genomesizes file (tab-delimited) listing chromosome lengths **[Default: None]**. Example::

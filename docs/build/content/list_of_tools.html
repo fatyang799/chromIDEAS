@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The tools &mdash; Try Sphinx V1.0 documentation</title>
+  <title>The tools &mdash; Try Sphinx v1.1-0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c4e650ba" />
 
   
-      <script src="../_static/documentation_options.js?v=d43430bd"></script>
+      <script src="../_static/documentation_options.js?v=aa67e282"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -80,9 +80,20 @@
 <li class="toctree-l3"><a class="reference internal" href="#tools-statecompare"><span class="xref std std-doc">tools/stateCompare</span></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#tools-for-functional-clustering">(8) Tools for Functional Clustering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tools-computecsmat"><span class="xref std std-doc">tools/computeCSMat</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tools-clustercs"><span class="xref std std-doc">tools/clusterCS</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tools-chromideas-csc"><span class="xref std std-doc">tools/chromIDEAS_CSC</span></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tools-for-differential-csc-gene-analysis">(9) Tools for Differential CSC Gene Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tools-chromdcscg"><span class="xref std std-doc">tools/chromDCSCG</span></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="example_usage.html">Usage Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="questions.html">Summary for all questions raised by users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 </ul>
 
@@ -158,6 +169,18 @@
 <li><p><a class="reference internal" href="#tools-statecompare" id="id20"><a class="reference internal" href="tools/stateCompare.html"><span class="doc">stateCompare</span></a></a></p></li>
 </ul>
 </li>
+<li><p><a class="reference internal" href="#tools-for-functional-clustering" id="id21">(8) Tools for Functional Clustering</a></p>
+<ul>
+<li><p><a class="reference internal" href="#tools-computecsmat" id="id22"><a class="reference internal" href="tools/computeCSMat.html"><span class="doc">computeCSMat</span></a></a></p></li>
+<li><p><a class="reference internal" href="#tools-clustercs" id="id23"><a class="reference internal" href="tools/clusterCS.html"><span class="doc">clusterCS</span></a></a></p></li>
+<li><p><a class="reference internal" href="#tools-chromideas-csc" id="id24"><a class="reference internal" href="tools/chromIDEAS_CSC.html"><span class="doc">chromIDEAS_CSC</span></a></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tools-for-differential-csc-gene-analysis" id="id25">(9) Tools for Differential CSC Gene Analysis</a></p>
+<ul>
+<li><p><a class="reference internal" href="#tools-chromdcscg" id="id26"><a class="reference internal" href="tools/chromDCSCG.html"><span class="doc">chromDCSCG</span></a></a></p></li>
+</ul>
+</li>
 </ul>
 </nav>
 <table class="docutils align-default">
@@ -218,6 +241,26 @@
 <td><p>Statistical Analysis</p></td>
 <td><p>output from ideasCS or chromIDEAS</p></td>
 <td><p>NULL</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tools/computeCSMat.html"><span class="doc">computeCSMat</span></a></p></td>
+<td><p>Preparation for Functional Clustering</p></td>
+<td><p>CS segmentation + genomic regions</p></td>
+<td><p>segment-wise CS occupancy matrix + HITs</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tools/clusterCS.html"><span class="doc">clusterCS</span></a></p></td>
+<td><p>Functional Clustering</p></td>
+<td><p>output from computeCSMat + emission table</p></td>
+<td><p>functional clustering of CS + distance matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tools/chromIDEAS_CSC.html"><span class="doc">chromIDEAS_CSC</span></a></p></td>
+<td><p>One Step Functional Clustering</p></td>
+<td><p>CS segmentation + genomic regions + emission table</p></td>
+<td><p>functional clustering of CS + distance matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tools/chromDCSCG.html"><span class="doc">chromDCSCG</span></a></p></td>
+<td><p>Differential CSC Gene Analysis</p></td>
+<td><p>CS segmentation + genomic regions + functional clustering of CS</p></td>
+<td><p>genes with differential CSC</p></td>
 </tr>
 </tbody>
 </table>
@@ -325,6 +368,24 @@ $<span class="w"> </span>chromIDEAS
 <h2><a class="toc-backref" href="#id19" role="doc-backlink">(7) Tools for Statistical Analysis</a><a class="headerlink" href="#tools-for-statistical-analysis" title="Link to this heading">¶</a></h2>
 <section id="tools-statecompare">
 <h3><a class="toc-backref" href="#id20" role="doc-backlink"><a class="reference internal" href="tools/stateCompare.html"><span class="doc">stateCompare</span></a></a><a class="headerlink" href="#tools-statecompare" title="Link to this heading">¶</a></h3>
+</section>
+</section>
+<section id="tools-for-functional-clustering">
+<h2><a class="toc-backref" href="#id21" role="doc-backlink">(8) Tools for Functional Clustering</a><a class="headerlink" href="#tools-for-functional-clustering" title="Link to this heading">¶</a></h2>
+<section id="tools-computecsmat">
+<h3><a class="toc-backref" href="#id22" role="doc-backlink"><a class="reference internal" href="tools/computeCSMat.html"><span class="doc">computeCSMat</span></a></a><a class="headerlink" href="#tools-computecsmat" title="Link to this heading">¶</a></h3>
+</section>
+<section id="tools-clustercs">
+<h3><a class="toc-backref" href="#id23" role="doc-backlink"><a class="reference internal" href="tools/clusterCS.html"><span class="doc">clusterCS</span></a></a><a class="headerlink" href="#tools-clustercs" title="Link to this heading">¶</a></h3>
+</section>
+<section id="tools-chromideas-csc">
+<h3><a class="toc-backref" href="#id24" role="doc-backlink"><a class="reference internal" href="tools/chromIDEAS_CSC.html"><span class="doc">chromIDEAS_CSC</span></a></a><a class="headerlink" href="#tools-chromideas-csc" title="Link to this heading">¶</a></h3>
+</section>
+</section>
+<section id="tools-for-differential-csc-gene-analysis">
+<h2><a class="toc-backref" href="#id25" role="doc-backlink">(9) Tools for Differential CSC Gene Analysis</a><a class="headerlink" href="#tools-for-differential-csc-gene-analysis" title="Link to this heading">¶</a></h2>
+<section id="tools-chromdcscg">
+<h3><a class="toc-backref" href="#id26" role="doc-backlink"><a class="reference internal" href="tools/chromDCSCG.html"><span class="doc">chromDCSCG</span></a></a><a class="headerlink" href="#tools-chromdcscg" title="Link to this heading">¶</a></h3>
 </section>
 </section>
 </section>

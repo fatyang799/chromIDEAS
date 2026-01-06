@@ -8,7 +8,7 @@ bedGraph2bigWig is a tool to convert bedgraph file format to bigwig file format.
 
 .. code-block:: sh
  
-    Usage: bedGraph2bigWig [options] ...
+    Usage:   bedGraph2bigWig [options] ...
 
 Content
 =======

@@ -5,9 +5,9 @@ chromIDEAS is a suite of tools particularly developed for the efficient analysis
 
 .. code-block:: sh
 
-    Usage: chromIDEAS [options] -m <metadata> -o <output> -n <windows_name> [-b <bin_size>]
-           chromIDEAS [options] -m <metadata> -o <output> -b <bin_size> -s <species> [-n <windows_name>]
-           chromIDEAS [options] -m <metadata> -o <output> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]
+    Usage:   chromIDEAS [options] -m <metadata> -o <output> -n <windows_name> [-b <bin_size>]
+       or:   chromIDEAS [options] -m <metadata> -o <output> -b <bin_size> -s <species> [-n <windows_name>]
+       or:   chromIDEAS [options] -m <metadata> -o <output> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]
 
 Content
 =======
@@ -32,7 +32,7 @@ Required arguments
     ...
 
 ``-s <species>``
-  Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the corresponding  genomesizes file and blacklist file. If your species is not listed, manually provide these files via ``-g <genome_sizes> -n <windows_name> [-B <blackList>]``. **[Default: None]**
+  Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the corresponding genomesizes file and blacklist file. If your species is not listed, manually provide these files via ``-g <genome_sizes> -n <windows_name> [-B <blackList>]``. **[Default: None]**
 
 ``-g <genomesizes>``
   Required if ``-s`` is unspecified. Path to a genomesizes file (tab-delimited) listing chromosome lengths **[Default: None]**. Example::
@@ -75,7 +75,7 @@ Normalization Parameters
 
 ``-l <local_bg_bin>``
   Local background bin number. If set local_bg_bin=5, this means when the target bin is bin10, the surrounding background bins are bin5-9 and bin11-15 **[Default: 5]**
-                          
+
 Chromatin States Assignment Parameters
 """"""""""""""""""""""""""""""""""""""
 

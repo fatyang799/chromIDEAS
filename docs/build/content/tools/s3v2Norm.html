@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3v2Norm &mdash; Try Sphinx V1.0 documentation</title>
+  <title>s3v2Norm &mdash; Try Sphinx v1.1-0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c4e650ba" />
 
   
-      <script src="../../_static/documentation_options.js?v=d43430bd"></script>
+      <script src="../../_static/documentation_options.js?v=aa67e282"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -43,6 +43,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../list_of_tools.html">The tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example_usage.html">Usage Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../questions.html">Summary for all questions raised by users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
 
@@ -74,9 +75,9 @@
 <h1>s3v2Norm<a class="headerlink" href="#s3v2norm" title="Link to this heading">¶</a></h1>
 <p>s3v2Norm is a tool to Simultaneously normalize the Signal in peak regions and the Signal in background regions of
 epigenomic data sets. Detail algorithms can be viewed: <a class="reference external" href="https://doi.org/10.1093/nar/gkaa105">https://doi.org/10.1093/nar/gkaa105</a></p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Usage:<span class="w"> </span>s3v2Norm<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>-o<span class="w"> </span>&lt;output&gt;<span class="w"> </span>-m<span class="w"> </span>&lt;metadata&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;windows_name&gt;<span class="w"> </span><span class="o">[</span>-b<span class="w"> </span>&lt;bin_size&gt;<span class="o">]</span>
-<span class="w">       </span>s3v2Norm<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>-o<span class="w"> </span>&lt;output&gt;<span class="w"> </span>-m<span class="w"> </span>&lt;metadata&gt;<span class="w"> </span>-b<span class="w"> </span>&lt;bin_size&gt;<span class="w"> </span>-s<span class="w"> </span>&lt;species&gt;<span class="w"> </span><span class="o">[</span>-n<span class="w"> </span>&lt;windows_name&gt;<span class="o">]</span>
-<span class="w">       </span>s3v2Norm<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>-o<span class="w"> </span>&lt;output&gt;<span class="w"> </span>-m<span class="w"> </span>&lt;metadata&gt;<span class="w"> </span>-b<span class="w"> </span>&lt;bin_size&gt;<span class="w"> </span>-g<span class="w"> </span>&lt;genomesizes&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;windows_name&gt;<span class="w"> </span><span class="o">[</span>-B<span class="w"> </span>&lt;blackList&gt;<span class="o">]</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Usage:<span class="w">   </span>s3v2Norm<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>-o<span class="w"> </span>&lt;output&gt;<span class="w"> </span>-m<span class="w"> </span>&lt;metadata&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;windows_name&gt;<span class="w"> </span><span class="o">[</span>-b<span class="w"> </span>&lt;bin_size&gt;<span class="o">]</span>
+<span class="w">   </span>or:<span class="w">   </span>s3v2Norm<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>-o<span class="w"> </span>&lt;output&gt;<span class="w"> </span>-m<span class="w"> </span>&lt;metadata&gt;<span class="w"> </span>-b<span class="w"> </span>&lt;bin_size&gt;<span class="w"> </span>-s<span class="w"> </span>&lt;species&gt;<span class="w"> </span><span class="o">[</span>-n<span class="w"> </span>&lt;windows_name&gt;<span class="o">]</span>
+<span class="w">   </span>or:<span class="w">   </span>s3v2Norm<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>-o<span class="w"> </span>&lt;output&gt;<span class="w"> </span>-m<span class="w"> </span>&lt;metadata&gt;<span class="w"> </span>-b<span class="w"> </span>&lt;bin_size&gt;<span class="w"> </span>-g<span class="w"> </span>&lt;genomesizes&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;windows_name&gt;<span class="w"> </span><span class="o">[</span>-B<span class="w"> </span>&lt;blackList&gt;<span class="o">]</span>
 </pre></div>
 </div>
 </section>
@@ -102,7 +103,7 @@ epigenomic data sets. Detail algorithms can be viewed: <a class="reference exter
 </pre></div>
 </div>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">&lt;species&gt;</span></code></dt><dd><p>Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the corresponding  genomesizes file and blacklist file. If your species is not listed, manually provide these files via <code class="docutils literal notranslate"><span class="pre">-g</span> <span class="pre">&lt;genome_sizes&gt;</span> <span class="pre">-n</span> <span class="pre">&lt;windows_name&gt;</span> <span class="pre">[-B</span> <span class="pre">&lt;blackList&gt;]</span></code>. <strong>[Default: None]</strong></p>
+<dt><code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">&lt;species&gt;</span></code></dt><dd><p>Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the corresponding genomesizes file and blacklist file. If your species is not listed, manually provide these files via <code class="docutils literal notranslate"><span class="pre">-g</span> <span class="pre">&lt;genome_sizes&gt;</span> <span class="pre">-n</span> <span class="pre">&lt;windows_name&gt;</span> <span class="pre">[-B</span> <span class="pre">&lt;blackList&gt;]</span></code>. <strong>[Default: None]</strong></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">-g</span> <span class="pre">&lt;genomesizes&gt;</span></code></dt><dd><p>Required if <code class="docutils literal notranslate"><span class="pre">-s</span></code> is unspecified. Path to a genomesizes file (tab-delimited) listing chromosome lengths <strong>[Default: None]</strong>. Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chr1</span>  <span class="mi">249250621</span>

@@ -11,7 +11,7 @@ import sphinx_rtd_theme
 project = 'Try Sphinx'
 copyright = '2025, fatyang'
 author = 'fatyang'
-release = 'V1.0'
+release = 'v1.1-0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

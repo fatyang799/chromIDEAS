@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ideasCS &mdash; Try Sphinx V1.0 documentation</title>
+  <title>ideasCS &mdash; Try Sphinx v1.1-0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c4e650ba" />
 
   
-      <script src="../../_static/documentation_options.js?v=d43430bd"></script>
+      <script src="../../_static/documentation_options.js?v=aa67e282"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -43,6 +43,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../list_of_tools.html">The tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example_usage.html">Usage Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../questions.html">Summary for all questions raised by users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
 
@@ -76,7 +77,7 @@
 models from the normalized epigenomic signals simultaneously along the genome and across cell types to improve
 consistency of state assignments across different cell types. Detail algorithms can be viewed:
 <a class="reference external" href="https://doi.org/10.1093/nar/gkw278">https://doi.org/10.1093/nar/gkw278</a></p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Usage:<span class="w"> </span>ideasCS<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>...
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Usage:<span class="w">   </span>ideasCS<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>...
 </pre></div>
 </div>
 </section>
@@ -91,7 +92,7 @@ consistency of state assignments across different cell types. Detail algorithms 
 <section id="required-arguments">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Required arguments</a><a class="headerlink" href="#required-arguments" title="Link to this heading">¶</a></h2>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">&lt;metadata&gt;</span></code></dt><dd><p>Path to a metadata file (space-delimited) for CS segmentation, containing the Cell, Marker, Signal file info [Default: None]. Example:</p>
+<dt><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">&lt;metadata&gt;</span></code></dt><dd><p>Path to a metadata file (space-delimited) for CS segmentation, containing the Cell, Marker, Signal file info <strong>[Default: None]</strong>. Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cell1</span> <span class="n">H3K4me3</span> <span class="n">file1</span><span class="o">.</span><span class="n">bedgraph</span>
 <span class="n">cell2</span> <span class="n">H3K4me3</span> <span class="n">file2</span><span class="o">.</span><span class="n">bedgraph</span>
 <span class="n">cell1</span> <span class="n">H3K9me3</span> <span class="n">file3</span><span class="o">.</span><span class="n">bedgraph</span>
@@ -109,7 +110,7 @@ consistency of state assignments across different cell types. Detail algorithms 
 <section id="optional-arguments">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Optional arguments</a><a class="headerlink" href="#optional-arguments" title="Link to this heading">¶</a></h2>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">&lt;otherpara&gt;</span></code></dt><dd><p>This allows you to use .para file from previous run as priors for the Gaussian distribution parameters in the current job (Example: <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">${out_dir}/${prefix}.para</span></code>). However, currently we assume that the set of marks and their orders in input are the same between previous and current data. <strong>[Default: None]</strong></p>
+<dt><code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">&lt;otherpara&gt;</span></code></dt><dd><p>This allows you to use .para file from previous run as priors for the Gaussian distribution parameters in the current job (Example: <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">&lt;out_dir&gt;/&lt;prefix&gt;.para</span></code>). However, currently we assume that the set of marks and their orders in input are the same between previous and current data. <strong>[Default: None]</strong></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">&lt;nthreads&gt;</span></code></dt><dd><p>Number of parallel processes. <strong>[Default: 4]</strong></p>
 </dd>
@@ -129,7 +130,7 @@ consistency of state assignments across different cell types. Detail algorithms 
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">-M</span> <span class="pre">&lt;mcmc&gt;</span></code></dt><dd><p>The number of steps for maximization. Increasing the number will increase computing and only slightly increase accuracy. <strong>[Default: 5]</strong></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">-z</span></code></dt><dd><p>Compress output files in gzip format. [Default: false]</p>
+<dt><code class="docutils literal notranslate"><span class="pre">-z</span></code></dt><dd><p>Compress output files in gzip format. <strong>[Default: false]</strong></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">-h</span></code></dt><dd><p>Show this help message and exit.</p>
 </dd>

@@ -34,6 +34,7 @@ Contents:
    content/installation.rst
    content/list_of_tools.rst
    content/example_usage.rst
+   content/questions.rst
    content/about.rst
 
 

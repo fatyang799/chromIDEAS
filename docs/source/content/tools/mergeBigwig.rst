@@ -5,13 +5,13 @@ mergeBigwig is a tool to merge multiple bigwig files with multiple replicates.
 
 .. code-block:: sh
 
-    Usage: mergeBigwig [options] ...
-        1) pre-existing window bins
-        mergeBigwig -f <file_list> -m <average_method> -n <windows_name>
-        2) building window bins for hg38/hg19/mm10
-        mergeBigwig -f <file_list> -m <average_method> -b <bin_size> -s <species> [-n <windows_name>]
-        3) building window bins for custom species
-        mergeBigwig -f <file_list> -m <average_method> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]
+    Usage:   mergeBigwig [options] ...
+                 1) pre-existing window bins
+                 mergeBigwig -f <file_list> -m <average_method> -n <windows_name>
+                 2) building window bins for hg38/hg19/mm10
+                 mergeBigwig -f <file_list> -m <average_method> -b <bin_size> -s <species> [-n <windows_name>]
+                 3) building window bins for custom species
+                 mergeBigwig -f <file_list> -m <average_method> -b <bin_size> -g <genomesizes> -n <windows_name> [-B <blackList>]
 
 Content
 =======
@@ -33,7 +33,6 @@ Required arguments
     /PATH/TO/B_rep2.H3K9me3.bw    /PATH/TO/A.H3K9me3.bw
     ...
 
-
 ``-m <average_method>``
   Merging method for signal values. Support choices: mean, median. **[Default: mean]**
 
@@ -41,14 +40,13 @@ Required arguments
   Bin size (in base pairs). **[Default: 200]**
 
 ``-s <species>``
-  Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the corresponding  genomesizes file and blacklist file. If your species is not listed, manually provide these files via ``-g <genome_sizes> -n <windows_name> [-B <blackList>]``. **[Default: None]**
+  Supported species: hg38, hg19, or mm10. Selecting this option automatically loads the corresponding genomesizes file and blacklist file. If your species is not listed, manually provide these files via ``-g <genome_sizes> -n <windows_name> [-B <blackList>]``. **[Default: None]**
 
 ``-g <genomesizes>``
   Required if ``-s`` is unspecified. Path to a genomesizes file (tab-delimited) listing chromosome lengths **[Default: None]**. Example::
 
     chr1  249250621
     ...
-
 
 ``-n <windows_name>``
   Required if ``-s`` is unspecified. A unique name to identify the generated window bins for downstream processing. **[Default: None]**

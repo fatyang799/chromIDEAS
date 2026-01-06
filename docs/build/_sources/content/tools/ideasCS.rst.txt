@@ -8,7 +8,7 @@ https://doi.org/10.1093/nar/gkw278
 
 .. code-block:: sh
  
-    Usage: ideasCS [options] ...
+    Usage:   ideasCS [options] ...
 
 Content
 =======
@@ -20,7 +20,7 @@ Required arguments
 ^^^^^^^^^^^^^^^^^^
 
 ``-m <metadata>``
-  Path to a metadata file (space-delimited) for CS segmentation, containing the Cell, Marker, Signal file info [Default: None]. Example::
+  Path to a metadata file (space-delimited) for CS segmentation, containing the Cell, Marker, Signal file info **[Default: None]**. Example::
 
     cell1 H3K4me3 file1.bedgraph
     cell2 H3K4me3 file2.bedgraph
@@ -38,7 +38,7 @@ Optional arguments
 ^^^^^^^^^^^^^^^^^^
 
 ``-f <otherpara>``
-  This allows you to use .para file from previous run as priors for the Gaussian distribution parameters in the current job (Example: ``-f ${out_dir}/${prefix}.para``). However, currently we assume that the set of marks and their orders in input are the same between previous and current data. **[Default: None]**
+  This allows you to use .para file from previous run as priors for the Gaussian distribution parameters in the current job (Example: ``-f <out_dir>/<prefix>.para``). However, currently we assume that the set of marks and their orders in input are the same between previous and current data. **[Default: None]**
 
 ``-p <nthreads>``
   Number of parallel processes. **[Default: 4]**
@@ -68,7 +68,7 @@ Optional arguments
   The number of steps for maximization. Increasing the number will increase computing and only slightly increase accuracy. **[Default: 5]**
 
 ``-z``
-  Compress output files in gzip format. [Default: false]
+  Compress output files in gzip format. **[Default: false]**
 
 ``-h``
   Show this help message and exit.

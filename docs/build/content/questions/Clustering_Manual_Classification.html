@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manually Adjusting Functional Clustering of Chromatin States &mdash; Try Sphinx v1.1-0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c4e650ba" />
+
+  
+      <script src="../../_static/documentation_options.js?v=aa67e282"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Try Sphinx
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../list_of_tools.html">The tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage.html">Usage Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../questions.html">Summary for all questions raised by users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Try Sphinx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Manually Adjusting Functional Clustering of Chromatin States</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/content/questions/Clustering_Manual_Classification.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="manually-adjusting-functional-clustering-of-chromatin-states">
+<h1>Manually Adjusting Functional Clustering of Chromatin States<a class="headerlink" href="#manually-adjusting-functional-clustering-of-chromatin-states" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#question-overview" id="id1">Question Overview</a></p></li>
+<li><p><a class="reference internal" href="#solution-strategies" id="id2">Solution Strategies</a></p></li>
+<li><p><a class="reference internal" href="#implementation-examples" id="id3">Implementation Examples</a></p>
+<ul>
+<li><p><a class="reference internal" href="#post-clustering-refinement" id="id4">Post-clustering Refinement</a></p></li>
+<li><p><a class="reference internal" href="#pre-clustering-grouping" id="id5">Pre-clustering Grouping</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#important-considerations" id="id6">Important Considerations</a></p></li>
+<li><p><a class="reference internal" href="#additional-support" id="id7">Additional Support</a></p></li>
+</ul>
+</nav>
+<section id="question-overview">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Question Overview</a><a class="headerlink" href="#question-overview" title="Link to this heading">¶</a></h2>
+<p>During functional clustering analysis, chromatin states with similar epigenetic profiles are automatically grouped into Chromatin State Clusters (CSCs). While this aggregation helps reduce noise and improve robustness for differential analysis, it may also lower the resolution of chromatin dynamics. For example, active enhancer-like states might be merged with promoter-associated states in the same CSC, potentially obscuring biologically important distinctions.</p>
+<p>This raises the question: How can users incorporate prior biological knowledge to retain certain chromatin states as independent CSCs when justified by strong evidence?</p>
+<img alt="CSC1 contain promoter-like and enhancer-like clusters" src="../../_images/CSC1_question.png" />
+</section>
+<section id="solution-strategies">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Solution Strategies</a><a class="headerlink" href="#solution-strategies" title="Link to this heading">¶</a></h2>
+<p>To address this need for flexibility while maintaining methodological rigor, chromIDEAS offers two complementary strategies for manual refinement:</p>
+<ol class="arabic simple">
+<li><p><strong>Post-clustering refinement</strong>: Run chromIDEAS in standard unsupervised mode to obtain primary CSCs, then subdivide specific CSCs into finer sub-clusters based on biological evidence.</p></li>
+<li><p><strong>Pre-clustering grouping</strong>: Define biologically distinct chromatin states as a meta-state prior to analysis, then apply chromIDEAS to cluster the remaining states.</p></li>
+</ol>
+</section>
+<section id="implementation-examples">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Implementation Examples</a><a class="headerlink" href="#implementation-examples" title="Link to this heading">¶</a></h2>
+<p>Based on the following biological assumptions:</p>
+<ul class="simple">
+<li><p><strong>Promoter-like states</strong>: S24, S31, S18, S36, S28, S25</p></li>
+<li><p><strong>Enhancer-like states</strong>: S30, S15, S19, S7</p></li>
+</ul>
+<section id="post-clustering-refinement">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Post-clustering Refinement</a><a class="headerlink" href="#post-clustering-refinement" title="Link to this heading">¶</a></h3>
+<p>After obtaining initial CSCs through standard chromIDEAS analysis, CSC1 can be manually divided into two sub-clusters:</p>
+</section>
+<section id="pre-clustering-grouping">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Pre-clustering Grouping</a><a class="headerlink" href="#pre-clustering-grouping" title="Link to this heading">¶</a></h3>
+<p><strong>Step 1: Baseline unsupervised clustering with all states</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chromIDEAS_CSC<span class="w"> </span>-i<span class="w"> </span>chromIDEAS.state<span class="w"> </span>-e<span class="w"> </span>chromIDEAS.emission.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">               </span>-r<span class="w"> </span>gencode.v40.annotation.gtf<span class="w"> </span>-o<span class="w"> </span>chromAllCS<span class="w"> </span><span class="se">\</span>
+<span class="w">               </span>-f<span class="w"> </span>gtf<span class="w"> </span>-t<span class="w"> </span>tx<span class="w"> </span>-O<span class="w"> </span><span class="m">0</span>.1
+</pre></div>
+</div>
+<p><strong>Step 2: Clustering with predefined states excluded</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chromIDEAS_CSC<span class="w"> </span>-i<span class="w"> </span>chromIDEAS.state<span class="w"> </span>-e<span class="w"> </span>chromIDEAS.emission.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">               </span>-r<span class="w"> </span>gencode.v40.annotation.gtf<span class="w"> </span>-o<span class="w"> </span>chromAllCS<span class="w"> </span><span class="se">\</span>
+<span class="w">               </span>-f<span class="w"> </span>gtf<span class="w"> </span>-t<span class="w"> </span>tx<span class="w"> </span>-O<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span><span class="se">\</span>
+<span class="w">               </span>-E<span class="w"> </span><span class="s2">&quot;7,15,18,19,24,25,28,30,31,36&quot;</span>
+</pre></div>
+</div>
+<p><strong>Comparison of results</strong>:</p>
+<img alt="Comparison of clustering results with and without predefined states" src="../../_images/Pre_clustering_grouping.jpg" />
+<p>When the 10 predefined chromatin states are excluded, chromIDEAS clusters the remaining 27 states into 4 CSCs. The resulting classification shows only minor variations compared to the full analysis, demonstrating robust pattern recognition in the unsupervised framework.</p>
+</section>
+</section>
+<section id="important-considerations">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Important Considerations</a><a class="headerlink" href="#important-considerations" title="Link to this heading">¶</a></h2>
+<p>While these manual adjustment strategies provide valuable flexibility, users should apply them judiciously:</p>
+<ul class="simple">
+<li><p><strong>Potential bias introduction</strong>: Manual adjustments should be supported by substantial independent biological evidence to avoid subjective interpretations.</p></li>
+<li><p><strong>Primary strength preservation</strong>: The core advantage of chromIDEAS remains its unbiased, data-driven functional classification. Manual adjustments should complement rather than replace this approach.</p></li>
+<li><p><strong>Alternative approach</strong>: If users observe overly broad merging of functionally similar states without specific biological justification, consider increasing the clustering resolution (e.g., using <code class="docutils literal notranslate"><span class="pre">res=3</span></code>) to obtain more refined CSCs while maintaining an unbiased framework.</p></li>
+</ul>
+<img alt="Example of higher resolution clustering (res=3)" src="../../_images/higher_resolution_clustering.png" />
+</section>
+<section id="additional-support">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Additional Support</a><a class="headerlink" href="#additional-support" title="Link to this heading">¶</a></h2>
+<p>For further assistance with chromIDEAS:</p>
+<ul class="simple">
+<li><p>Submit questions on <a class="reference external" href="https://github.com/fatyang799/chromIDEAS/issues">GitHub</a></p></li>
+<li><p>Contact the author via email: <a class="reference external" href="mailto:yangliu326459&#37;&#52;&#48;gmail&#46;com">yangliu326459<span>&#64;</span>gmail<span>&#46;</span>com</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, fatyang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

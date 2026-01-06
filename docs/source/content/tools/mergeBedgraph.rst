@@ -5,7 +5,7 @@ mergeBedgraph is a tool to merge multiple bedgraph files with multiple replicate
 
 .. code-block:: sh
 
-    Usage: mergeBedgraph [options] ...
+    Usage:   mergeBedgraph [options] ...
 
 Content
 =======

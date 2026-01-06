@@ -8,7 +8,7 @@ bigWig2bedGraph converts bigWig files to bedGraph format using standardized geno
 
 .. code-block:: sh
 
-    Usage: bigWig2bedGraph [options] ...
+    Usage:   bigWig2bedGraph [options] ...
 
 Content
 =======
