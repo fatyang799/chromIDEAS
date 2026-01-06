@@ -55,6 +55,11 @@ Optional arguments:
   -p                        Disable the creation of multi-resolution clustering tree plots. By default, these visualizations 
                             are automatically generated. Use this flag to suppress plot output if only the CSV results are 
                             needed. [Default: enabled]
+  -E <excludeCS>            Exclude specified CSs from functional clustering. When users have clear evidence about the 
+                            functions of certain CSs, they can manually cluster them and exclude these states from 
+                            chromIDEAS's unsupervised functional clustering analysis. CS are specified directly by their 
+                            numerical labels, separated by commas (e.g., "1,2,3" will exclude states S1, S2, and S3 from 
+                            the analysis). [Default: none]
   -h                        Show this help message and exit.
   -v                        Show program's version number and exit.
 

@@ -16,8 +16,8 @@ if (T) {
   # test dat 
   if (F) {
     emission <- "chromIDEAS.emission.txt"
-    cell1_cs_gene <- "data/saved_data/1.chrom.tx_Body_(10segments)_based_on_CSPercentage.cd34.qs"
-    cell2_cs_gene <- "data/saved_data/1.chrom.tx_Body_(10segments)_based_on_CSPercentage.thp1.qs"
+    cell1_cs_gene <- "data/saved_data/1.chrom.tx_Body_10segments_based_on_CSPercentage.cd34.qs"
+    cell2_cs_gene <- "data/saved_data/1.chrom.tx_Body_10segments_based_on_CSPercentage.thp1.qs"
     hits <- "data/saved_data/1.chrom.2000_Highly_Informative_Txs.qs"
     output_prefix <- "data/saved_data/2.csc_cluster"
     
@@ -29,6 +29,8 @@ if (T) {
     
     resolutions <- "0.1-0.9-0.1,1-5-0.2"
     plot_clustertree <- "T"
+    
+    excludeCS <- "7,15,18,19,24,25,28,30,31,36"
   }
   
   emission <- args[1]
@@ -41,6 +43,7 @@ if (T) {
   
   resolutions <- args[7]
   plot_clustertree <- args[8]
+  excludeCS <- args[9]
 }
 
 # get resolution
@@ -53,6 +56,12 @@ if (T) {
       as.numeric(pat)
     }
   })))
+}
+
+# get exclude states
+if (excludeCS != "none") {
+  excludeCS <- as.numeric(strsplit(excludeCS, ",")[[1]])
+  excludeCS <- paste0("S", excludeCS)
 }
 
 # prepare the gene CS data
@@ -106,7 +115,7 @@ if (T) {
 
 # clustering
 if (T) {
-  chrom_clustering <- function(gene, emission, resolutions, plot_clustertree, prefix) {
+  chrom_clustering <- function(gene, emission, resolutions, excludeCS, plot_clustertree, prefix) {
     # Create Seurat Object
     if (T) {
       # gene parts' percentage
@@ -116,6 +125,10 @@ if (T) {
         gene <- gene*1e4
         gene <- round(gene)
         gene <- log2(gene+1)
+        
+        if (length(excludeCS)>1 & (! "none" %in% excludeCS)) {
+          gene <- gene[, !(colnames(gene) %in% excludeCS)]
+        }
         
         gene <- CreateSeuratObject(counts = gene,
                                    assay = "gene",
@@ -230,19 +243,19 @@ if (T) {
   }
   
   if (mode < 3) {
-    dat <- chrom_clustering(gene, emission, resolutions, plot_clustertree=plot_clustertree, prefix=paste0(output_prefix, ".", cell))
+    dat <- chrom_clustering(gene, emission, resolutions, excludeCS, plot_clustertree=plot_clustertree, prefix=paste0(output_prefix, ".", cell))
     write.table(dat, file = paste0(output_prefix, ".", cell, ".cluster.csv"), quote = F, sep = ",", col.names = T, row.names = F)
   } else if (mode == 3) {
-    dat <- chrom_clustering(gene, emission, resolutions, plot_clustertree=plot_clustertree, prefix=paste0(output_prefix, ".", "merge"))
+    dat <- chrom_clustering(gene, emission, resolutions, excludeCS, plot_clustertree=plot_clustertree, prefix=paste0(output_prefix, ".", "merge"))
     write.table(dat, file = paste0(output_prefix, ".", "merge", ".cluster.csv"), quote = F, sep = ",", col.names = T, row.names = F)
   } else if (mode == 4) {
-    dat1 <- chrom_clustering(gene1, emission, resolutions, plot_clustertree=plot_clustertree, prefix=paste0(output_prefix, ".", cell1))
+    dat1 <- chrom_clustering(gene1, emission, resolutions, excludeCS, plot_clustertree=plot_clustertree, prefix=paste0(output_prefix, ".", cell1))
     write.table(dat1, file = paste0(output_prefix, ".", cell1, ".cluster.csv"), quote = F, sep = ",", col.names = T, row.names = F)
     
-    dat2 <- chrom_clustering(gene2, emission, resolutions, plot_clustertree=plot_clustertree, prefix=paste0(output_prefix, ".", cell2))
+    dat2 <- chrom_clustering(gene2, emission, resolutions, excludeCS, plot_clustertree=plot_clustertree, prefix=paste0(output_prefix, ".", cell2))
     write.table(dat2, file = paste0(output_prefix, ".", cell2, ".cluster.csv"), quote = F, sep = ",", col.names = T, row.names = F)
     
-    dat3 <- chrom_clustering(gene, emission, resolutions, plot_clustertree=plot_clustertree, prefix=paste0(output_prefix, ".", "merge"))
+    dat3 <- chrom_clustering(gene, emission, resolutions, excludeCS, plot_clustertree=plot_clustertree, prefix=paste0(output_prefix, ".", "merge"))
     write.table(dat3, file = paste0(output_prefix, ".", "merge", ".cluster.csv"), quote = F, sep = ",", col.names = T, row.names = F)
   }
 }

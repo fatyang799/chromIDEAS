@@ -42,6 +42,7 @@ if true; then
 	overlap_cutoff=0.1
 	n_HITs=2000
 	mode=3
+	excludeCS=none
 	nthreads=4
 	resolutions="0.1-0.9-0.1,1-1.8-0.2,2-5-1"
 	clustree=T
@@ -50,7 +51,7 @@ fi
 # get the arguments
 if true; then
 	# get arguments from commandline
-	while getopts ":hvi:e:r:o:l:z:f:t:O:n:p:m:R:P" opt
+	while getopts ":hvi:e:r:o:l:z:f:t:O:n:p:E:m:R:P" opt
 	do
 		case $opt in
 			i) input_CS=${OPTARG} ;;
@@ -64,6 +65,7 @@ if true; then
 			O) overlap_cutoff=${OPTARG} ;;
 			n) n_HITs=${OPTARG} ;;
 			p) nthreads=${OPTARG} ;;
+			E) excludeCS=${OPTARG} ;;
 			m) mode=${OPTARG} ;;
 			R) resolutions=${OPTARG} ;;
 			P) clustree=F ;;
@@ -233,7 +235,8 @@ if true; then
 		-H ${HITs} \
 		-o ${out_prefix} \
 		-m ${mode} \
-		-r ${resolutions}
+		-r ${resolutions} \
+		-E ${excludeCS}
 	elif [[ ${clustree} == F ]]; then
 		#statements
 		clusterCS -e ${emission} \
@@ -243,6 +246,7 @@ if true; then
 		-o ${out_prefix} \
 		-m ${mode} \
 		-r ${resolutions} \
+		-E ${excludeCS} \
 		-p
 	fi
 fi

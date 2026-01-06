@@ -38,12 +38,13 @@ if true; then
 	mode=3
 	resolutions="0.1-0.9-0.1,1-1.8-0.2,2-5-1"
 	clustree=T
+	excludeCS=none
 fi
 
 # get the arguments
 if true; then
 	# get arguments from commandline
-	while getopts ":hve:a:b:H:o:m:r:p:" opt
+	while getopts ":hve:a:b:H:o:m:r:p:E:" opt
 	do
 		case $opt in
 			e) emission=${OPTARG} ;;
@@ -54,6 +55,7 @@ if true; then
 			m) mode=${OPTARG} ;;
 			r) resolutions=${OPTARG} ;;
 			p) clustree=F ;;
+			E) excludeCS=${OPTARG} ;;
 
 			h) cat ${manual_root}/${command}.txt
 			   exit ;;
@@ -268,6 +270,7 @@ if true; then
 	${output_prefix} \
 	${mode} \
 	${resolutions} \
-	${clustree}
+	${clustree} \
+	${excludeCS}
 fi
 

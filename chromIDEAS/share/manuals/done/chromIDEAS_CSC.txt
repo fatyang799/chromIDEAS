@@ -71,6 +71,11 @@ Optional arguments:
                             the output HITs list for each cell type, which serves as the high-signal feature set for CS 
                             clustering. Analogous to selecting highly variable genes in scRNA-seq analysis. [Default: 2000]
   -p <nthreads>             Number of parallel processes. Recommended to be ≤ 10. [Default: 4]
+  -E <excludeCS>            Exclude specified CSs from functional clustering. When users have clear evidence about the 
+                            functions of certain CSs, they can manually cluster them and exclude these states from 
+                            chromIDEAS's unsupervised functional clustering analysis. CS are specified directly by their 
+                            numerical labels, separated by commas (e.g., "1,2,3" will exclude states S1, S2, and S3 from 
+                            the analysis). [Default: none]
   -m <mode>                 Analysis mode. Specifies which datasets to cluster. [Default: 3]
                                 1: Cluster CSs from cell type 1 only (independent analysis).
                                 2: Cluster CSs from cell type 2 only (independent analysis).
